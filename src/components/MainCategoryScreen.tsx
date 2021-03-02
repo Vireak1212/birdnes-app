@@ -1,14 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const Hello1 = () => {
+const MainCategoryScreen = () => {
     return (
-        <View style={{ flex: 1 }}>
-            <Text>Hello</Text>
+        <View>
+            <Text>Category</Text>
         </View>
     )
 }
 
-export default Hello1
+export default MainCategoryScreen
 
 const styles = StyleSheet.create({})

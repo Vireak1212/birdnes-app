@@ -1,12 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Hello1 from './src/hello'
+import Route from './src/navigate/Route'
+
 
 const App = () => {
+  // React.useEffect(() => {
+  //   SplashScreen.hide();
+  // })
   return (
-    <View style={{ flex: 1 }}>
-      <Hello1 />
-    </View>
+    <>
+      <Route />
+    </>
   )
 }
 
