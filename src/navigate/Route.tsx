@@ -13,6 +13,11 @@ import HomeScreen from '../components/HomeScreen';
 import MainCategoryScreen from '../components/MainCategoryScreen';
 import MainCartScreen from '../components/MainCartScreen';
 import AccountScreen from '../components/AccountScreen';
+import ProductDetail from '../containers/product/ProductDetail';
+import StoreDetail from '../containers/store/StoreDetail';
+import AllStore from '../containers/store/AllStore';
+import AllProduct from '../containers/product/AllProduct';
+import HomeSearch from '../containers/home/HomeSearch';
 
 
 const Stack = createStackNavigator();
@@ -26,22 +31,11 @@ const Route = () => {
         headerShown: false,
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
-        {/* <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SingUp" component={SignUpScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-
-        <Stack.Screen name="Cart" component={CartScreen} />
-
         <Stack.Screen name="productDetail" component={ProductDetail} />
-        <Stack.Screen name="productByCategory" component={ProductByCategory} />
-        <Stack.Screen name="ClubDetail" component={SportClubDetail} />
-
-       
-        <Stack.Screen name="AllCategory" component={AllProductCategory} />
-        <Stack.Screen name="EditProfile" component={EditProfile} />
-
-        <Stack.Screen name="message" component={MessageScreen} />
-        <Stack.Screen name="notification" component={NotificationScreen} /> */}
+        <Stack.Screen name="storeDetail" component={StoreDetail} />
+        <Stack.Screen name="allStore" component={AllStore} />
+        <Stack.Screen name="allProduct" component={AllProduct} />
+        <Stack.Screen name="homeSearch" component={HomeSearch} />
       </Stack.Navigator>
     );
   }
