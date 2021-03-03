@@ -6,10 +6,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import style, { ICON_COLOR } from '../../styles/index'
+import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 import { Col, Row } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
-import { PRICE_COLOR } from '../../styles/index';
+
 
 const ProductDetail = (props: any) => {
     const { item } = props.route.params;

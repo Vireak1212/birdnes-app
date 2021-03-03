@@ -1,17 +1,27 @@
+import { useNavigation } from '@react-navigation/native';
 import { Button, Row } from 'native-base';
 import React from 'react';
-import { View, Text, Image, TextInput, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TextInput, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MainHeader from '../../custom_items/MainHeader';
+import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 
 const EditProfile = () => {
+    const navigate = useNavigation();
+
+    const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
+        onPress={() => navigate.goBack()}>
+        <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
+    </TouchableOpacity>
 
     return (
-
-        <View style={{ flex: 1 }}>
-
-
-            <ScrollView >
-
+        <SafeAreaView style={{ flex: 1 }}>
+            <MainHeader
+                title={'Update Profile'}
+                leftIcon={leftIcon()}
+            />
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ marginHorizontal: 30, marginTop: 30 }}>
                     <Text style={{ fontSize: 30 }}>Update Profile</Text>
                     <Text style={{ color: '#224889' }}>Make change to your personal information</Text>
@@ -51,7 +61,7 @@ const EditProfile = () => {
                     </Button>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
 
 
     );

@@ -1,16 +1,26 @@
 import { Col } from 'native-base';
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-const MainCartScreen = () => {
-    return (
-        // <View style={{ backgroundColor: '#000', height: 50, width: '100%' }}>
-        //     <Text>Hello</Text>
-        //     <Image style={{ position: 'absolute', top: 50, width: '100%', height: 200 }} resizeMode='cover'
-        //         resizeMethod='resize' source={require('../images/empty-cart-rappi.png')} />
+import style, { ICON_COLOR, PRICE_COLOR } from '../styles/index'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import MainHeader from '../custom_items/MainHeader';
 
-        // </View>
-        <View style={{ flex: 1 }}>
+const MainCartScreen = () => {
+    const navigate = useNavigation();
+
+    const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
+        onPress={() => navigate.goBack()}>
+        <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
+    </TouchableOpacity>
+
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <MainHeader
+                title={'Cart'}
+                leftIcon={leftIcon()}
+            />
             <View style={styles.cartImageContainer}>
                 <Image style={{
                     height: 200,
@@ -46,7 +56,7 @@ const MainCartScreen = () => {
                     <AntDesign name='playcircleo' size={20} style={{ color: '#fff', marginLeft: 10 }} color='#000' />
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

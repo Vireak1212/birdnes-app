@@ -12,18 +12,15 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from '../components/HomeScreen';
 import MainCategoryScreen from '../components/MainCategoryScreen';
 import MainCartScreen from '../components/MainCartScreen';
-<<<<<<< HEAD
-import AccountScreen from '../components/AccountScreen';
 import ProductDetail from '../containers/product/ProductDetail';
 import StoreDetail from '../containers/store/StoreDetail';
 import AllStore from '../containers/store/AllStore';
 import AllProduct from '../containers/product/AllProduct';
 import HomeSearch from '../containers/home/HomeSearch';
-=======
-import ProfileScreen from '../components/ProfileScreen';
+
 import EditProfile from './../containers/profile/EditProfile';
-import ShippingAddress from '../components/ShippingAddress';
->>>>>>> cd80d6b9c62a94e582510c2e53cba2564224ce0b
+import ProfileScreen from '../components/ProfileScreen';
+import ShippingAddress from '../containers/profile/ShippingAddress';
 
 
 const Stack = createStackNavigator();
@@ -37,17 +34,8 @@ const Route = () => {
         headerShown: false,
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
-<<<<<<< HEAD
-=======
         <Stack.Screen name="editProfile" component={EditProfile} />
         <Stack.Screen name="shippingAdress" component={ShippingAddress} />
-        {/* <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SingUp" component={SignUpScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-
-        <Stack.Screen name="Cart" component={CartScreen} />
-
->>>>>>> cd80d6b9c62a94e582510c2e53cba2564224ce0b
         <Stack.Screen name="productDetail" component={ProductDetail} />
         <Stack.Screen name="storeDetail" component={StoreDetail} />
         <Stack.Screen name="allStore" component={AllStore} />
