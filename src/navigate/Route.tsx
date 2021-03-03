@@ -12,7 +12,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from '../components/HomeScreen';
 import MainCategoryScreen from '../components/MainCategoryScreen';
 import MainCartScreen from '../components/MainCartScreen';
-import AccountScreen from '../components/AccountScreen';
+import ProfileScreen from '../components/ProfileScreen';
+import EditProfile from './../containers/profile/EditProfile';
+import ShippingAddress from '../components/ShippingAddress';
 
 
 const Stack = createStackNavigator();
@@ -26,6 +28,8 @@ const Route = () => {
         headerShown: false,
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
+        <Stack.Screen name="editProfile" component={EditProfile} />
+        <Stack.Screen name="shippingAdress" component={ShippingAddress} />
         {/* <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SingUp" component={SignUpScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
@@ -88,7 +92,7 @@ const Route = () => {
         />
         <Tab.Screen
           name="Account"
-          component={AccountScreen}
+          component={ProfileScreen}
           options={
             {
               tabBarIcon: ({ color }) => (
