@@ -11,23 +11,23 @@ const HotCategory = () => {
     const [data, setData] = useState([
         {
             id: 1,
-            image: 'https://digitalagencynetwork.com/wp-content/uploads/2018/11/brilliant-nike-campaigns.png'
+            product_name: 'Birtnest Drink',
+            image: 'https://farm8.staticflickr.com/7542/16227459701_f0568dd128_o.jpg'
         },
         {
             id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            product_name: 'Birtnest Meat',
+            image: 'https://chinatown.co.uk/wp-content/uploads/2017/01/birds-nest-soup.jpg'
         },
         {
             id: 3,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
+            product_name: 'Birtnest Soup',
+            image: 'https://i1.wp.com/primebirdsnest.com/wp-content/uploads/2018/09/FB_IMG_1514486502296-e1536375734968.jpg?fit=719%2C500&ssl=1'
         },
         {
             id: 4,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
-        },
-        {
-            id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            product_name: 'Birtnest Peckage',
+            image: 'https://www.yuxiangyan.com/wp-content/uploads/2015/05/bnestbottled.jpg'
         },
     ])
 
@@ -46,14 +46,14 @@ const HotCategory = () => {
                 <Text style={{
                     position: 'absolute',
                     color: '#fff',
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    backgroundColor: 'rgba(60, 60, 60, 0.3)',
                     bottom: 0,
                     left: 0,
                     borderTopRightRadius: 5,
                     paddingHorizontal: 5,
                     paddingVertical: 2,
                     fontSize: 12,
-                }} numberOfLines={2}>Pro Brid Shop</Text>
+                }} numberOfLines={2}>{item.product_name}</Text>
 
             </TouchableOpacity>
         )

@@ -8,25 +8,25 @@ const HomeMenu = () => {
         {
             id: 1,
             name: 'Category',
-            image: 'https://cdn.iconscout.com/icon/free/png-512/sport-game-batsman-cricket-player-bat-ball-pad-gloves-helmet-29296.png',
+            image: require('../../images/icon/list.png'),
             color: '#FF7051'
         },
         {
             id: 2,
             name: 'Stores',
-            image: 'https://cdn.iconscout.com/icon/free/png-512/sport-game-batsman-cricket-player-bat-ball-pad-gloves-helmet-29296.png',
+            image: require('../../images/icon/store.png'),
             color: '#874cfe'
         },
         {
             id: 3,
             name: 'Special',
-            image: 'https://cdn.iconscout.com/icon/free/png-512/sport-game-batsman-cricket-player-bat-ball-pad-gloves-helmet-29296.png',
+            image: require('../../images/icon/medal.png'),
             color: '#0194fe'
         },
         {
             id: 3,
             name: 'Collection',
-            image: 'https://cdn.iconscout.com/icon/free/png-512/sport-game-batsman-cricket-player-bat-ball-pad-gloves-helmet-29296.png',
+            image: require('../../images/icon/data-collection.png'),
             color: '#63bb05'
         },
     ])
@@ -46,7 +46,7 @@ const HomeMenu = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                    <Image key={index} source={{ uri: item.image }}
+                    <Image key={index} source={item.image}
                         style={{
                             width: 30,
                             height: 30,

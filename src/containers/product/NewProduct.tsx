@@ -14,19 +14,19 @@ const NewProduct = () => {
     const [data, setData] = useState([
         {
             id: 1,
-            image: 'https://digitalagencynetwork.com/wp-content/uploads/2018/11/brilliant-nike-campaigns.png'
+            image: 'https://www.mcgill.ca/oss/files/oss/styles/hd/public/s_white_900x600-4.jpg?itok=t3Ztf2bL&timestamp=1548273854'
         },
         {
             id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            image: 'https://www.thespruceeats.com/thmb/bYV1LMBZmNqEb1-slUnAylk0muE=/724x407/smart/filters:no_upscale()/Bird-s-nest-soup-576915305f9b58346aab3366.jpg'
         },
         {
             id: 3,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
+            image: 'https://media.istockphoto.com/photos/edible-birds-nest-and-goji-jujube-birds-nest-soup-traditional-chinese-picture-id1071659556?k=6&m=1071659556&s=612x612&w=0&h=vRvaQNpOH87lPblQr5EV6mY_LvZn_9D9e-hwJ3a8gcU='
         },
         {
             id: 4,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
+            image: 'https://www.thespruceeats.com/thmb/EXeaj3QF879cqllA4UySqlLfM9s=/450x0/filters:no_upscale():max_bytes(150000):strip_icc()/16232589180_9d1e4a3ece_k-583290e53df78c6f6af2a79c.jpg'
         }
     ])
 

@@ -15,31 +15,31 @@ const AllProduct = () => {
     const [data, setData] = useState([
         {
             id: 1,
-            image: 'https://digitalagencynetwork.com/wp-content/uploads/2018/11/brilliant-nike-campaigns.png'
+            image: 'https://upload.wikimedia.org/wikipedia/commons/1/16/Edible-birds-nest-bowl-shape.png'
         },
         {
             id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            image: 'https://www.nybirdnest.com/wp-content/uploads/2018/01/subscription-img-1-300x297.png'
         },
         {
             id: 3,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
+            image: 'https://cf.shopee.com.my/file/3999485dc804db95cdc9dda76d4b248a'
         },
         {
             id: 4,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
+            image: 'https://lh3.googleusercontent.com/proxy/gZeqVy4Abc8CiBc39LAuucNA-_boztwUBbUrvOLpJjCntR-DA2RpkUvccLqVE_aXlt45wN1avHQ0nKHoGsTApI9ppkFoyG31pXHjCuuuz_VU0Hg'
         },
         {
-            id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            id: 5,
+            image: 'https://eveessential.com.my/wp-content/uploads/2020/12/3-1.jpg'
         },
         {
-            id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            id: 6,
+            image: 'https://cf.shopee.sg/file/cf06a6b3258d1e196bb2ea93644328e8'
         },
         {
-            id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            id: 7,
+            image: 'https://cf.shopee.sg/file/e53f927d4927f19a578d6e89d450ed08'
         },
     ])
 

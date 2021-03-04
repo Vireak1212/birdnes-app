@@ -10,20 +10,20 @@ const FeatureStores = () => {
     const [data, setData] = useState([
         {
             id: 1,
-            image: 'https://digitalagencynetwork.com/wp-content/uploads/2018/11/brilliant-nike-campaigns.png'
+            image: 'https://cdni0.trtworld.com/w960/h540/q75/7649-trtworld-373441-412017.jpg'
         },
         {
             id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            image: 'https://media.thestar.com.my/Prod/BD34C16D-4AC6-43DA-A527-3FDB4EDCB877'
         },
         {
             id: 3,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
+            image: 'https://media-cdn.tripadvisor.com/media/photo-s/0f/7d/d7/eb/birdsnest-s-flagship.jpg'
         },
         {
             id: 4,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
-        }
+            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi3-9ZOtvL0HAYaldaBnbePdi4m6JSj0Ww1w&usqp=CAU'
+        },
     ])
 
     const _renderFeatureStore = ({ item, index }: any) => {
@@ -48,7 +48,9 @@ const FeatureStores = () => {
                 <Text style={{
                     position: 'absolute',
                     color: '#fff',
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    backgroundColor: 'rgba(60, 60, 60, 0.3)',
+                    fontWeight: 'bold',
+                    fontSize: 12,
                     bottom: 6,
                     left: 5,
                     borderTopRightRadius: 5,

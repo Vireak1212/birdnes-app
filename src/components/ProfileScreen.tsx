@@ -15,15 +15,10 @@ import MainHeader from '../custom_items/MainHeader';
 const ProfileScreen = () => {
     const navigate = useNavigation();
 
-    const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
-        onPress={() => navigate.goBack()}>
-        <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
-    </TouchableOpacity>
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#eee' }}>
             <MainHeader
                 title={'Profile'}
-                leftIcon={leftIcon()}
             />
             <ScrollView>
                 <TouchableOpacity>

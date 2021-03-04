@@ -13,23 +13,23 @@ const TopProduct = () => {
     const [data, setData] = useState([
         {
             id: 1,
-            image: 'https://digitalagencynetwork.com/wp-content/uploads/2018/11/brilliant-nike-campaigns.png'
+            image: 'https://upload.wikimedia.org/wikipedia/commons/1/16/Edible-birds-nest-bowl-shape.png'
         },
         {
             id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            image: 'https://www.nybirdnest.com/wp-content/uploads/2018/01/subscription-img-1-300x297.png'
         },
         {
             id: 3,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
+            image: 'https://cf.shopee.com.my/file/3999485dc804db95cdc9dda76d4b248a'
         },
         {
             id: 4,
-            image: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1549616344492/adidas-coupons.jpg'
+            image: 'https://lh3.googleusercontent.com/proxy/gZeqVy4Abc8CiBc39LAuucNA-_boztwUBbUrvOLpJjCntR-DA2RpkUvccLqVE_aXlt45wN1avHQ0nKHoGsTApI9ppkFoyG31pXHjCuuuz_VU0Hg'
         },
         {
             id: 2,
-            image: 'https://w3-lab.com/wp-content/uploads/2019/10/nike-and-cocacola-emotins-1024x640.jpg'
+            image: 'https://thaiaroonbirdnest.com/en/wp-content/uploads/2018/11/%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%A3%E0%B8%A7%E0%B8%A1%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B21.png'
         },
     ])
     const _renderTopProduct = ({ item, index }: any) => {
@@ -46,7 +46,7 @@ const TopProduct = () => {
                     margin: 5
                 }}>
                     <Image style={{
-                        height: 150,
+                        height: 160,
                         width: '100%',
                         borderRadius: 5,
                     }}
