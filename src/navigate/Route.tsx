@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -103,6 +103,7 @@ const Route = () => {
   return (
     <Root>
       <NavigationContainer>
+        <StatusBar barStyle="light-content" />
         <MainStack />
       </NavigationContainer>
     </Root>
