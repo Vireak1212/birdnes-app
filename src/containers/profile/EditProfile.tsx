@@ -24,7 +24,8 @@ const EditProfile = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ marginHorizontal: 30, marginTop: 30 }}>
                     <Text style={{ fontSize: 30 }}>Update Profile</Text>
-                    <Text style={{ color: '#224889' }}>Make change to your personal information</Text>
+                    <Text style={{ color: '#224889' }}>
+                        Make change to your personal information</Text>
                     <View style={styles.styleform}>
                         <TextInput style={{ fontSize: 15, marginHorizontal: 10 }}
                             placeholder="First name"
@@ -54,7 +55,7 @@ const EditProfile = () => {
                 <View style={{ marginHorizontal: 30 }}>
                     <Button
                         // onPress={() => onSave()}
-                        full rounded style={{ marginTop: 25, borderRadius: 10, backgroundColor: '#224889', width: '100%' }}>
+                        full rounded style={styles.ButtonUpdate}>
                         <Row style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ fontWeight: 'bold', color: '#fff' }}>Update</Text>
                         </Row>
@@ -77,5 +78,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 10,
         justifyContent: 'center'
+    },
+    ButtonUpdate: {
+        marginTop: 25,
+        borderRadius: 10,
+        backgroundColor: '#224889',
+        width: '100%'
     }
 })

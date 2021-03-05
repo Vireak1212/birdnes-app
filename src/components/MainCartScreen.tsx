@@ -39,28 +39,15 @@ const MainCartScreen = (props: any) => {
                 />
                 <Text style={{ opacity: 0.5 }}>Cart Empty</Text>
             </View>
-            <View style={{
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-                width: '100%',
-                paddingHorizontal: 20,
-                position: 'absolute',
-                bottom: 30
-            }}>
+            <View style={styles.style$0}>
                 <Col>
                     <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>$0</Text>
                 </Col>
-                <TouchableOpacity style={{
-                    backgroundColor: '#224889',
-                    width: '50%', height: 50,
-                    borderRadius: 10, alignItems: 'center',
-                    justifyContent: 'center', flexDirection: 'row',
-
-                }}>
+                <TouchableOpacity style={styles.styleCHACKOUT}>
                     <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
-                    <AntDesign name='playcircleo' size={20} style={{ color: '#fff', marginLeft: 10 }} color='#000' />
+                    <AntDesign name='playcircleo' size={20}
+                        style={{ color: '#fff', marginLeft: 10 }} color='#000' />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -75,4 +62,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 130
     },
+    style$0: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        paddingHorizontal: 20,
+        position: 'absolute',
+        bottom: 30
+    },
+    styleCHACKOUT: {
+        backgroundColor: '#224889',
+        width: '50%',
+        height: 50,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+
+    }
 })
