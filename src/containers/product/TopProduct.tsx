@@ -3,36 +3,19 @@ import { Col } from 'native-base'
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid'
+import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction'
 import { PRICE_COLOR } from '../../styles';
 const screen = Dimensions.get('screen')
 
 const TopProduct = () => {
+
+    const products = useSelector((state: { products: any }) => state.products);
+
     const navigate = useNavigation();
 
-    const [data, setData] = useState([
-        {
-            id: 1,
-            image: 'https://upload.wikimedia.org/wikipedia/commons/1/16/Edible-birds-nest-bowl-shape.png'
-        },
-        {
-            id: 2,
-            image: 'https://www.nybirdnest.com/wp-content/uploads/2018/01/subscription-img-1-300x297.png'
-        },
-        {
-            id: 3,
-            image: 'https://cf.shopee.com.my/file/3999485dc804db95cdc9dda76d4b248a'
-        },
-        {
-            id: 4,
-            image: 'https://lh3.googleusercontent.com/proxy/gZeqVy4Abc8CiBc39LAuucNA-_boztwUBbUrvOLpJjCntR-DA2RpkUvccLqVE_aXlt45wN1avHQ0nKHoGsTApI9ppkFoyG31pXHjCuuuz_VU0Hg'
-        },
-        {
-            id: 2,
-            image: 'https://thaiaroonbirdnest.com/en/wp-content/uploads/2018/11/%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%A3%E0%B8%A7%E0%B8%A1%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B21.png'
-        },
-    ])
     const _renderTopProduct = ({ item, index }: any) => {
+        const _product = item.items;
         return (
             <TouchableOpacity key={index} onPress={() => navigate.navigate('productDetail',
                 { item }
@@ -41,6 +24,15 @@ const TopProduct = () => {
                     backgroundColor: '#fff',
                     width: screen.width * 8 / 17.5,
                     borderRadius: 5,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 1,
+                    },
+                    shadowOpacity: 0.18,
+                    shadowRadius: 1.00,
+
+                    elevation: 1,
                 }}>
                 <View style={{
                     margin: 5
@@ -50,25 +42,25 @@ const TopProduct = () => {
                         width: '100%',
                         borderRadius: 5,
                     }}
-                        source={{ uri: item.image }}
+                        source={{ uri: _product.cover }}
                         resizeMode='cover'
                         resizeMethod='resize'
                     />
                     <Col style={{ paddingTop: 10 }}>
-                        <Text style={{ fontSize: 13, paddingBottom: 2 }} numberOfLines={2}>
-                            Premium birdnest drink
+                        <Text style={{ fontSize: 15, paddingBottom: 2, color: '#aaa' }} numberOfLines={2}>
+                            {_product.name}
                         </Text>
-                        <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={1}>
-                            Bird's nest new product for health
-                        </Text>
+                        {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
+                            {_product.description}
+                        </Text> */}
                         <Text style={{
-                            fontSize: 13,
+                            fontSize: 16,
                             paddingVertical: 5,
                             fontWeight: 'bold',
                             color: PRICE_COLOR
                         }}
                             numberOfLines={1}>
-                            $15.50
+                            {'$' + _product.price}
                         </Text>
                     </Col>
                 </View>
@@ -79,7 +71,7 @@ const TopProduct = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{
                 paddingHorizontal: 12,
-                paddingVertical: 15,
+                paddingBottom: 15,
             }}>
                 <Text>Top Products</Text>
             </View>
@@ -96,7 +88,7 @@ const TopProduct = () => {
                     marginBottom: -5
                 }}
                 renderItem={_renderTopProduct}
-                data={data}
+                data={products}
             // data={color.slice(0, (Math.floor((width / 80)) * 2))}
             />
         </SafeAreaView>

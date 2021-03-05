@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, ScrollView } from 'react-native';
 import MainHeader from '../../custom_items/MainHeader';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -7,13 +7,30 @@ import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
-import { Col, Row } from 'native-base';
+import { Col, Item, Row } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 
 
 const ProductDetail = (props: any) => {
     const { item } = props.route.params;
     const navigate = useNavigation();
+    const product_neme = item.items.name;
+
+    const [count, setCount] = useState(1);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([]);
+    let controller;
+
+    const handleIncrement = () => {
+        setCount(prevCount => prevCount + 1);
+    };
+    const handleDecrement = () => {
+        if (count === 1) {
+            setCount((prevCount) => prevCount - 0)
+        } else {
+            setCount(prevCount => prevCount - 1);
+        }
+    };
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
@@ -24,13 +41,16 @@ const ProductDetail = (props: any) => {
         onPress={() => navigate.navigate('Cart',
             { header: 'show' }
         )}>
+        <View style={styles.itemCountContainer}>
+            <Text style={styles.itemCountText}>0</Text>
+        </View>
         <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
     </TouchableOpacity>;
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <MainHeader
-                title={'Product Name'}
+                title={product_neme}
                 leftIcon={leftIcon()}
                 rightIcon={rightIcon()}
             />
@@ -41,7 +61,7 @@ const ProductDetail = (props: any) => {
                         width: '100%',
                         borderRadius: 10,
                     }}
-                        source={{ uri: item.image }}
+                        source={{ uri: item.items.cover }}
                         resizeMode='cover'
                         resizeMethod='resize'
                     />
@@ -52,10 +72,10 @@ const ProductDetail = (props: any) => {
                             fontSize: 19,
                             fontWeight: 'bold'
                         }}>
-                            Premium birdnest drink
+                            {item.items.name}
                         </Text>
                         <Text style={{ fontWeight: 'bold' }}>
-                            MN123
+                            {item.items.code}
                         </Text>
                         <View style={{ alignSelf: 'flex-start' }}>
                             <Rating
@@ -72,7 +92,7 @@ const ProductDetail = (props: any) => {
                             <Feather name='star' size={30} />
                         </TouchableOpacity>
                         <Text style={styles.productDetailPrice}>
-                            $10
+                            {count * item.items.price + '$'}
                         </Text>
                     </View>
                 </Row>
@@ -81,15 +101,18 @@ const ProductDetail = (props: any) => {
                     <View style={{ paddingVertical: 10 }}>
                         <Text>Grade:</Text>
                         <Text style={{ fontSize: 13, paddingVertical: 5, paddingLeft: 10 }}>NONE</Text>
-                        <Text>Quanity:</Text>
-                        <Row style={{ paddingTop: 10 }}>
-                            <TouchableOpacity style={styles.MPBotton}>
+                        <Text >Quanity:</Text>
+
+                        <Row style={{ alignItems: 'center', paddingTop: 10 }}>
+                            <TouchableOpacity onPress={handleDecrement}
+                                style={styles.MPBotton}>
                                 <AntDesign name="minus" size={23} style={{ color: ICON_COLOR }} />
                             </TouchableOpacity>
 
-                            <Text style={{ fontWeight: 'bold', fontSize: 13 }}>1</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{count}</Text>
 
-                            <TouchableOpacity style={styles.MPBotton}>
+                            <TouchableOpacity onPress={handleIncrement}
+                                style={styles.MPBotton}>
                                 <AntDesign name="plus" size={18} style={{ color: ICON_COLOR }} />
                             </TouchableOpacity>
                         </Row>
@@ -99,7 +122,13 @@ const ProductDetail = (props: any) => {
                 <Row style={styles.productDetailQtyContainer}>
                     <View style={{ paddingVertical: 10 }}>
                         <Text>Free Shipping</Text>
-                        <Text style={{ color: '#aaa' }}>Free Shipping in phnom penh</Text>
+                        {item.items.freeShipping == null ? (
+                            <Text style={{ color: '#aaa' }}>
+                                free shipping in phnom penh
+                            </Text>
+                        ) : (
+                                null
+                            )}
                     </View>
                     <TouchableOpacity>
                         <MaterialIcons name='navigate-next' size={23} color={ICON_COLOR} />
@@ -108,8 +137,8 @@ const ProductDetail = (props: any) => {
 
                 <View style={styles.productSubDetail}>
                     <Text style={{ paddingVertical: 10 }}>Product Description</Text>
-                    <Text style={{ paddingBottom: 10, fontSize: 13, color: '#aaa' }}>
-                        Followed by that, for v3, I recreated the Airbnb ratings component and added it to this repo, in case others find this useful. It works out of the box and is quite functional.
+                    <Text style={{ paddingBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 17 }}>
+                        {item.items.description}
                     </Text>
                 </View>
             </ScrollView>
@@ -127,6 +156,22 @@ const ProductDetail = (props: any) => {
 export default ProductDetail
 
 const styles = StyleSheet.create({
+    itemCountContainer: {
+        position: 'absolute',
+        height: 25,
+        width: 25,
+        borderRadius: 12.5,
+        backgroundColor: 'rgba(255, 99, 71, 0.8)',
+        right: 20,
+        bottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 2000
+    },
+    itemCountText: {
+        color: 'white',
+        fontWeight: 'bold'
+    },
     addToCartBotton: {
         height: 50,
         // marginRight: 15,
@@ -166,9 +211,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     MPBotton: {
-        height: 25,
-        width: 25,
-        borderRadius: 12.5,
+        height: 30,
+        width: 30,
+        borderRadius: 15,
         marginHorizontal: 15,
         backgroundColor: '#eee',
         alignItems: 'center',

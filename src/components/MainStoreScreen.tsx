@@ -3,40 +3,24 @@ import { Col } from 'native-base';
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
-import { makeid } from '../../functions/PTFunction';
+import { makeid } from '../functions/PTFunction';
 const screen = Dimensions.get('screen')
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import style, { ICON_COLOR } from '../../styles/index'
-import MainHeader from '../../custom_items/MainHeader';
+import style, { ICON_COLOR } from '../styles/index'
+import MainHeader from '../custom_items/MainHeader';
+import { useSelector } from 'react-redux';
 
-const AllStore = () => {
+const MainStoreScreen = () => {
+    const store = useSelector((state: { store: any }) => state.store);
     const navigate = useNavigation();
-
-    const [data, setData] = useState([
-        {
-            id: 1,
-            image: 'https://cdni0.trtworld.com/w960/h540/q75/7649-trtworld-373441-412017.jpg'
-        },
-        {
-            id: 2,
-            image: 'https://media.thestar.com.my/Prod/BD34C16D-4AC6-43DA-A527-3FDB4EDCB877'
-        },
-        {
-            id: 3,
-            image: 'https://media-cdn.tripadvisor.com/media/photo-s/0f/7d/d7/eb/birdsnest-s-flagship.jpg'
-        },
-        {
-            id: 4,
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi3-9ZOtvL0HAYaldaBnbePdi4m6JSj0Ww1w&usqp=CAU'
-        },
-    ])
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
     </TouchableOpacity>
 
-    const _renderAllStore = ({ item, index }: any) => {
+    const _renderMainStore = ({ item, index }: any) => {
+        const _AllStore = item.items;
         return (
             <TouchableOpacity key={index} onPress={() => navigate.navigate('storeDetail',
                 { item }
@@ -45,16 +29,25 @@ const AllStore = () => {
                     backgroundColor: '#fff',
                     width: screen.width * 3 / 10,
                     borderRadius: 5,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 1,
+                    },
+                    shadowOpacity: 0.18,
+                    shadowRadius: 1.00,
+
+                    elevation: 1,
                 }}>
                 <View style={{
-                    margin: 5
+                    margin: 3
                 }}>
                     <Image style={{
                         height: 80,
                         width: '100%',
                         borderRadius: 5,
                     }}
-                        source={{ uri: item.image }}
+                        source={{ uri: _AllStore.avatar }}
                         resizeMode='cover'
                         resizeMethod='resize'
                     />
@@ -69,14 +62,15 @@ const AllStore = () => {
                     <Text style={{
                         position: 'absolute',
                         color: '#fff',
-                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        backgroundColor: 'rgba(60, 60, 60, 0.3)',
                         bottom: 0,
                         left: 0,
-                        borderTopRightRadius: 5,
+                        borderBottomLeftRadius: 5,
+                        borderBottomRightRadius: 5,
                         paddingHorizontal: 5,
                         paddingVertical: 2,
                         fontSize: 12,
-                    }} numberOfLines={2}>Pro Brid Shop</Text>
+                    }} numberOfLines={2}>{_AllStore.name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -93,21 +87,21 @@ const AllStore = () => {
                 scrollEnabled={true}
                 showsVerticalScrollIndicator={false}
                 listKey={makeid()}
-                itemDimension={95}
+                itemDimension={100}
                 style={{
                     height: 'auto',
                     width: '100%',
                     borderRadius: 10,
                     marginBottom: -5
                 }}
-                renderItem={_renderAllStore}
-                data={data}
+                renderItem={_renderMainStore}
+                data={store}
             // data={color.slice(0, (Math.floor((width / 80)) * 2))}
             />
         </SafeAreaView>
     )
 }
 
-export default AllStore
+export default MainStoreScreen
 
 const styles = StyleSheet.create({})

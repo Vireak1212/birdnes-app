@@ -1,10 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import { Col, Row } from 'native-base';
 import React, { useState } from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatGrid } from 'react-native-super-grid';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux';
+import { makeid } from '../../functions/PTFunction';
+import { PRICE_COLOR } from '../../styles';
+const screen = Dimensions.get('screen')
 
 const people = [
     "Siri",
@@ -18,6 +23,7 @@ const people = [
 
 const HomeSearch = () => {
     const navigate = useNavigation();
+    const products = useSelector((state: { products: any }) => state.products);
 
     const [search, setSearch] = useState('')
     const [searchResults, setSearchResults] = React.useState([]);
@@ -38,7 +44,7 @@ const HomeSearch = () => {
                     <Row style={styles.searchProductContainer}>
                         <MaterialIcons name='search' size={25} color='#C0C0C0' style={{ position: 'absolute', left: 10, }} />
                         <TextInput
-                            style={{ paddingLeft: 40, height: 50, }}
+                            style={{ paddingLeft: 40, height: 50, width: '100%' }}
                             placeholder='What are you looking for?'
                             onChangeText={(text) => setSearch(text)}
                             value={search}
@@ -47,11 +53,67 @@ const HomeSearch = () => {
                     </Row>
                 </Col>
             </View>
-            <View>
+
+            <FlatGrid
+                data={products}
+                listKey={makeid()}
+                itemDimension={130}
+                keyExtractor={item => item.id}
+                style={{
+                    height: 'auto',
+                    width: '100%',
+                    borderRadius: 10,
+                }}
+                renderItem={({ item, index }) => (
+                    <View >
+                        <TouchableOpacity key={index} onPress={() => navigate.navigate('productDetail',
+                            { item }
+                        )}
+                            style={{
+                                backgroundColor: '#fff',
+                                width: screen.width * 8 / 17.5,
+                                borderRadius: 5,
+                            }}>
+                            <View style={{
+                                margin: 5
+                            }}>
+                                <Image style={{
+                                    height: 150,
+                                    width: '100%',
+                                    borderRadius: 5,
+                                }}
+                                    source={{ uri: item.items.cover }}
+                                    resizeMode='cover'
+                                    resizeMethod='resize'
+                                />
+                                <Col style={{ paddingTop: 10 }}>
+                                    <Text style={{ fontSize: 15, paddingBottom: 2 }} numberOfLines={2}>
+                                        {item.items.name}
+                                    </Text>
+                                    <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
+                                        {item.items.description}
+                                    </Text>
+                                    <Text style={{
+                                        fontSize: 15,
+                                        paddingVertical: 5,
+                                        fontWeight: 'bold',
+                                        color: PRICE_COLOR
+                                    }}
+                                        numberOfLines={1}>
+                                        {'$' + item.items.price}
+                                    </Text>
+                                </Col>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )}
+            />
+
+            {/* <View>
                 {searchResults.map(item => (
                     <Text>{item}</Text>
                 ))}
-            </View>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -59,6 +121,16 @@ const HomeSearch = () => {
 export default HomeSearch
 
 const styles = StyleSheet.create({
+    listItem: {
+        marginTop: 10,
+        padding: 20,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        width: '100%'
+    },
+    listItemText: {
+        fontSize: 18
+    },
     searchProductContainer: {
         height: 40,
         alignItems: 'center',

@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "881940438136",
+    "firebase_url": "https://birdnestseller.firebaseio.com",
+    "project_id": "birdnestseller",
+    "storage_bucket": "birdnestseller.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881940438136:android:11ad9a829c37ad2dfda18d",
+        "android_client_info": {
+          "package_name": "com.bird_nest_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "881940438136-0dpvr7nkobjfmaipmsoivuh80kq1m1g9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bird_nest_app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "881940438136-68dbtt2evqfpgkdt58ag3g6rlkl83igi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYU54KeTnvgeDPQyrJ3ZGPYplLBGU2jEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "881940438136-68dbtt2evqfpgkdt58ag3g6rlkl83igi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "881940438136-pcofglgmhr9ib0p0dsjavreo3nal59nq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.phsatech.BirdNestSeller"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881940438136:android:5e0b3f714149b9a9fda18d",
+        "android_client_info": {
+          "package_name": "com.onlineget.OnlineGet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "881940438136-23fd38kctlf2okt00ent10h3861vesst.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onlineget.OnlineGet",
+            "certificate_hash": "f368e55f720b29f200370f8906b56bc8da02e577"
+          }
+        },
+        {
+          "client_id": "881940438136-voi4t85fvb1nqfa3qnhrvlieogvngth9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onlineget.OnlineGet",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "881940438136-68dbtt2evqfpgkdt58ag3g6rlkl83igi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYU54KeTnvgeDPQyrJ3ZGPYplLBGU2jEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "881940438136-68dbtt2evqfpgkdt58ag3g6rlkl83igi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "881940438136-pcofglgmhr9ib0p0dsjavreo3nal59nq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.phsatech.BirdNestSeller"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,32 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Dimensions, Image } from 'react-native';
+import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
 const size = Dimensions.get('screen');
 
 const FeatureStores = () => {
+    const store = useSelector((state: { store: any }) => state.store);
     const navigate = useNavigation();
 
-    const [data, setData] = useState([
-        {
-            id: 1,
-            image: 'https://cdni0.trtworld.com/w960/h540/q75/7649-trtworld-373441-412017.jpg'
-        },
-        {
-            id: 2,
-            image: 'https://media.thestar.com.my/Prod/BD34C16D-4AC6-43DA-A527-3FDB4EDCB877'
-        },
-        {
-            id: 3,
-            image: 'https://media-cdn.tripadvisor.com/media/photo-s/0f/7d/d7/eb/birdsnest-s-flagship.jpg'
-        },
-        {
-            id: 4,
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi3-9ZOtvL0HAYaldaBnbePdi4m6JSj0Ww1w&usqp=CAU'
-        },
-    ])
-
     const _renderFeatureStore = ({ item, index }: any) => {
+        const _store = item.items;
+
         return (
             <TouchableOpacity onPress={() => navigate.navigate('storeDetail',
                 { item }
@@ -36,8 +21,18 @@ const FeatureStores = () => {
                     marginLeft: index === 0 ? 5 : 5,
                     marginRight: item.length - 1 == index ? 10 : 5,
                     borderRadius: 5,
+                    marginBottom: 15,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 1,
+                    },
+                    shadowOpacity: 0.18,
+                    shadowRadius: 1.00,
+
+                    elevation: 1,
                 }}>
-                <Image key={index} source={{ uri: item.image }}
+                <Image key={index} source={{ uri: _store.avatar }}
                     style={{
                         width: size.width / 3,
                         height: 90,
@@ -56,7 +51,7 @@ const FeatureStores = () => {
                     borderTopRightRadius: 5,
                     paddingHorizontal: 5,
                     paddingVertical: 2
-                }} numberOfLines={2}>Pro Brid Shop</Text>
+                }} numberOfLines={2}>{_store.name}</Text>
             </TouchableOpacity>
         )
     }
@@ -75,7 +70,7 @@ const FeatureStores = () => {
                 </TouchableOpacity>
             </View>
             <FlatList
-                data={data}
+                data={store}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}

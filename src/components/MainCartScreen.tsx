@@ -7,7 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import MainHeader from '../custom_items/MainHeader';
 
-const MainCartScreen = () => {
+const MainCartScreen = (props: any) => {
     const navigate = useNavigation();
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -17,10 +17,17 @@ const MainCartScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <MainHeader
-                title={'Cart'}
-                leftIcon={leftIcon()}
-            />
+            {
+                props.route.params !== undefined ?
+                    props.route.params.header === 'show' ?
+                        <MainHeader
+                            title={'Cart'}
+                            leftIcon={leftIcon()}
+                        /> : null :
+                    <MainHeader
+                        title={'Cart'}
+                    />
+            }
             <View style={styles.cartImageContainer}>
                 <Image style={{
                     height: 200,

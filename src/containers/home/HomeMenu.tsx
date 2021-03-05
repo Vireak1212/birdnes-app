@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { makeid } from '../../functions/PTFunction';
@@ -31,9 +32,24 @@ const HomeMenu = () => {
         },
     ])
 
+    const navigate = useNavigation();
+
     const _renderMenu = ({ item, index }: any) => {
         return (
-            <TouchableOpacity
+            <TouchableOpacity onPress={() => {
+                if (index == 0) {
+                    navigate.navigate('Category')
+                }
+                else if (index == 1) {
+                    navigate.navigate('allStore')
+                }
+                else if (index == 2) {
+                    navigate.navigate('allProduct')
+                }
+                else if (index == 3) {
+                    navigate.navigate('allProduct')
+                }
+            }}
                 style={[styles.categoryCard,
                 {
                     backgroundColor: '#fff',
@@ -68,6 +84,7 @@ const HomeMenu = () => {
                 keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
                 listKey={makeid()}
                 renderItem={_renderMenu}
+                style={{}}
             />
         </SafeAreaView>
     )
@@ -79,7 +96,16 @@ const styles = StyleSheet.create({
     categoryCard: {
         width: size.width / 4.55,
         borderRadius: 10,
-        marginTop: 5,
+        marginBottom: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
+
+        elevation: 1,
     },
     Menutext: {
         fontSize: 12,

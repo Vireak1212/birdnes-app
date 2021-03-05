@@ -35,7 +35,7 @@ const Category = () => {
         return (
             <TouchableOpacity key={index}>
                 <Image style={{
-                    height: 80,
+                    height: 100,
                     width: screen.width * 3 / 10,
                     borderRadius: 5,
                 }}
@@ -64,7 +64,7 @@ const Category = () => {
                 backgroundColor: '#fff',
                 marginTop: 10,
                 paddingVertical: 10,
-                paddingLeft: 10
+                paddingLeft: 10,
             }}>
                 <Text>Category</Text>
             </View>

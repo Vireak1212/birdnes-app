@@ -13,6 +13,7 @@ const HomeHeader = ({ leftIcon, title, rightIcon }: any) => {
             <Col style={{
                 width: '50%',
                 height: '100%',
+                justifyContent: 'center',
             }}>
                 {leftIcon}
             </Col>

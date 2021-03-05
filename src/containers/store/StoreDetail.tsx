@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
-import style, { ICON_COLOR } from '../../styles/index'
+import style, { ICON_COLOR, MAIN_COLOR } from '../../styles/index'
 import MainHeader from '../../custom_items/MainHeader';
 import { ScrollableTab, Tab, Tabs } from 'native-base';
 import StoreIteam from './StoreIteam';
@@ -32,6 +32,7 @@ const product = [
 
 const StoreDetail = (props: any) => {
     const { item } = props.route.params;
+    const store_name = item.items.name;
     const navigate = useNavigation();
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -42,7 +43,7 @@ const StoreDetail = (props: any) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f6f6f6' }}>
             <MainHeader
-                title={'Shop Name'}
+                title={store_name}
                 leftIcon={leftIcon()}
             // rightIcon={rightIcon()}
             />
@@ -52,7 +53,7 @@ const StoreDetail = (props: any) => {
                         height: 250,
                         width: '100%'
                     }}
-                        source={{ uri: item.image }}
+                        source={{ uri: item.items.avatar }}
                         resizeMode='cover'
                         resizeMethod='resize'
                     />
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
     activeTextUPS: {
-        color: '#00CC66',
+        color: MAIN_COLOR,
         fontWeight: 'bold',
     },
     textUPS: {

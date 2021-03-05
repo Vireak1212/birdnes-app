@@ -2,10 +2,12 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react'
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
+import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
 const screen = Dimensions.get('screen')
 
 const HotCategory = () => {
+    const store = useSelector((state: { store: any }) => state.store);
     const navigate = useNavigation();
 
     const [data, setData] = useState([
@@ -32,10 +34,11 @@ const HotCategory = () => {
     ])
 
     const _renderHotCategory = ({ item, index }: any) => {
+        const _hotCategory = item.items;
         return (
             <TouchableOpacity key={index}>
                 <Image style={{
-                    height: 80,
+                    height: 100,
                     width: screen.width * 3 / 10,
                     borderRadius: 5,
                 }}

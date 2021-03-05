@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { Dispatch } from 'react'
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Root } from 'native-base';
+import style, { MAIN_COLOR } from '../styles/index'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from '../components/HomeScreen';
@@ -14,19 +15,30 @@ import MainCategoryScreen from '../components/MainCategoryScreen';
 import MainCartScreen from '../components/MainCartScreen';
 import ProductDetail from '../containers/product/ProductDetail';
 import StoreDetail from '../containers/store/StoreDetail';
-import AllStore from '../containers/store/AllStore';
 import AllProduct from '../containers/product/AllProduct';
 import HomeSearch from '../containers/home/HomeSearch';
 
 import EditProfile from './../containers/profile/EditProfile';
 import ProfileScreen from '../components/ProfileScreen';
 import ShippingAddress from '../containers/profile/ShippingAddress';
+import { useDispatch } from 'react-redux';
+import { loadData } from '../functions/LoadData';
+import MainStoreScreen from '../components/MainStoreScreen';
+
 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Route = () => {
+  async function loadStyle(dispatch: Dispatch<any>) {
+    dispatch({ type: 'LOAD_STYLES', style });
+  }
+  const dispatch = useDispatch()
+  React.useEffect(() => {
+    loadStyle(dispatch)
+    loadData(dispatch)
+  }, []);
 
   function MainStack() {
     return (
@@ -38,7 +50,7 @@ const Route = () => {
         <Stack.Screen name="shippingAdress" component={ShippingAddress} />
         <Stack.Screen name="productDetail" component={ProductDetail} />
         <Stack.Screen name="storeDetail" component={StoreDetail} />
-        <Stack.Screen name="allStore" component={AllStore} />
+        <Stack.Screen name="allStore" component={MainStoreScreen} />
         <Stack.Screen name="allProduct" component={AllProduct} />
         <Stack.Screen name="homeSearch" component={HomeSearch} />
       </Stack.Navigator>
@@ -46,11 +58,11 @@ const Route = () => {
   }
   function MainTab() {
     const customTabBarStyle = {
-      activeTintColor: '#4C60EE',
+      activeTintColor: MAIN_COLOR,
       inactiveTintColor: Colors.tabIconDefault,
       allowFontScaling: true,
-      labelStyle: { fontSize: 12, marginBottom: 5 },
-      tabStyle: { marginTop: 5 }
+      labelStyle: { fontSize: 12, },
+      tabStyle: { marginVertical: 5 }
     }
 
     return (
@@ -71,10 +83,21 @@ const Route = () => {
           options={
             {
               tabBarIcon: ({ color }) => (
-                <Ionicons name="list" color={color} size={25} />
+                <MaterialIcons name="format-list-bulleted" color={color} size={25} />
               ),
             }}
         />
+        <Tab.Screen
+          name="Store"
+          component={MainStoreScreen}
+          options={
+            {
+              tabBarIcon: ({ color }) => (
+                <Fontisto name="shopping-store" color={color} size={20} />
+              ),
+            }}
+        />
+
         <Tab.Screen
           name="Cart"
           component={MainCartScreen}
