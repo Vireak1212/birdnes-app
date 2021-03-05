@@ -21,6 +21,7 @@ import HomeSearch from '../containers/home/HomeSearch';
 import EditProfile from './../containers/profile/EditProfile';
 import ProfileScreen from '../components/ProfileScreen';
 import ShippingAddress from '../containers/profile/ShippingAddress';
+import LoginScreen from '../login/LoginScreen';
 
 
 const Stack = createStackNavigator();
@@ -34,6 +35,7 @@ const Route = () => {
         headerShown: false,
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
+        {/* <Stack.Screen name="login" component={LoginScreen} /> */}
         <Stack.Screen name="editProfile" component={EditProfile} />
         <Stack.Screen name="shippingAdress" component={ShippingAddress} />
         <Stack.Screen name="productDetail" component={ProductDetail} />
