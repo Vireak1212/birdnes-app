@@ -6,10 +6,11 @@ import style, { ICON_COLOR, PRICE_COLOR } from '../styles/index'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import MainHeader from '../custom_items/MainHeader';
+import { useSelector } from 'react-redux';
 
 const MainCartScreen = (props: any) => {
     const navigate = useNavigation();
-
+    const style = useSelector((state: { style: any }) => state.style)
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
@@ -28,7 +29,7 @@ const MainCartScreen = (props: any) => {
                         title={'Cart'}
                     />
             }
-            <View style={styles.cartImageContainer}>
+            <View style={style.cartImageContainer}>
                 <Image style={{
                     height: 200,
                     width: 200,
@@ -39,12 +40,12 @@ const MainCartScreen = (props: any) => {
                 />
                 <Text style={{ opacity: 0.5 }}>Cart Empty</Text>
             </View>
-            <View style={styles.style$0}>
+            <View style={style.stylePrice}>
                 <Col>
                     <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>$0</Text>
                 </Col>
-                <TouchableOpacity style={styles.styleCHACKOUT}>
+                <TouchableOpacity style={style.styleCHACKOUT}>
                     <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
                     <AntDesign name='playcircleo' size={20}
                         style={{ color: '#fff', marginLeft: 10 }} color='#000' />
@@ -57,28 +58,5 @@ const MainCartScreen = (props: any) => {
 export default MainCartScreen
 
 const styles = StyleSheet.create({
-    cartImageContainer: {
-        width: '100%',
-        alignItems: 'center',
-        paddingTop: 130
-    },
-    style$0: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        paddingHorizontal: 20,
-        position: 'absolute',
-        bottom: 30
-    },
-    styleCHACKOUT: {
-        backgroundColor: '#224889',
-        width: '50%',
-        height: 50,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
 
-    }
 })
