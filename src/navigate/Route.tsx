@@ -10,6 +10,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import { useDispatch } from 'react-redux';
+import { loadData } from '../functions/LoadData';
+import MainStoreScreen from '../components/MainStoreScreen';
+
 import HomeScreen from '../components/HomeScreen';
 import MainCategoryScreen from '../components/MainCategoryScreen';
 import MainCartScreen from '../components/MainCartScreen';
@@ -21,11 +26,9 @@ import HomeSearch from '../containers/home/HomeSearch';
 import EditProfile from './../containers/profile/EditProfile';
 import ProfileScreen from '../components/ProfileScreen';
 import ShippingAddress from '../containers/profile/ShippingAddress';
-import { useDispatch } from 'react-redux';
-import { loadData } from '../functions/LoadData';
-import MainStoreScreen from '../components/MainStoreScreen';
 
 import LoginScreen from '../login/LoginScreen';
+import ProductOfCategory from '../containers/category/ProductOfCategory';
 
 
 const Stack = createStackNavigator();
@@ -48,13 +51,18 @@ const Route = () => {
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
         <Stack.Screen name="login" component={LoginScreen} />
+
         <Stack.Screen name="editProfile" component={EditProfile} />
         <Stack.Screen name="shippingAdress" component={ShippingAddress} />
+
         <Stack.Screen name="productDetail" component={ProductDetail} />
         <Stack.Screen name="storeDetail" component={StoreDetail} />
+
         <Stack.Screen name="allStore" component={MainStoreScreen} />
         <Stack.Screen name="allProduct" component={AllProduct} />
+
         <Stack.Screen name="homeSearch" component={HomeSearch} />
+        <Stack.Screen name="productCategory" component={ProductOfCategory} />
       </Stack.Navigator>
     );
   }

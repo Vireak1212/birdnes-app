@@ -51,13 +51,7 @@ const NewProduct = () => {
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{
-                paddingTop: 5,
-                paddingBottom: 15,
-                paddingHorizontal: 12,
-                flexDirection: 'row',
-                justifyContent: 'space-between'
-            }}>
+            <View style={styles.newProductGrid}>
                 <Text>New Product</Text>
                 <TouchableOpacity onPress={() => navigate.navigate('allProduct')}>
                     <Text style={{ fontSize: 13, color: '#224889' }}>More</Text>
@@ -87,6 +81,13 @@ const NewProduct = () => {
 export default NewProduct
 
 const styles = StyleSheet.create({
+    newProductGrid: {
+        paddingTop: 5,
+        paddingBottom: 15,
+        paddingHorizontal: 12,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     newProductPrice: {
         fontSize: 13,
         paddingTop: 2,

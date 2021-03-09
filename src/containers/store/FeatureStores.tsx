@@ -13,25 +13,13 @@ const FeatureStores = () => {
         const _store = item.items;
 
         return (
-            <TouchableOpacity onPress={() => navigate.navigate('storeDetail',
-                { item }
-            )}
-                style={{
-                    backgroundColor: '#fff',
-                    marginLeft: index === 0 ? 5 : 5,
-                    marginRight: item.length - 1 == index ? 10 : 5,
-                    borderRadius: 5,
-                    marginBottom: 15,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 1,
-                    },
-                    shadowOpacity: 0.18,
-                    shadowRadius: 1.00,
-
-                    elevation: 1,
-                }}>
+            <TouchableOpacity key={index} style={[styles.featureStoreContainer, {
+                marginLeft: index === 0 ? 5 : 5,
+                marginRight: item.length - 1 == index ? 10 : 5,
+            }]}
+                onPress={() => navigate.navigate('storeDetail',
+                    { item }
+                )}>
                 <Image key={index} source={{ uri: _store.avatar }}
                     style={{
                         width: size.width / 3,
@@ -40,18 +28,9 @@ const FeatureStores = () => {
                         margin: 5
                     }}>
                 </Image>
-                <Text style={{
-                    position: 'absolute',
-                    color: '#fff',
-                    backgroundColor: 'rgba(60, 60, 60, 0.3)',
-                    fontWeight: 'bold',
-                    fontSize: 12,
-                    bottom: 6,
-                    left: 5,
-                    borderTopRightRadius: 5,
-                    paddingHorizontal: 5,
-                    paddingVertical: 2
-                }} numberOfLines={2}>{_store.name}</Text>
+                <Text style={styles.featureStoreName} numberOfLines={2}>
+                    {_store.name}
+                </Text>
             </TouchableOpacity>
         )
     }
@@ -85,5 +64,30 @@ const FeatureStores = () => {
 export default FeatureStores
 
 const styles = StyleSheet.create({
+    featureStoreName: {
+        position: 'absolute',
+        color: '#fff',
+        backgroundColor: 'rgba(60, 60, 60, 0.3)',
+        fontWeight: 'bold',
+        fontSize: 12,
+        bottom: 6,
+        left: 5,
+        borderTopRightRadius: 5,
+        paddingHorizontal: 5,
+        paddingVertical: 2
+    },
+    featureStoreContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        marginBottom: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
 
+        elevation: 1,
+    }
 })

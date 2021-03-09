@@ -36,7 +36,7 @@ const HotCategory = () => {
     const _renderHotCategory = ({ item, index }: any) => {
         const _hotCategory = item.items;
         return (
-            <TouchableOpacity key={index}>
+            <TouchableOpacity key={index} onPress={() => navigate.navigate('productCategory')}>
                 <Image style={{
                     height: 100,
                     width: screen.width * 3 / 10,
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         borderTopRightRadius: 5,
+        borderBottomLeftRadius: 5,
         paddingHorizontal: 5,
         paddingVertical: 2,
         fontSize: 12,

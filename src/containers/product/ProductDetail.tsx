@@ -127,8 +127,8 @@ const ProductDetail = (props: any) => {
                                 free shipping in phnom penh
                             </Text>
                         ) : (
-                                null
-                            )}
+                            null
+                        )}
                     </View>
                     <TouchableOpacity>
                         <MaterialIcons name='navigate-next' size={23} color={ICON_COLOR} />

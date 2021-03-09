@@ -33,7 +33,7 @@ const Category = () => {
 
     const _renderCategory = ({ item, index }: any) => {
         return (
-            <TouchableOpacity key={index}>
+            <TouchableOpacity key={index} onPress={() => navigate.navigate('productCategory')}>
                 <Image style={{
                     height: 100,
                     width: screen.width * 3 / 10,
@@ -43,8 +43,9 @@ const Category = () => {
                     resizeMode='cover'
                     resizeMethod='resize'
                 />
-                <Text style={styles.categoryName} numberOfLines={2}>{item.product_name}</Text>
-
+                <Text style={styles.categoryName} numberOfLines={2}>
+                    {item.product_name}
+                </Text>
             </TouchableOpacity>
         )
     }
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         borderTopRightRadius: 5,
+        borderBottomLeftRadius: 5,
         paddingHorizontal: 5,
         paddingVertical: 2,
         fontSize: 12,

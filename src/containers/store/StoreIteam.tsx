@@ -35,23 +35,10 @@ const StoreIteam = () => {
 
     const _renderShopItem = ({ item, index }: any) => {
         return (
-            <TouchableOpacity key={index} onPress={() => navigate.navigate('productDetail',
-                { item }
-            )}
-                style={{
-                    backgroundColor: '#fff',
-                    width: screen.width * 8 / 17.5,
-                    borderRadius: 5,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 1,
-                    },
-                    shadowOpacity: 0.18,
-                    shadowRadius: 1.00,
-
-                    elevation: 1,
-                }}>
+            <TouchableOpacity key={index} style={styles.storeItemContainer}
+                onPress={() => navigate.navigate('productDetail',
+                    { item }
+                )}>
                 <View style={{
                     margin: 5
                 }}>
@@ -71,12 +58,7 @@ const StoreIteam = () => {
                         <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={1}>
                             Bird's nest new product for health
                         </Text>
-                        <Text style={{
-                            fontSize: 13,
-                            paddingVertical: 5,
-                            fontWeight: 'bold',
-                            color: PRICE_COLOR
-                        }} numberOfLines={1}>
+                        <Text style={styles.storeItemPrice} numberOfLines={1}>
                             $15.50
                         </Text>
                     </Col>
@@ -107,4 +89,25 @@ const StoreIteam = () => {
 
 export default StoreIteam
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    storeItemPrice: {
+        fontSize: 13,
+        paddingVertical: 5,
+        fontWeight: 'bold',
+        color: PRICE_COLOR
+    },
+    storeItemContainer: {
+        backgroundColor: '#fff',
+        width: screen.width * 8 / 17.5,
+        borderRadius: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
+
+        elevation: 1,
+    }
+})
