@@ -24,10 +24,7 @@ import ShippingAddress from '../containers/profile/ShippingAddress';
 import { useDispatch } from 'react-redux';
 import { loadData } from '../functions/LoadData';
 import MainStoreScreen from '../components/MainStoreScreen';
-<<<<<<< HEAD
 
-=======
->>>>>>> c142e8b607db6d7cce600c55d459c62a3bf140fd
 import LoginScreen from '../login/LoginScreen';
 
 
