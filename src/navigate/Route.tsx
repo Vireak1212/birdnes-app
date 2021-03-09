@@ -26,6 +26,8 @@ import { loadData } from '../functions/LoadData';
 import MainStoreScreen from '../components/MainStoreScreen';
 
 import LoginScreen from '../login/LoginScreen';
+import OrderHistory from '../containers/order/OrderHistory';
+import Wishlish from '../containers/order/Wishlish';
 
 
 const Stack = createStackNavigator();
@@ -48,6 +50,8 @@ const Route = () => {
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
         <Stack.Screen name="login" component={LoginScreen} />
+        <Stack.Screen name="order" component={OrderHistory} />
+        <Stack.Screen name="favorite" component={Wishlish} />
         <Stack.Screen name="editProfile" component={EditProfile} />
         <Stack.Screen name="shippingAdress" component={ShippingAddress} />
         <Stack.Screen name="productDetail" component={ProductDetail} />
