@@ -46,29 +46,14 @@ const HotCategory = () => {
                     resizeMode='cover'
                     resizeMethod='resize'
                 />
-                <Text style={{
-                    position: 'absolute',
-                    color: '#fff',
-                    backgroundColor: 'rgba(60, 60, 60, 0.3)',
-                    bottom: 0,
-                    left: 0,
-                    borderTopRightRadius: 5,
-                    paddingHorizontal: 5,
-                    paddingVertical: 2,
-                    fontSize: 12,
-                }} numberOfLines={2}>{item.product_name}</Text>
+                <Text style={styles.hotCategoryName} numberOfLines={2}>{item.product_name}</Text>
 
             </TouchableOpacity>
         )
     }
     return (
         <SafeAreaView>
-            <View style={{
-                backgroundColor: '#fff',
-                marginTop: 10,
-                paddingVertical: 10,
-                paddingLeft: 10
-            }}>
+            <View style={styles.hotCategoryContainer}>
                 <Text>Hot Category</Text>
             </View>
             <FlatGrid
@@ -93,4 +78,22 @@ const HotCategory = () => {
 
 export default HotCategory
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    hotCategoryContainer: {
+        backgroundColor: '#fff',
+        marginTop: 10,
+        paddingVertical: 10,
+        paddingLeft: 10
+    },
+    hotCategoryName: {
+        position: 'absolute',
+        color: '#fff',
+        backgroundColor: 'rgba(60, 60, 60, 0.3)',
+        bottom: 0,
+        left: 0,
+        borderTopRightRadius: 5,
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        fontSize: 12,
+    }
+})

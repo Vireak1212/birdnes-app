@@ -21,14 +21,11 @@ import HomeSearch from '../containers/home/HomeSearch';
 import EditProfile from './../containers/profile/EditProfile';
 import ProfileScreen from '../components/ProfileScreen';
 import ShippingAddress from '../containers/profile/ShippingAddress';
-<<<<<<< HEAD
 import { useDispatch } from 'react-redux';
 import { loadData } from '../functions/LoadData';
 import MainStoreScreen from '../components/MainStoreScreen';
 
-=======
 import LoginScreen from '../login/LoginScreen';
->>>>>>> f6d152c925324cfc61c8d3d9435dc04a2311f47c
 
 
 const Stack = createStackNavigator();

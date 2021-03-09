@@ -108,12 +108,6 @@ const HomeSearch = () => {
                     </View>
                 )}
             />
-
-            {/* <View>
-                {searchResults.map(item => (
-                    <Text>{item}</Text>
-                ))}
-            </View> */}
         </SafeAreaView>
     )
 }

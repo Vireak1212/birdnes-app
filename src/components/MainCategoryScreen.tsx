@@ -31,11 +31,11 @@ const MainCategoryScreen = (props: any) => {
                         <Text>PRIME</Text>
                     </Button>
                 ) : (
-                        <Button onPress={() => setIndex(0)}
-                            style={[styles.categoryButton, { borderColor: '#fff' }]}>
-                            <Text>PRIME</Text>
-                        </Button>
-                    )}
+                    <Button onPress={() => setIndex(0)}
+                        style={[styles.categoryButton, { borderColor: '#fff' }]}>
+                        <Text>PRIME</Text>
+                    </Button>
+                )}
 
                 {filter == 1 ? (
                     <Button onPress={() => setIndex(1)}
@@ -43,11 +43,11 @@ const MainCategoryScreen = (props: any) => {
                         <Text>GOLDEN NEST</Text>
                     </Button>
                 ) : (
-                        <Button onPress={() => setIndex(1)}
-                            style={[styles.categoryButton, { marginLeft: 15, borderColor: '#fff' }]}>
-                            <Text>GOLDEN NEST</Text>
-                        </Button>
-                    )}
+                    <Button onPress={() => setIndex(1)}
+                        style={[styles.categoryButton, { marginLeft: 15, borderColor: '#fff' }]}>
+                        <Text>GOLDEN NEST</Text>
+                    </Button>
+                )}
             </View>
 
             <FlatList
@@ -64,8 +64,8 @@ const MainCategoryScreen = (props: any) => {
                             {filter == 0 ? (
                                 <HotCategory />
                             ) : (
-                                    null
-                                )}
+                                null
+                            )}
 
                             <Category />
                         </>

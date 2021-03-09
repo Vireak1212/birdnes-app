@@ -16,23 +16,10 @@ const NewProduct = () => {
     const _renderNewProduct = ({ item, index }: any) => {
         const _NewProduct = item.items;
         return (
-            <TouchableOpacity key={index} onPress={() => navigate.navigate('productDetail',
-                { item }
-            )}
-                style={{
-                    backgroundColor: '#fff',
-                    width: screen.width * 4 / 8.7,
-                    borderRadius: 5,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 1,
-                    },
-                    shadowOpacity: 0.18,
-                    shadowRadius: 1.00,
-
-                    elevation: 1,
-                }}>
+            <TouchableOpacity key={index} style={styles.newProductContainer}
+                onPress={() => navigate.navigate('productDetail',
+                    { item }
+                )}>
                 <View style={{
                     flexDirection: 'row',
                     padding: 5
@@ -53,12 +40,7 @@ const NewProduct = () => {
                         <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_NewProduct.description}
                         </Text>
-                        <Text style={{
-                            fontSize: 13,
-                            paddingTop: 2,
-                            fontWeight: 'bold',
-                            color: PRICE_COLOR
-                        }}
+                        <Text style={styles.newProductPrice}
                             numberOfLines={1}>
                             {'$' + _NewProduct.price}
                         </Text>
@@ -105,5 +87,24 @@ const NewProduct = () => {
 export default NewProduct
 
 const styles = StyleSheet.create({
+    newProductPrice: {
+        fontSize: 13,
+        paddingTop: 2,
+        fontWeight: 'bold',
+        color: PRICE_COLOR
+    },
+    newProductContainer: {
+        backgroundColor: '#fff',
+        width: screen.width * 4 / 8.7,
+        borderRadius: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
 
+        elevation: 1,
+    },
 })

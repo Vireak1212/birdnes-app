@@ -20,20 +20,7 @@ const TopProduct = () => {
             <TouchableOpacity key={index} onPress={() => navigate.navigate('productDetail',
                 { item }
             )}
-                style={{
-                    backgroundColor: '#fff',
-                    width: screen.width * 8 / 17.5,
-                    borderRadius: 5,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 1,
-                    },
-                    shadowOpacity: 0.18,
-                    shadowRadius: 1.00,
-
-                    elevation: 1,
-                }}>
+                style={styles.TopProductContainer}>
                 <View style={{
                     margin: 5
                 }}>
@@ -53,12 +40,7 @@ const TopProduct = () => {
                         {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_product.description}
                         </Text> */}
-                        <Text style={{
-                            fontSize: 16,
-                            paddingVertical: 5,
-                            fontWeight: 'bold',
-                            color: PRICE_COLOR
-                        }}
+                        <Text style={styles.topProductPrice}
                             numberOfLines={1}>
                             {'$' + _product.price}
                         </Text>
@@ -97,4 +79,25 @@ const TopProduct = () => {
 
 export default TopProduct
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    topProductPrice: {
+        fontSize: 16,
+        paddingVertical: 5,
+        fontWeight: 'bold',
+        color: PRICE_COLOR
+    },
+    TopProductContainer: {
+        backgroundColor: '#fff',
+        width: screen.width * 8 / 17.5,
+        borderRadius: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
+
+        elevation: 1,
+    }
+})

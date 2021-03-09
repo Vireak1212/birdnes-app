@@ -43,29 +43,14 @@ const Category = () => {
                     resizeMode='cover'
                     resizeMethod='resize'
                 />
-                <Text style={{
-                    position: 'absolute',
-                    color: '#fff',
-                    backgroundColor: 'rgba(60, 60, 60, 0.3)',
-                    bottom: 0,
-                    left: 0,
-                    borderTopRightRadius: 5,
-                    paddingHorizontal: 5,
-                    paddingVertical: 2,
-                    fontSize: 12,
-                }} numberOfLines={2}>{item.product_name}</Text>
+                <Text style={styles.categoryName} numberOfLines={2}>{item.product_name}</Text>
 
             </TouchableOpacity>
         )
     }
     return (
         <SafeAreaView>
-            <View style={{
-                backgroundColor: '#fff',
-                marginTop: 10,
-                paddingVertical: 10,
-                paddingLeft: 10,
-            }}>
+            <View style={styles.categoryContainer}>
                 <Text>Category</Text>
             </View>
             <FlatGrid
@@ -90,4 +75,22 @@ const Category = () => {
 
 export default Category
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    categoryContainer: {
+        backgroundColor: '#fff',
+        marginTop: 10,
+        paddingVertical: 10,
+        paddingLeft: 10,
+    },
+    categoryName: {
+        position: 'absolute',
+        color: '#fff',
+        backgroundColor: 'rgba(60, 60, 60, 0.3)',
+        bottom: 0,
+        left: 0,
+        borderTopRightRadius: 5,
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        fontSize: 12,
+    },
+})

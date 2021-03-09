@@ -21,7 +21,7 @@ const ShippingAddress = () => {
                 title={'Shipping Address'}
                 leftIcon={leftIcon()}
             />
-            <ScrollView >
+            <ScrollView>
 
                 <View style={{ marginHorizontal: 30, marginTop: 30 }}>
                     <Text style={{ fontSize: 30 }}>ShippingAddress</Text>
