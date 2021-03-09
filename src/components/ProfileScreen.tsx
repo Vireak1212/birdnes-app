@@ -11,10 +11,11 @@ import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import style, { ICON_COLOR, PRICE_COLOR } from '../styles/index'
 import MainHeader from '../custom_items/MainHeader';
+import { useSelector } from 'react-redux';
 
 const ProfileScreen = () => {
     const navigate = useNavigation();
-
+    const style = useSelector((state: { style: any }) => state.style)
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#eee' }}>
             <MainHeader
@@ -22,21 +23,21 @@ const ProfileScreen = () => {
             />
             <ScrollView>
                 <TouchableOpacity style={{ alignItems: 'center' }}>
-                    <View style={styles.backgroundImage}>
-                        <Image style={styles.Imagestyle}
+                    <View style={style.backgroundImage}>
+                        <Image style={style.Imagestyle}
                             source={require('../images/placeholder400x400.jpg')}
                             resizeMethod="auto"
                             resizeMode="cover"
                         />
                         <View style={{ position: 'absolute', bottom: 0, right: 2 }}>
-                            <View style={styles.Camera}>
+                            <View style={style.Camera}>
                                 <Entypo name='camera' size={20} color='#000' />
                             </View>
                         </View>
                     </View>
                 </TouchableOpacity>
                 <View style={{ marginHorizontal: 5 }}>
-                    <View style={styles.backgroundAccountinfo}>
+                    <View style={style.backgroundAccountinfo}>
                         <View style={{ margin: 10 }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Account Info</Text>
                             <Text style={{ opacity: 0.4, marginTop: 10 }}>
@@ -74,7 +75,7 @@ const ProfileScreen = () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={styles.backgroundAccountsetting}>
+                    <View style={style.backgroundAccountsetting}>
                         <View style={{ margin: 10 }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                                 Account Settings
@@ -113,10 +114,15 @@ const ProfileScreen = () => {
                                     </View>
                                 </View>
                             </TouchableOpacity>
+<<<<<<< HEAD
                             <TouchableOpacity
                             // onPress={() => navigate.navigate('login')}
                             >
                                 <View style={styles.signOut}>
+=======
+                            <TouchableOpacity onPress={() => navigate.navigate('login')}>
+                                <View style={style.signOut}>
+>>>>>>> c142e8b607db6d7cce600c55d459c62a3bf140fd
                                     <Text style={{ color: '#fff' }}>Sign Out</Text>
                                 </View>
                             </TouchableOpacity>
@@ -132,43 +138,5 @@ const ProfileScreen = () => {
 export default ProfileScreen
 
 const styles = StyleSheet.create({
-    backgroundImage: {
-        marginTop: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 100,
-    },
-    Imagestyle: {
-        height: 100,
-        width: 100,
-        borderRadius: 50,
-    },
-    Camera: {
-        backgroundColor: '#fff',
-        height: 30,
-        width: 30,
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    backgroundAccountinfo: {
-        marginTop: 50,
-        backgroundColor: '#fff',
-        height: 240,
-        width: '100%'
-    },
-    backgroundAccountsetting: {
-        marginTop: 15,
-        backgroundColor: '#fff',
-        height: 350,
-        width: '100%'
-    },
-    signOut: {
-        backgroundColor: '#224889',
-        height: 50,
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 15
-    },
+
 })

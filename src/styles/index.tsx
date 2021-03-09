@@ -12,4 +12,184 @@ export default StyleSheet.create({
     headerIconColor: {
         color: '#fff'
     },
+
+    ///Profile
+    backgroundImage: {
+        marginTop: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 100,
+    },
+    Imagestyle: {
+        height: 100,
+        width: 100,
+        borderRadius: 50,
+    },
+    Camera: {
+        backgroundColor: '#fff',
+        height: 30,
+        width: 30,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    backgroundAccountinfo: {
+        marginTop: 50,
+        backgroundColor: '#fff',
+        height: 240,
+        width: '100%'
+    },
+    backgroundAccountsetting: {
+        marginTop: 15,
+        backgroundColor: '#fff',
+        height: 350,
+        width: '100%'
+    },
+    signOut: {
+        backgroundColor: '#224889',
+        height: 50,
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15
+    },
+
+    ////Login
+    container: {
+        marginHorizontal: 10,
+        marginTop: 20,
+
+    },
+    labelTitle: {
+        fontSize: 20,
+        color: '#000',
+        opacity: 0.7
+    },
+    subTextLabel: {
+        fontSize: 14,
+        color: '#000',
+        opacity: 0.4
+    },
+    iconBack: {
+        color: '#fff',
+        fontSize: 16
+    },
+    Img: {
+        width: 40,
+        height: 30
+    },
+    phoneInputContainer: {
+        backgroundColor: '#eee',
+        height: 70,
+        width: '100%',
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 35,
+        borderRadius: 5
+    },
+    flagContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    countryCode: {
+        fontSize: 16,
+        marginLeft: 5,
+        color: '#000',
+        opacity: 0.6
+    },
+    iconDropDown: {
+        marginLeft: 10,
+        color: '#000',
+        opacity: 0.6
+    },
+    input: {
+        fontSize: 16,
+        marginLeft: 15
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        bottom: 50,
+        position: 'absolute',
+        paddingHorizontal: 35
+    },
+    arrowContinue: {
+        backgroundColor: '#224889',
+        width: 60,
+        height: 60,
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    ArrowContinue: {
+        color: '#fff',
+        fontSize: 26
+    },
+    textInstruction: {
+        color: '#000',
+        paddingRight: 5
+    },
+    ///EditProfile
+    styleform: {
+        backgroundColor: '#e6e7e8',
+        height: 50,
+        width: '100%',
+        marginTop: 20,
+        borderRadius: 10,
+        justifyContent: 'center'
+    },
+    ButtonUpdate: {
+        marginTop: 25,
+        borderRadius: 10,
+        backgroundColor: '#224889',
+        width: '100%'
+    },
+    lastNamestyle: {
+        justifyContent: 'center',
+        height: '80%',
+        alignItems: 'center',
+    },
+    ////shippingAdress
+
+    styleforms: {
+        backgroundColor: '#e6e7e8',
+        height: 150,
+        width: '100%',
+        marginTop: 20,
+        borderRadius: 10,
+        justifyContent: 'center'
+    },
+    bottonUpdate: {
+        marginTop: 25,
+        borderRadius: 10,
+        backgroundColor: '#224889',
+        width: '100%'
+    },
+    ////MainCartScreen
+    cartImageContainer: {
+        width: '100%',
+        alignItems: 'center',
+        paddingTop: 130
+    },
+    stylePrice: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        paddingHorizontal: 20,
+        position: 'absolute',
+        bottom: 30
+    },
+    styleCHACKOUT: {
+        backgroundColor: '#224889',
+        width: '50%',
+        height: 50,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    }
 })
