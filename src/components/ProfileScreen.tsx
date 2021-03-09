@@ -43,7 +43,7 @@ const ProfileScreen = () => {
                             <Text style={{ opacity: 0.4, marginTop: 10 }}>
                                 Information about your dransaction
                             </Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigate.navigate('order')}>
                                 <View style={{ marginTop: 15, flexDirection: 'row' }}>
                                     <View>
                                         <Fontisto name='play-list' size={25}
@@ -58,7 +58,7 @@ const ProfileScreen = () => {
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigate.navigate('favorite')}>
                                 <View style={{ flexDirection: 'row', marginTop: 20 }}>
                                     <View>
                                         <AntDesign name='star' size={30}
@@ -66,7 +66,7 @@ const ProfileScreen = () => {
                                             color='#000' />
                                     </View>
                                     <View style={{ marginLeft: 20 }}>
-                                        <Text>Wishlish</Text>
+                                        <Text style={{ fontSize: 18 }}>Wishlish</Text>
                                         <Text style={{ marginTop: 15, opacity: 0.4 }}>
                                             All your favorite wishlist
                                         </Text>
@@ -91,7 +91,7 @@ const ProfileScreen = () => {
                                             style={{ marginTop: 15, opacity: 0.6 }} color='#000' />
                                     </View>
                                     <View style={{ marginLeft: 20 }}>
-                                        <Text>Update Information</Text>
+                                        <Text style={{ fontSize: 18 }}>Update Information</Text>
                                         <Text style={{ marginTop: 15, opacity: 0.4 }}>
                                             Update your name, phone number and email address
                                         </Text>
@@ -105,7 +105,7 @@ const ProfileScreen = () => {
                                             style={{ marginTop: 20, opacity: 0.6 }} color='#000' />
                                     </View>
                                     <View style={{ marginLeft: 20 }}>
-                                        <Text>
+                                        <Text style={{ fontSize: 18 }}>
                                             Shipping Address
                                     </Text>
                                         <Text style={{ marginTop: 15, opacity: 0.4 }}>
@@ -115,7 +115,7 @@ const ProfileScreen = () => {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
-                            // onPress={() => navigate.navigate('login')}
+                                onPress={() => navigate.navigate('login')}
                             >
                                 <View style={style.signOut}>
                                     <Text style={{ color: '#fff' }}>Sign Out</Text>
@@ -131,7 +131,6 @@ const ProfileScreen = () => {
 }
 
 export default ProfileScreen
-
 const styles = StyleSheet.create({
 
 })

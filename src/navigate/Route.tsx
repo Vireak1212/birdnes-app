@@ -28,7 +28,12 @@ import ProfileScreen from '../components/ProfileScreen';
 import ShippingAddress from '../containers/profile/ShippingAddress';
 
 import LoginScreen from '../login/LoginScreen';
+<<<<<<< HEAD
 import ProductOfCategory from '../containers/category/ProductOfCategory';
+=======
+import OrderHistory from '../containers/order/OrderHistory';
+import Wishlish from '../containers/order/Wishlish';
+>>>>>>> f37f8a929909029293dd7bdf2811088a91964b4a
 
 
 const Stack = createStackNavigator();
@@ -51,7 +56,12 @@ const Route = () => {
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
         <Stack.Screen name="login" component={LoginScreen} />
+<<<<<<< HEAD
 
+=======
+        <Stack.Screen name="order" component={OrderHistory} />
+        <Stack.Screen name="favorite" component={Wishlish} />
+>>>>>>> f37f8a929909029293dd7bdf2811088a91964b4a
         <Stack.Screen name="editProfile" component={EditProfile} />
         <Stack.Screen name="shippingAdress" component={ShippingAddress} />
 

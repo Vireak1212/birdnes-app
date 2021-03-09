@@ -105,7 +105,7 @@ export default StyleSheet.create({
     },
     input: {
         fontSize: 16,
-        marginLeft: 15
+        marginLeft: 15,
     },
     buttonContainer: {
         flexDirection: 'row',
