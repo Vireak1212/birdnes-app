@@ -31,6 +31,7 @@ import LoginScreen from '../login/LoginScreen';
 import ProductOfCategory from '../containers/category/ProductOfCategory';
 import OrderHistory from '../containers/order/OrderHistory';
 import Wishlish from '../containers/order/Wishlish';
+// import VerifyScreen from './../login/VerifyScreen';
 
 
 
@@ -54,7 +55,7 @@ const Route = () => {
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
         <Stack.Screen name="login" component={LoginScreen} />
-
+        {/* <Stack.Screen name="Comfirm" component={VerifyScreen} /> */}
         <Stack.Screen name="order" component={OrderHistory} />
         <Stack.Screen name="favorite" component={Wishlish} />
         <Stack.Screen name="editProfile" component={EditProfile} />

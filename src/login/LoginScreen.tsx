@@ -38,7 +38,9 @@ const LoginScreen = () => {
 					By continuing, you agree to accept our term and condition. Your data rates may apply.
 						</Text>
 
-				<TouchableOpacity style={style.arrowContinue} onPress={() => navigate.goBack()}>
+				<TouchableOpacity style={style.arrowContinue}
+				//onPress={() => navigate.navigate('Comfirm')}
+				>
 					<AntDesign style={style.ArrowContinue} name="arrowright" />
 				</TouchableOpacity>
 			</View>
