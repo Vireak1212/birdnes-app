@@ -27,7 +27,7 @@ import EditProfile from './../containers/profile/EditProfile';
 import ProfileScreen from '../components/ProfileScreen';
 import ShippingAddress from '../containers/profile/ShippingAddress';
 
-import LoginScreen from '../login/LoginScreen';
+import LoginScreen from '../components/auth/LoginScreen';
 import ProductOfCategory from '../containers/category/ProductOfCategory';
 import OrderHistory from '../containers/order/OrderHistory';
 import Wishlish from '../containers/order/Wishlish';
