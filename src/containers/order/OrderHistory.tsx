@@ -8,7 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 const OrderHistory = (props: any) => {
 
-    const data = [0, 1, 2, 3, 4, 5];
+    const data = [0, 1, 2, 3, 4, 5, 6];
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
 
@@ -26,17 +26,18 @@ const OrderHistory = (props: any) => {
                 backgroundColor: '#fff',
                 alignItems: 'center',
                 width: '100%',
-                borderRadius: 5,
-                marginTop: 15,
-                marginBottom: index == data.length - 1 ? 15 : 0
+                borderRadius: 10,
+                marginTop: 10,
+                marginBottom: index == data.length - 1 ? 10 : 0
             }}>
                 <Image
                     source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/1/16/Edible-birds-nest-bowl-shape.png' }}
                     style={{
                         height: 120,
                         width: 120,
-                        borderTopLeftRadius: 5,
-                        borderBottomLeftRadius: 5,
+                        borderRadius: 10,
+                        // borderTopLeftRadius: 5,
+                        // borderBottomLeftRadius: 5,
                         backgroundColor: '#ddd'
                     }} />
                 <Col style={{
