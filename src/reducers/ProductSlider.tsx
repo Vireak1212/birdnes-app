@@ -1,7 +1,7 @@
-const ProductSlider = (state = [], action: { type: any; slides: any[]; error: any; }) => {
+const ProductSlider = (state = [], action: { type: any; slide_shows: any[]; error: any; }) => {
     switch (action.type) {
         case 'LOAD_SLIDER':
-            return action.slides;
+            return action.slide_shows;
         case 'SLIDER_ERROR':
             return action.error;
         default:

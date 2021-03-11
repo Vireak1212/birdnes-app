@@ -36,22 +36,19 @@ export default StyleSheet.create({
     backgroundAccountinfo: {
         marginTop: 50,
         backgroundColor: '#fff',
-        height: 240,
-        width: '100%'
     },
     backgroundAccountsetting: {
         marginTop: 15,
         backgroundColor: '#fff',
-        height: 350,
-        width: '100%'
     },
     signOut: {
         backgroundColor: '#224889',
         height: 50,
-        marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 15
+        borderRadius: 15,
+        marginHorizontal: 10,
+        marginBottom: 10
     },
 
     ////Login

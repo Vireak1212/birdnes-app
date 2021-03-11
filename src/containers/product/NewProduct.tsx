@@ -1,17 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
 import { Col } from 'native-base';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Dimensions } from 'react-native';
-import { color } from 'react-native-reanimated';
 import { FlatGrid } from 'react-native-super-grid';
 import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
 import { PRICE_COLOR } from '../../styles/index';
+import firestore from '@react-native-firebase/firestore';
+import FastImage from 'react-native-fast-image';
+
 const screen = Dimensions.get('screen')
 
 const NewProduct = () => {
     const products = useSelector((state: { products: any }) => state.products);
     const navigate = useNavigation();
+    // useEffect(() => {
+    //     firestore().collection('products').get().then(data => {
+    //         console.log(data.docs.length, 'sssssssssssss')
+    //     })
+    // }, [])
+
 
     const _renderNewProduct = ({ item, index }: any) => {
         const _NewProduct = item.items;
@@ -24,18 +32,17 @@ const NewProduct = () => {
                     flexDirection: 'row',
                     padding: 5
                 }}>
-                    <Image style={{
+                    <FastImage style={{
                         height: 90,
                         width: 85,
                         borderRadius: 5,
                     }}
-                        source={{ uri: _NewProduct.cover }}
-                        resizeMode='cover'
-                        resizeMethod='resize'
+                        source={{ uri: _NewProduct.product_info.photos[0].photo_url }}
+                        resizeMode={FastImage.resizeMode.cover}
                     />
                     <Col style={{ paddingLeft: 10 }}>
                         <Text style={{ fontSize: 12, paddingBottom: 2 }} numberOfLines={2}>
-                            {_NewProduct.name}
+                            {_NewProduct.product_info.product_name}
                         </Text>
                         <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_NewProduct.description}
@@ -109,3 +116,4 @@ const styles = StyleSheet.create({
         elevation: 1,
     },
 })
+

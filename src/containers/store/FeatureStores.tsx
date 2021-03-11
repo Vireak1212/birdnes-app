@@ -20,7 +20,7 @@ const FeatureStores = () => {
                 onPress={() => navigate.navigate('storeDetail',
                     { item }
                 )}>
-                <Image key={index} source={{ uri: _store.avatar }}
+                <Image key={index} source={{ uri: _store.store_cover }}
                     style={{
                         width: size.width / 3,
                         height: 90,
@@ -29,7 +29,7 @@ const FeatureStores = () => {
                     }}>
                 </Image>
                 <Text style={styles.featureStoreName} numberOfLines={2}>
-                    {_store.name}
+                    {_store.store_name}
                 </Text>
             </TouchableOpacity>
         )

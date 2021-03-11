@@ -1,27 +1,35 @@
 import React, { useState } from 'react'
 import { Dimensions, Image, Platform, StyleSheet, Text, View } from 'react-native'
+import FastImage from 'react-native-fast-image';
 import Swiper from 'react-native-swiper'
 import { useSelector } from 'react-redux';
 const size = Dimensions.get('screen');
 
 const ProductSlide = () => {
-    const slides = useSelector((state: { slides: any }) => state.slides);
+    const slide_shows = useSelector((state: { slide_shows: any }) => state.slide_shows);
     return (
         <View style={styles.carouselArea}>
             <Swiper style={styles.wrapper}
-                autoplay
+                horizontal
+                autoplay={true}
                 showsButtons={false}
+                dotStyle={{ height: 0 }}
+                activeDotStyle={{ height: 0 }}
                 removeClippedSubviews={Platform.OS === 'ios' ? true : false}>
                 {
-                    slides.map((item: any, index: any) => {
+                    slide_shows.map((item: any, index: any) => {
                         return (
                             <View key={index} style={styles.slide1}>
-                                <Image source={{ uri: item.items.fileUrl }} style={styles.slideImage} />
+                                <FastImage style={styles.slideImage}
+                                    source={{ uri: item.items.photo_url }}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                />
                             </View>
                         )
                     })
                 }
             </Swiper>
+
         </View>
     )
 }

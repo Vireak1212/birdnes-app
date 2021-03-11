@@ -32,7 +32,7 @@ const product = [
 
 const StoreDetail = (props: any) => {
     const { item } = props.route.params;
-    const store_name = item.items.name;
+    const store_name = item.items.store_name;
     const navigate = useNavigation();
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -53,7 +53,7 @@ const StoreDetail = (props: any) => {
                         height: 250,
                         width: '100%'
                     }}
-                        source={{ uri: item.items.avatar }}
+                        source={{ uri: item.items.store_cover }}
                         resizeMode='cover'
                         resizeMethod='resize'
                     />

@@ -9,6 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 import { Col, Item, Row } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
+import FastImage from 'react-native-fast-image';
 
 
 const ProductDetail = (props: any) => {
@@ -16,10 +17,18 @@ const ProductDetail = (props: any) => {
     const navigate = useNavigation();
     const product_neme = item.items.name;
 
+
+    const [isLoading, setIsLoading] = useState(true)
     const [count, setCount] = useState(1);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([]);
     let controller;
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 200);
+    }, [])
 
     const handleIncrement = () => {
         setCount(prevCount => prevCount + 1);
@@ -56,14 +65,13 @@ const ProductDetail = (props: any) => {
             />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.detailImageContainer}>
-                    <Image style={{
+                    <FastImage style={{
                         height: 250,
                         width: '100%',
                         borderRadius: 10,
                     }}
-                        source={{ uri: item.items.cover }}
-                        resizeMode='cover'
-                        resizeMethod='resize'
+                        source={{ uri: item.items.product_info.photos[0].photo_url }}
+                        resizeMode={FastImage.resizeMode.cover}
                     />
                 </View>
                 <Row style={styles.productDetailContainer}>
@@ -72,7 +80,7 @@ const ProductDetail = (props: any) => {
                             fontSize: 19,
                             fontWeight: 'bold'
                         }}>
-                            {item.items.name}
+                            {item.items.product_info.product_name}
                         </Text>
                         <Text style={{ fontWeight: 'bold' }}>
                             {item.items.code}

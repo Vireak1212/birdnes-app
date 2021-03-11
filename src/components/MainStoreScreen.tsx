@@ -47,7 +47,7 @@ const MainStoreScreen = () => {
                         width: '100%',
                         borderRadius: 5,
                     }}
-                        source={{ uri: _AllStore.avatar }}
+                        source={{ uri: _AllStore.store_cover }}
                         resizeMode='cover'
                         resizeMethod='resize'
                     />
@@ -70,7 +70,7 @@ const MainStoreScreen = () => {
                         paddingHorizontal: 5,
                         paddingVertical: 2,
                         fontSize: 12,
-                    }} numberOfLines={2}>{_AllStore.name}</Text>
+                    }} numberOfLines={2}>{_AllStore.store_name}</Text>
                 </View>
             </TouchableOpacity>
         )

@@ -9,10 +9,19 @@ const screen = Dimensions.get('screen')
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MainHeader from '../../custom_items/MainHeader';
 import { useSelector } from 'react-redux';
+import FastImage from 'react-native-fast-image';
 
 const AllProduct = () => {
     const products = useSelector((state: { products: any }) => state.products);
     const navigate = useNavigation();
+
+    const [isLoading, setIsLoading] = useState(true)
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 200);
+    }, [])
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
@@ -29,18 +38,17 @@ const AllProduct = () => {
                 <View style={{
                     margin: 5
                 }}>
-                    <Image style={{
+                    <FastImage style={{
                         height: 150,
                         width: '100%',
                         borderRadius: 5,
                     }}
-                        source={{ uri: _AllProduct.cover }}
-                        resizeMode='cover'
-                        resizeMethod='resize'
+                        source={{ uri: _AllProduct.product_image }}
+                        resizeMode={FastImage.resizeMode.cover}
                     />
                     <Col style={{ paddingTop: 10 }}>
                         <Text style={{ fontSize: 15, paddingBottom: 2 }} numberOfLines={2}>
-                            {_AllProduct.name}
+                            {_AllProduct.product_info.product_name}
                         </Text>
                         <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_AllProduct.description}

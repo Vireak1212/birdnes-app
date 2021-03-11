@@ -16,3 +16,15 @@ export const loadProduct = () => {
             });
     }
 }
+
+
+export const createProduct = (products: any) => {
+    return async (dispatch: (arg0: (dispatch: any) => void) => void) => {
+        const data = await firestore().collection('products');
+        data.add(
+            {
+                ...products
+            }
+        )
+    }
+}

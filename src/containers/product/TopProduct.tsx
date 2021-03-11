@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Col } from 'native-base'
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { FlatGrid } from 'react-native-super-grid'
 import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction'
@@ -24,18 +25,17 @@ const TopProduct = () => {
                 <View style={{
                     margin: 5
                 }}>
-                    <Image style={{
+                    <FastImage style={{
                         height: 160,
                         width: '100%',
                         borderRadius: 5,
                     }}
-                        source={{ uri: _product.cover }}
-                        resizeMode='cover'
-                        resizeMethod='resize'
+                        source={{ uri: _product.product_info.photos[0].photo_url }}
+                        resizeMode={FastImage.resizeMode.cover}
                     />
                     <Col style={{ paddingTop: 10 }}>
                         <Text style={{ fontSize: 15, paddingBottom: 2, color: '#aaa' }} numberOfLines={2}>
-                            {_product.name}
+                            {_product.product_info.product_name}
                         </Text>
                         {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_product.description}

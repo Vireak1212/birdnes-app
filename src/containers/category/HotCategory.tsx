@@ -7,31 +7,32 @@ import { makeid } from '../../functions/PTFunction';
 const screen = Dimensions.get('screen')
 
 const HotCategory = () => {
-    const store = useSelector((state: { store: any }) => state.store);
+    const categories = useSelector((state: { categories: any }) => state.categories);
     const navigate = useNavigation();
+    console.log(categories)
 
-    const [data, setData] = useState([
-        {
-            id: 1,
-            product_name: 'Birtnest Drink',
-            image: 'https://farm8.staticflickr.com/7542/16227459701_f0568dd128_o.jpg'
-        },
-        {
-            id: 2,
-            product_name: 'Birtnest Meat',
-            image: 'https://chinatown.co.uk/wp-content/uploads/2017/01/birds-nest-soup.jpg'
-        },
-        {
-            id: 3,
-            product_name: 'Birtnest Soup',
-            image: 'https://i1.wp.com/primebirdsnest.com/wp-content/uploads/2018/09/FB_IMG_1514486502296-e1536375734968.jpg?fit=719%2C500&ssl=1'
-        },
-        {
-            id: 4,
-            product_name: 'Birtnest Peckage',
-            image: 'https://www.yuxiangyan.com/wp-content/uploads/2015/05/bnestbottled.jpg'
-        },
-    ])
+    // const [data, setData] = useState([
+    //     {
+    //         id: 1,
+    //         product_name: 'Birtnest Drink',
+    //         image: 'https://farm8.staticflickr.com/7542/16227459701_f0568dd128_o.jpg'
+    //     },
+    //     {
+    //         id: 2,
+    //         product_name: 'Birtnest Meat',
+    //         image: 'https://chinatown.co.uk/wp-content/uploads/2017/01/birds-nest-soup.jpg'
+    //     },
+    //     {
+    //         id: 3,
+    //         product_name: 'Birtnest Soup',
+    //         image: 'https://i1.wp.com/primebirdsnest.com/wp-content/uploads/2018/09/FB_IMG_1514486502296-e1536375734968.jpg?fit=719%2C500&ssl=1'
+    //     },
+    //     {
+    //         id: 4,
+    //         product_name: 'Birtnest Peckage',
+    //         image: 'https://www.yuxiangyan.com/wp-content/uploads/2015/05/bnestbottled.jpg'
+    //     },
+    // ])
 
     const _renderHotCategory = ({ item, index }: any) => {
         const _hotCategory = item.items;
@@ -46,7 +47,9 @@ const HotCategory = () => {
                     resizeMode='cover'
                     resizeMethod='resize'
                 />
-                <Text style={styles.hotCategoryName} numberOfLines={2}>{item.product_name}</Text>
+                <Text style={styles.hotCategoryName} numberOfLines={2}>
+                    {/* {_hotCategory.category_name} */}
+                </Text>
 
             </TouchableOpacity>
         )
@@ -69,7 +72,7 @@ const HotCategory = () => {
                     marginTop: -10,
                 }}
                 renderItem={_renderHotCategory}
-                data={data}
+                data={categories}
             // data={color.slice(0, (Math.floor((width / 80)) * 2))}
             />
         </SafeAreaView>

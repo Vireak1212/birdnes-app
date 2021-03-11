@@ -1,4 +1,4 @@
-import { Row } from 'native-base';
+import { Col, Row } from 'native-base';
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -36,9 +36,9 @@ const ProfileScreen = () => {
                         </View>
                     </View>
                 </TouchableOpacity>
-                <View style={{ marginHorizontal: 5 }}>
+                <View>
                     <View style={style.backgroundAccountinfo}>
-                        <View style={{ margin: 10 }}>
+                        <View style={{ margin: 15 }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Account Info</Text>
                             <Text style={{ opacity: 0.4, marginTop: 10 }}>
                                 Information about your dransaction
@@ -50,12 +50,12 @@ const ProfileScreen = () => {
                                             style={{ marginTop: 15, opacity: 0.6 }}
                                             color='#000' />
                                     </View>
-                                    <View style={{ marginLeft: 20 }}>
+                                    <Col style={{ marginLeft: 20 }}>
                                         <Text style={{ fontSize: 18 }}>Orders</Text>
                                         <Text style={{ marginTop: 10, opacity: 0.4 }}>
                                             View your order informations
                                         </Text>
-                                    </View>
+                                    </Col>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => navigate.navigate('favorite')}>
@@ -65,18 +65,18 @@ const ProfileScreen = () => {
                                             style={{ marginTop: 15, opacity: 0.6 }}
                                             color='#000' />
                                     </View>
-                                    <View style={{ marginLeft: 20 }}>
+                                    <Col style={{ marginLeft: 20 }}>
                                         <Text style={{ fontSize: 18 }}>Wishlish</Text>
                                         <Text style={{ marginTop: 15, opacity: 0.4 }}>
                                             All your favorite wishlist
                                         </Text>
-                                    </View>
+                                    </Col>
                                 </View>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={style.backgroundAccountsetting}>
-                        <View style={{ margin: 10 }}>
+                        <View style={{ margin: 15 }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                                 Account Settings
                             </Text>
@@ -90,12 +90,12 @@ const ProfileScreen = () => {
                                         <FontAwesome5 name='user-cog' size={25}
                                             style={{ marginTop: 15, opacity: 0.6 }} color='#000' />
                                     </View>
-                                    <View style={{ marginLeft: 20 }}>
+                                    <Col style={{ marginLeft: 20 }}>
                                         <Text style={{ fontSize: 18 }}>Update Information</Text>
-                                        <Text style={{ marginTop: 15, opacity: 0.4 }}>
+                                        <Text style={{ marginTop: 15, opacity: 0.4 }} numberOfLines={1}>
                                             Update your name, phone number and email address
                                         </Text>
-                                    </View>
+                                    </Col>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => navigate.navigate('shippingAdress')}>
@@ -104,28 +104,30 @@ const ProfileScreen = () => {
                                         <FontAwesome5 name='car-side' size={25}
                                             style={{ marginTop: 20, opacity: 0.6 }} color='#000' />
                                     </View>
-                                    <View style={{ marginLeft: 20 }}>
+                                    <Col style={{ marginLeft: 20 }}>
                                         <Text style={{ fontSize: 18 }}>
                                             Shipping Address
-                                    </Text>
+                                        </Text>
                                         <Text style={{ marginTop: 15, opacity: 0.4 }}>
                                             Make Update to your current address
-                                    </Text>
-                                    </View>
+                                        </Text>
+                                    </Col>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => navigate.navigate('login')}
-                            >
-                                <View style={style.signOut}>
-                                    <Text style={{ color: '#fff' }}>Sign Out</Text>
-                                </View>
-                            </TouchableOpacity>
+
                         </View>
+
                     </View>
                 </View>
 
             </ScrollView>
+            <View style={{ backgroundColor: '#fff' }}>
+                <TouchableOpacity style={style.signOut}
+                    onPress={() => navigate.navigate('login')}
+                >
+                    <Text style={{ color: '#fff' }}>Sign Out</Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
