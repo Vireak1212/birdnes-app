@@ -5,15 +5,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import style, { ICON_COLOR, PRICE_COLOR } from '../styles/index'
+import { MAIN_COLOR } from '../styles/index'
 import MainHeader from '../custom_items/MainHeader';
 import { useSelector } from 'react-redux';
 
 const ProfileScreen = () => {
+    const clients = useSelector((state: { clients: any }) => state.clients);
+
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
     return (
@@ -21,118 +21,128 @@ const ProfileScreen = () => {
             <MainHeader
                 title={'Profile'}
             />
-            <ScrollView>
-                <TouchableOpacity style={{ alignItems: 'center' }}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{
+                    backgroundColor: '#fff',
+                    marginBottom: 15,
+                    flexDirection: 'row'
+                }}>
                     <View style={style.backgroundImage}>
                         <Image style={style.Imagestyle}
                             source={require('../images/placeholder400x400.jpg')}
                             resizeMethod="auto"
                             resizeMode="cover"
                         />
-                        <View style={{ position: 'absolute', bottom: 0, right: 2 }}>
-                            <View style={style.Camera}>
-                                <Entypo name='camera' size={20} color='#000' />
-                            </View>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <View>
-                    <View style={style.backgroundAccountinfo}>
-                        <View style={{ margin: 15 }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Account Info</Text>
-                            <Text style={{ opacity: 0.4, marginTop: 10 }}>
-                                Information about your dransaction
-                            </Text>
-                            <TouchableOpacity onPress={() => navigate.navigate('order')}>
-                                <View style={{ marginTop: 15, flexDirection: 'row' }}>
-                                    <View>
-                                        <Fontisto name='play-list' size={25}
-                                            style={{ marginTop: 15, opacity: 0.6 }}
-                                            color='#000' />
-                                    </View>
-                                    <Col style={{ marginLeft: 20 }}>
-                                        <Text style={{ fontSize: 18 }}>Orders</Text>
-                                        <Text style={{ marginTop: 10, opacity: 0.4 }}>
-                                            View your order informations
-                                        </Text>
-                                    </Col>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigate.navigate('favorite')}>
-                                <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                                    <View>
-                                        <AntDesign name='star' size={30}
-                                            style={{ marginTop: 15, opacity: 0.6 }}
-                                            color='#000' />
-                                    </View>
-                                    <Col style={{ marginLeft: 20 }}>
-                                        <Text style={{ fontSize: 18 }}>Wishlish</Text>
-                                        <Text style={{ marginTop: 15, opacity: 0.4 }}>
-                                            All your favorite wishlist
-                                        </Text>
-                                    </Col>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={style.backgroundAccountsetting}>
-                        <View style={{ margin: 15 }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                                Account Settings
-                            </Text>
-                            <Text style={{ opacity: 0.4, marginTop: 10, width: '100%' }}>
-                                Manage information about, your payments and your contacts,
-                                and your account in general.
-                            </Text>
-                            <TouchableOpacity onPress={() => navigate.navigate('editProfile')}>
-                                <View style={{ marginTop: 15, flexDirection: 'row' }}>
-                                    <View>
-                                        <FontAwesome5 name='user-cog' size={25}
-                                            style={{ marginTop: 15, opacity: 0.6 }} color='#000' />
-                                    </View>
-                                    <Col style={{ marginLeft: 20 }}>
-                                        <Text style={{ fontSize: 18 }}>Update Information</Text>
-                                        <Text style={{ marginTop: 15, opacity: 0.4 }} numberOfLines={1}>
-                                            Update your name, phone number and email address
-                                        </Text>
-                                    </Col>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigate.navigate('shippingAdress')}>
-                                <View style={{ marginTop: 30, flexDirection: 'row' }}>
-                                    <View>
-                                        <FontAwesome5 name='car-side' size={25}
-                                            style={{ marginTop: 20, opacity: 0.6 }} color='#000' />
-                                    </View>
-                                    <Col style={{ marginLeft: 20 }}>
-                                        <Text style={{ fontSize: 18 }}>
-                                            Shipping Address
-                                        </Text>
-                                        <Text style={{ marginTop: 15, opacity: 0.4 }}>
-                                            Make Update to your current address
-                                        </Text>
-                                    </Col>
-                                </View>
-                            </TouchableOpacity>
 
-                        </View>
+                        <TouchableOpacity style={style.Camera}>
+                            <Entypo name='camera' size={20} color='#000' />
+                        </TouchableOpacity>
+                    </View>
 
+                    <Col style={{
+                        marginRight: 15,
+                        justifyContent: 'center'
+                    }}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: MAIN_COLOR }}>
+                            {clients.items.client_info.first_name}
+                        </Text>
+                        <Text style={{ color: '#aaa' }}>{'(+855)' + clients.items.client_info.phone_number}</Text>
+                    </Col>
+                </View>
+
+
+                <View style={style.backgroundAccountinfo}>
+                    <View style={{ margin: 15 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Account Info</Text>
+                        <Text style={{ opacity: 0.4, marginTop: 5, fontSize: 12 }}>
+                            Information about your dransaction
+                        </Text>
+
+                        <TouchableOpacity style={styles.accountInfoContainer}
+                            onPress={() => navigate.navigate('Order')}>
+
+                            <Fontisto name='play-list' size={24} style={{ opacity: 0.6 }} color='#000' />
+                            <Col style={{ marginLeft: 20 }}>
+                                <Text style={{ fontSize: 18 }}>Orders</Text>
+                                <Text style={{ opacity: 0.4, fontSize: 12, marginTop: 5, }}>
+                                    View your order informations
+                                </Text>
+                            </Col>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.accountInfoContainer}
+                            onPress={() => navigate.navigate('Favorite')}>
+
+                            <FontAwesome name='star' size={30} style={{ opacity: 0.6 }} color='#000' />
+                            <Col style={{ marginLeft: 20 }}>
+                                <Text style={{ fontSize: 18 }}>Wishlish</Text>
+                                <Text style={{ opacity: 0.4, fontSize: 12, marginTop: 5, }}>
+                                    All your favorite wishlist
+                                </Text>
+                            </Col>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
+                <View style={style.backgroundAccountsetting}>
+                    <View style={{ margin: 15 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
+                            Account Settings
+                            </Text>
+                        <Text style={{ opacity: 0.4, marginTop: 5, fontSize: 12 }}>
+                            Manage information about, your payments and your contacts,
+                            and your account in general.
+                        </Text>
+
+                        <TouchableOpacity style={styles.accountInfoContainer}
+                            onPress={() => navigate.navigate('EditProfile')}>
+                            <FontAwesome5 name='user-cog' size={25} style={{ opacity: 0.6 }} color='#000' />
+
+                            <Col style={{ marginLeft: 20 }}>
+                                <Text style={{ fontSize: 18 }}>Update Information</Text>
+                                <Text style={{ opacity: 0.4, marginTop: 5, fontSize: 12 }} numberOfLines={1}>
+                                    Update your name, phone number and email address
+                                </Text>
+                            </Col>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.accountInfoContainer}
+                            onPress={() => navigate.navigate('ShippingAdress')}>
+
+
+                            <FontAwesome5 name='car-side' size={25}
+                                style={{ opacity: 0.6 }} color='#000' />
+                            <Col style={{ marginLeft: 20 }}>
+                                <Text style={{ fontSize: 18 }}>
+                                    Shipping Address
+                                        </Text>
+                                <Text style={{ opacity: 0.4, fontSize: 12, marginTop: 5, }}>
+                                    Make Update to your current address
+                                </Text>
+                            </Col>
+
+                        </TouchableOpacity>
+
+                    </View>
+
+                </View>
+
             </ScrollView>
-            <View style={{ backgroundColor: '#fff' }}>
-                <TouchableOpacity style={style.signOut}
-                    onPress={() => navigate.navigate('login')}
-                >
-                    <Text style={{ color: '#fff' }}>Sign Out</Text>
-                </TouchableOpacity>
-            </View>
+
+            <TouchableOpacity style={style.signOut}
+                onPress={() => navigate.navigate('Login')}>
+                <Text style={{ color: '#fff' }}>Sign Out</Text>
+            </TouchableOpacity>
+
         </SafeAreaView>
     )
 }
 
 export default ProfileScreen
 const styles = StyleSheet.create({
-
+    accountInfoContainer: {
+        marginTop: 15,
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
 })

@@ -1,14 +1,18 @@
+import { loadCart } from "../actions/Cart";
 import { loadCategory } from "../actions/Category";
-import { loadCurrentCustomer } from "../actions/Customer";
-import { loadProduct } from "../actions/Product";
+import { loadClient } from "../actions/Client";
+import { loadNewProduct, loadProduct, loadTopProduct } from "../actions/Product";
 import { loadSlider } from "../actions/ProductSlider";
 import { loadStore } from "../actions/Store";
 
 export function loadData(dispatch) {
-    dispatch(loadCurrentCustomer());
+    dispatch(loadClient());
     dispatch(loadProduct());
+    dispatch(loadNewProduct());
+    dispatch(loadTopProduct())
     dispatch(loadSlider())
     dispatch(loadProduct());
     dispatch(loadCategory());
     dispatch(loadStore());
+    dispatch(loadCart());
 }

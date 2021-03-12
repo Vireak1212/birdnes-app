@@ -9,6 +9,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
 import { PRICE_COLOR } from '../../styles';
+import AllProduct from '../product/AllProduct';
 const screen = Dimensions.get('screen')
 
 const people = [
@@ -53,8 +54,11 @@ const HomeSearch = () => {
                     </Row>
                 </Col>
             </View>
+            <View style={{ flex: 1, paddingTop: 10 }}>
+                <AllProduct />
+            </View>
 
-            <FlatGrid
+            {/* <FlatGrid
                 data={products}
                 listKey={makeid()}
                 itemDimension={130}
@@ -107,7 +111,7 @@ const HomeSearch = () => {
                         </TouchableOpacity>
                     </View>
                 )}
-            />
+            /> */}
         </SafeAreaView>
     )
 }

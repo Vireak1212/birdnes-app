@@ -59,7 +59,7 @@ const StoreDetail = (props: any) => {
                     />
                 </View>
 
-                <Tabs renderTabBar={() => (
+                <Tabs renderTabBar={(props: any) => (
                     <ScrollableTab
                         underlineStyle={{ height: 0, }}
                         style={{ alignItems: 'center', height: 60 }}
@@ -76,7 +76,7 @@ const StoreDetail = (props: any) => {
                                 textStyle={styles.textUPS}
                                 activeTextStyle={styles.activeTextUPS}
                                 heading={item.product_type}>
-                                <StoreIteam />
+                                <StoreIteam {...props} />
                             </Tab>
                         )
                     })}

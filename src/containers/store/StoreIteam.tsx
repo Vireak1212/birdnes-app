@@ -36,10 +36,10 @@ const StoreIteam = () => {
     const _renderShopItem = ({ item, index }: any) => {
         return (
             <TouchableOpacity key={index} style={styles.storeItemContainer}
-                onPress={() => navigate.navigate('productDetail',
+                onPress={() => navigate.navigate('ProductDetail',
                     { item }
                 )}>
-                <View style={{
+                {/* <View style={{
                     margin: 5
                 }}>
                     <Image style={{
@@ -62,7 +62,7 @@ const StoreIteam = () => {
                             $15.50
                         </Text>
                     </Col>
-                </View>
+                </View> */}
             </TouchableOpacity>
         )
     }

@@ -22,7 +22,7 @@ const MainStoreScreen = () => {
     const _renderMainStore = ({ item, index }: any) => {
         const _AllStore = item.items;
         return (
-            <TouchableOpacity key={index} onPress={() => navigate.navigate('storeDetail',
+            <TouchableOpacity key={index} onPress={() => navigate.navigate('StoreDetail',
                 { item }
             )}
                 style={{

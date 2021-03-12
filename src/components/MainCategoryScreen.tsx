@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Platform, Dimensions } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Platform, Dimensions, Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import Category from '../containers/category/Category';
@@ -8,6 +8,8 @@ import HotCategory from '../containers/category/HotCategory';
 import MainHeader from '../custom_items/MainHeader';
 import { makeid } from '../functions/PTFunction';
 import style, { PRICE_COLOR } from '../styles/index';
+import { FlatGrid } from 'react-native-super-grid';
+import { MAIN_COLOR } from '../styles/index';
 const screen = Dimensions.get('screen')
 
 const MainCategoryScreen = (props: any) => {
@@ -33,7 +35,18 @@ const MainCategoryScreen = (props: any) => {
 
     useEffect(() => {
         if (categoryId != "") {
-            setSubCategories(categories.filter((r: any) => r.items.parent_id === categoryId))
+            if (backState.length > 0) {
+                let _subCategory = []
+                _subCategory.push({
+                    id: makeid(),
+                    items: []
+                })
+                _subCategory.push(...categories.filter((r: any) => r.items.parent_id === categoryId))
+                setSubCategories(_subCategory)
+            }
+            else
+                setSubCategories(categories.filter((r: any) => r.items.parent_id === categoryId))
+
         }
     }, [categoryId])
 
@@ -71,7 +84,7 @@ const MainCategoryScreen = (props: any) => {
                     backgroundColor: mainCategoryId === item.id ? '#ddd' : '#f6f6f6',
 
                 }]}>
-                <Text>{item.items.category_name}</Text>
+                <Text style={{ fontWeight: 'bold', color: MAIN_COLOR }}>{item.items.category_name}</Text>
             </TouchableOpacity>
         )
     }
@@ -79,64 +92,62 @@ const MainCategoryScreen = (props: any) => {
     const onSubCategoryPress = (item: any) => {
         let _backState = backState;
         _backState.push(item.id);
-        setCategoryId(item.id)
         setBackState(_backState)
+        setCategoryId(item.id)
     }
 
     const onBackCategory = () => {
         if (backState.length > 0) {
             let _backState = backState;
             _backState.length = backState.length - 1;
-            setCategoryId(_backState[backState.length - 1])
             setBackState(_backState)
+            setCategoryId(_backState[backState.length - 1])
         }
     }
 
     const _renderCategory = ({ item, index }: any) => {
         return (
-            <>
-                {(index == 0 && backState.length > 0) &&
-                    <TouchableOpacity onPress={() => {
-                        onBackCategory()
-                    }}
-                        style={[styles.categoryButton, {
-                            marginLeft: index == 0 ? 10 : 0,
-                            marginRight: 10,
-                            backgroundColor: '#fff'
-                        }]}>
-                        <Text>{"< Back"}</Text>
-                    </TouchableOpacity>
-                }
-
-                <TouchableOpacity onPress={() => {
+            <TouchableOpacity onPress={() => {
+                if (item.items.length != 0)
                     onSubCategoryPress(item)
-                }}
-                    style={{
-                        //marginLeft: 10,
-                        marginBottom: index === 0 ? 10 : 0,
-                        marginRight: 10,
-                        height: 100,
-                        borderRadius: 5,
-                        width: screen.width / 3 - 15,
-                        backgroundColor: '#fff',
-                        alignItems: 'center',
-                        justifyContent: 'center'
+                else
+                    onBackCategory()
+            }}
+                style={{
+                    height: 100,
+                    borderRadius: 5,
+                    width: screen.width * 3 / 10,
+                    backgroundColor: '#fff',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                {/* {item.items.icon === "" ? (
+                    <View style={{
+                        height: 20,
+                        width: 20,
+                        borderWidth: 1,
+                        borderRadius: 10,
                     }}>
-                    {item.items.icon === "" ? (
-                        <View style={{
-                            height: 20,
-                            width: 20,
-                            borderWidth: 1,
-                            borderRadius: 10,
-                        }}>
 
-                        </View>
-                    ) : null}
-                    <Text>
-                        {item.items.category_name}
-                    </Text>
-                </TouchableOpacity>
-            </>
+                    </View>
+                ) : null} */}
+                {item.items.length !== 0 ? (
+                    <Image style={{
+                        height: 50,
+                        width: 50,
+                    }}
+                        source={require('../images/icon/birdsnest.png')} />
+                ) : null}
+
+                <Text>
+                    {item.items.length == 0 ? <View style={{ flexDirection: 'row' }}>
+                        <MaterialIcons name="arrow-back-ios" size={25} style={{ color: MAIN_COLOR }} />
+                        <Text>Back</Text>
+                    </View>
+
+                        : item.items.category_name}
+                </Text>
+            </TouchableOpacity>
         )
     }
     return (
@@ -162,16 +173,18 @@ const MainCategoryScreen = (props: any) => {
                 </View>
             }
 
-            <FlatList
-                numColumns={3}
+            <FlatGrid
                 removeClippedSubviews={Platform.OS == 'ios' ? false : true}
                 showsVerticalScrollIndicator={false}
-                data={subCategories}
+                itemDimension={95}
+                data={subCategories.sort(function (a: any, b: any) {
+                    return b.items.length - a.items.length
+                })}
                 listKey={makeid()}
                 ListEmptyComponent={null}
                 keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
                 renderItem={_renderCategory}
-                style={{ marginTop: 10, marginLeft: 13 }}
+
             />
 
         </SafeAreaView>
@@ -182,7 +195,7 @@ export default MainCategoryScreen
 
 const styles = StyleSheet.create({
     categoryButton: {
-        height: 40,
+        height: 50,
         paddingHorizontal: 15,
         borderRadius: 10,
         alignItems: 'center',

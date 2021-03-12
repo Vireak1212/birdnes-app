@@ -18,19 +18,21 @@ import MainStoreScreen from '../components/MainStoreScreen';
 import HomeScreen from '../components/HomeScreen';
 import MainCategoryScreen from '../components/MainCategoryScreen';
 import MainCartScreen from '../components/MainCartScreen';
+import HomeSearch from '../containers/home/HomeSearch';
+
 import ProductDetail from '../containers/product/ProductDetail';
 import StoreDetail from '../containers/store/StoreDetail';
 import AllProduct from '../containers/product/AllProduct';
-import HomeSearch from '../containers/home/HomeSearch';
+import ProductOfCategory from '../containers/category/ProductOfCategory';
 
 import EditProfile from './../containers/profile/EditProfile';
 import ProfileScreen from '../components/ProfileScreen';
 import ShippingAddress from '../containers/profile/ShippingAddress';
 
 import LoginScreen from '../components/auth/LoginScreen';
-import ProductOfCategory from '../containers/category/ProductOfCategory';
 import OrderHistory from '../containers/order/OrderHistory';
 import Wishlish from '../containers/order/Wishlish';
+import ProductItems from '../containers/product/ProductItems';
 // import VerifyScreen from './../login/VerifyScreen';
 
 
@@ -54,18 +56,19 @@ const Route = () => {
         headerShown: false,
       }}>
         <Stack.Screen name="Tab" component={MainTab} />
-        <Stack.Screen name="login" component={LoginScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
         {/* <Stack.Screen name="Comfirm" component={VerifyScreen} /> */}
-        <Stack.Screen name="order" component={OrderHistory} />
-        <Stack.Screen name="favorite" component={Wishlish} />
-        <Stack.Screen name="editProfile" component={EditProfile} />
-        <Stack.Screen name="shippingAdress" component={ShippingAddress} />
+        <Stack.Screen name="Order" component={OrderHistory} />
+        <Stack.Screen name="Favorite" component={Wishlish} />
+        <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name="ShippingAdress" component={ShippingAddress} />
 
-        <Stack.Screen name="productDetail" component={ProductDetail} />
-        <Stack.Screen name="storeDetail" component={StoreDetail} />
+        <Stack.Screen name="ProductDetail" component={ProductDetail} />
+        <Stack.Screen name="StoreDetail" component={StoreDetail} />
 
-        <Stack.Screen name="allStore" component={MainStoreScreen} />
-        <Stack.Screen name="allProduct" component={AllProduct} />
+        <Stack.Screen name="AllStore" component={MainStoreScreen} />
+        <Stack.Screen name="AllProduct" component={AllProduct} />
+        <Stack.Screen name="ProductItem" component={ProductItems} />
 
         <Stack.Screen name="homeSearch" component={HomeSearch} />
         <Stack.Screen name="productCategory" component={ProductOfCategory} />
@@ -77,8 +80,9 @@ const Route = () => {
       activeTintColor: MAIN_COLOR,
       inactiveTintColor: Colors.tabIconDefault,
       allowFontScaling: true,
-      labelStyle: { fontSize: 12, },
-      tabStyle: { marginVertical: 5 }
+      labelStyle: { fontSize: 12, marginBottom: 5 },
+      tabStyle: { marginTop: 5 },
+      style: { height: 50 }
     }
 
     return (

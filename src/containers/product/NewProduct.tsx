@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Col } from 'native-base';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Dimensions, FlatList } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
@@ -12,10 +12,11 @@ import FastImage from 'react-native-fast-image';
 const screen = Dimensions.get('screen')
 
 const NewProduct = () => {
-    const products = useSelector((state: { products: any }) => state.products);
+    const new_products = useSelector((state: { new_products: any }) => state.new_products);
     const navigate = useNavigation();
+
     // useEffect(() => {
-    //     firestore().collection('products').get().then(data => {
+    //     firestore().collection('clients').get().then(data => {
     //         console.log(data.docs.length, 'sssssssssssss')
     //     })
     // }, [])
@@ -24,32 +25,37 @@ const NewProduct = () => {
     const _renderNewProduct = ({ item, index }: any) => {
         const _NewProduct = item.items;
         return (
-            <TouchableOpacity key={index} style={styles.newProductContainer}
-                onPress={() => navigate.navigate('productDetail',
-                    { item }
+            <TouchableOpacity key={index} style={[styles.newProductContainer, {
+                marginLeft: index === 0 ? 10 : 0,
+                marginHorizontal: 10,
+                marginBottom: 10,
+            }]}
+                onPress={() => navigate.navigate('ProductDetail',
+                    {
+                        item
+                    }
                 )}>
                 <View style={{
-                    flexDirection: 'row',
-                    padding: 5
+                    padding: 5,
                 }}>
                     <FastImage style={{
-                        height: 90,
-                        width: 85,
+                        height: 100,
+                        width: '100%',
                         borderRadius: 5,
                     }}
                         source={{ uri: _NewProduct.product_info.photos[0].photo_url }}
                         resizeMode={FastImage.resizeMode.cover}
                     />
-                    <Col style={{ paddingLeft: 10 }}>
-                        <Text style={{ fontSize: 12, paddingBottom: 2 }} numberOfLines={2}>
+                    <Col style={{ paddingTop: 10 }}>
+                        <Text style={{ fontSize: 13, paddingBottom: 2, color: '#aaa' }} numberOfLines={2}>
                             {_NewProduct.product_info.product_name}
                         </Text>
-                        <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
-                            {_NewProduct.description}
-                        </Text>
+                        {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
+                            {_NewProduct.product_info.product_description}
+                        </Text> */}
                         <Text style={styles.newProductPrice}
                             numberOfLines={1}>
-                            {'$' + _NewProduct.price}
+                            {'$' + _NewProduct.product_info.units[0].price}
                         </Text>
                     </Col>
                 </View>
@@ -58,27 +64,32 @@ const NewProduct = () => {
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
+
             <View style={styles.newProductGrid}>
-                <Text>New Product</Text>
-                <TouchableOpacity onPress={() => navigate.navigate('allProduct')}>
+                <Text>New Products</Text>
+                {new_products.length > 8 && <TouchableOpacity onPress={() => navigate.navigate('ProductItem', {
+                    title: 'New Products'
+                })}>
                     <Text style={{ fontSize: 13, color: '#224889' }}>More</Text>
                 </TouchableOpacity>
+                }
             </View>
 
-            <FlatGrid
-                scrollEnabled={false}
-                showsVerticalScrollIndicator={false}
+            <FlatList
+                scrollEnabled={true}
+                horizontal
+                showsHorizontalScrollIndicator={false}
                 listKey={makeid()}
-                itemDimension={130}
+                // itemDimension={95}
                 style={{
                     height: 'auto',
                     width: '100%',
                     borderRadius: 10,
                     paddingTop: -5,
-                    marginBottom: -5
                 }}
                 renderItem={_renderNewProduct}
-                data={products.slice(0, 4)}
+                data={new_products.slice(0, 8)}
+
             // data={color.slice(0, (Math.floor((width / 80)) * 2))}
             />
         </SafeAreaView>
@@ -96,14 +107,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     newProductPrice: {
-        fontSize: 13,
-        paddingTop: 2,
+        fontSize: 14,
+        paddingVertical: 3,
         fontWeight: 'bold',
         color: PRICE_COLOR
     },
     newProductContainer: {
         backgroundColor: '#fff',
-        width: screen.width * 4 / 8.7,
+        width: screen.width * 3 / 10,
         borderRadius: 5,
         shadowColor: "#000",
         shadowOffset: {

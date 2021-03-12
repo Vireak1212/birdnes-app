@@ -15,10 +15,11 @@ export default StyleSheet.create({
 
     ///Profile
     backgroundImage: {
-        marginTop: 50,
         alignItems: 'center',
         justifyContent: 'center',
         width: 100,
+        height: 100,
+        margin: 20,
     },
     Imagestyle: {
         height: 100,
@@ -30,11 +31,13 @@ export default StyleSheet.create({
         height: 30,
         width: 30,
         borderRadius: 20,
+        bottom: 5,
+        right: 10,
+        position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center'
     },
     backgroundAccountinfo: {
-        marginTop: 50,
         backgroundColor: '#fff',
     },
     backgroundAccountsetting: {
@@ -171,14 +174,14 @@ export default StyleSheet.create({
         alignItems: 'center',
         paddingTop: 130
     },
-    stylePrice: {
+    checkOutContainer: {
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
         width: '100%',
         paddingHorizontal: 20,
         position: 'absolute',
-        bottom: 30
+        bottom: 10,
     },
     styleCHACKOUT: {
         backgroundColor: '#224889',

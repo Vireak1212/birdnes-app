@@ -1,9 +1,10 @@
-import Customer from "./Customer";
 import { combineReducers } from 'redux';
-import Product from "./Product";
 import Store from "./Store";
 import ProductSlider from "./ProductSlider";
 import Category from "./Category";
+import { NewProduct, Product, TopProduct } from "./Product";
+import Client from './Client';
+import Cart from './Cart';
 
 const isLoadingHome = (state = true, action: { type: any; }) => {
     switch (action.type) {
@@ -31,10 +32,13 @@ const rootReducers = combineReducers({
     isLoadingHome,
     style: LoadingStyles,
     slide_shows: ProductSlider,
-    customer: Customer,
+    clients: Client,
     products: Product,
+    new_products: NewProduct,
+    top_products: TopProduct,
     categories: Category,
     store: Store,
+    carts: Cart,
 
 });
 

@@ -17,7 +17,7 @@ const FeatureStores = () => {
                 marginLeft: index === 0 ? 5 : 5,
                 marginRight: item.length - 1 == index ? 10 : 5,
             }]}
-                onPress={() => navigate.navigate('storeDetail',
+                onPress={() => navigate.navigate('StoreDetail',
                     { item }
                 )}>
                 <Image key={index} source={{ uri: _store.store_cover }}
@@ -44,7 +44,7 @@ const FeatureStores = () => {
                 justifyContent: 'space-between'
             }}>
                 <Text>Feature Stores</Text>
-                <TouchableOpacity onPress={() => navigate.navigate('allStore')}>
+                <TouchableOpacity onPress={() => navigate.navigate('AllStore')}>
                     <Text style={{ fontSize: 13, color: '#224889' }}>More</Text>
                 </TouchableOpacity>
             </View>

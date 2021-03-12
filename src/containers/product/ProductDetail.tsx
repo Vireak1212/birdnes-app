@@ -1,21 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native';
 import MainHeader from '../../custom_items/MainHeader';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
-import { Col, Item, Row } from 'native-base';
+import { Col, Row } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
 
+const screen = Dimensions.get('screen')
 
 const ProductDetail = (props: any) => {
     const { item } = props.route.params;
     const navigate = useNavigation();
-    const product_neme = item.items.name;
+    const product_neme = item.items.product_info.product_name;
 
 
     const [isLoading, setIsLoading] = useState(true)
@@ -83,7 +84,7 @@ const ProductDetail = (props: any) => {
                             {item.items.product_info.product_name}
                         </Text>
                         <Text style={{ fontWeight: 'bold' }}>
-                            {item.items.code}
+                            {item.items.product_info.product_code}
                         </Text>
                         <View style={{ alignSelf: 'flex-start' }}>
                             <Rating
@@ -100,7 +101,7 @@ const ProductDetail = (props: any) => {
                             <Feather name='star' size={30} />
                         </TouchableOpacity>
                         <Text style={styles.productDetailPrice}>
-                            {count * item.items.price + '$'}
+                            {count * item.items.product_info.units[0].price + '$'}
                         </Text>
                     </View>
                 </Row>
@@ -117,7 +118,9 @@ const ProductDetail = (props: any) => {
                                 <AntDesign name="minus" size={23} style={{ color: ICON_COLOR }} />
                             </TouchableOpacity>
 
-                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{count}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
+                                {count * item.items.product_info.units[0].multiplier}
+                            </Text>
 
                             <TouchableOpacity onPress={handleIncrement}
                                 style={styles.MPBotton}>
@@ -146,11 +149,18 @@ const ProductDetail = (props: any) => {
                 <View style={styles.productSubDetail}>
                     <Text style={{ paddingVertical: 10 }}>Product Description</Text>
                     <Text style={{ paddingBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 17 }}>
-                        {item.items.description}
+                        {item.items.product_info.product_description}
                     </Text>
                 </View>
+
+
             </ScrollView>
-            <View>
+
+            <View style={{
+                position: 'absolute',
+                marginTop: screen.width * 18.5 / 10,
+                marginHorizontal: screen.width * 3.2 / 10,
+            }}>
                 <TouchableOpacity
                     style={styles.addToCartBotton}>
                     <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
@@ -191,15 +201,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "center",
         backgroundColor: '#224889',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
 
-        elevation: 2,
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 1,
+        // },
+        // shadowOpacity: 0.18,
+        // shadowRadius: 1.00,
+
+        // elevation: 2,
     },
     productDetailQtyContainer: {
         marginTop: 5,
