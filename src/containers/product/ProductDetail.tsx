@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, ScrollView, Dimensions, Platform } from 'react-native';
 import MainHeader from '../../custom_items/MainHeader';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -10,6 +10,8 @@ import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 import { Col, Row } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
+import { FlatList } from 'react-native-gesture-handler';
+import { makeid } from '../../functions/PTFunction';
 
 const screen = Dimensions.get('window')
 
@@ -64,102 +66,114 @@ const ProductDetail = (props: any) => {
                 leftIcon={leftIcon()}
                 rightIcon={rightIcon()}
             />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.detailImageContainer}>
-                    <FastImage style={{
-                        height: 250,
-                        width: '100%',
-                        borderRadius: 10,
-                    }}
-                        source={{ uri: item.items.product_info.photos[0].photo_url }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                </View>
-                <Row style={styles.productDetailContainer}>
-                    <Col>
-                        <Text style={{
-                            fontSize: 19,
-                            fontWeight: 'bold'
-                        }}>
-                            {item.items.product_info.product_name}
-                        </Text>
-                        <Text style={{ fontWeight: 'bold' }}>
-                            {item.items.product_info.product_code}
-                        </Text>
-                        <View style={{ alignSelf: 'flex-start' }}>
-                            <Rating
-                                type='star'
-                                ratingCount={5}
-                                imageSize={16}
-                            //   onFinishRating={ratingCompleted}
+
+            <FlatList
+                removeClippedSubviews={Platform.OS == 'ios' ? false : true}
+                showsVerticalScrollIndicator={false}
+                // disableVirtualization={true}
+                data={[1]}
+                listKey={makeid()}
+                ListEmptyComponent={null}
+                keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
+                renderItem={({ }) => (
+                    <View >
+                        <View style={styles.detailImageContainer}>
+                            <FastImage style={{
+                                height: 250,
+                                width: '100%',
+                                borderRadius: 10,
+                            }}
+                                source={{ uri: item.items.product_info.photos[0].photo_url }}
+                                resizeMode={FastImage.resizeMode.cover}
                             />
                         </View>
+                        <Row style={styles.productDetailContainer}>
+                            <Col>
+                                <Text style={{
+                                    fontSize: 19,
+                                    fontWeight: 'bold'
+                                }}>
+                                    {item.items.product_info.product_name}
+                                </Text>
+                                <Text style={{ fontWeight: 'bold' }}>
+                                    {item.items.product_info.product_code}
+                                </Text>
+                                <View style={{ alignSelf: 'flex-start' }}>
+                                    <Rating
+                                        type='star'
+                                        ratingCount={5}
+                                        imageSize={16}
+                                    //   onFinishRating={ratingCompleted}
+                                    />
+                                </View>
 
-                    </Col>
-                    <View style={{ alignItems: 'center' }}>
-                        <TouchableOpacity style={{ paddingBottom: 5 }}>
-                            <Feather name='star' size={30} />
-                        </TouchableOpacity>
-                        <Text style={styles.productDetailPrice}>
-                            {count * item.items.product_info.units[0].price + '$'}
-                        </Text>
-                    </View>
-                </Row>
+                            </Col>
+                            <View style={{ alignItems: 'center' }}>
+                                <TouchableOpacity style={{ paddingBottom: 5 }}>
+                                    <Feather name='star' size={30} />
+                                </TouchableOpacity>
+                                <Text style={styles.productDetailPrice}>
+                                    {count * item.items.product_info.units[0].price + '$'}
+                                </Text>
+                            </View>
+                        </Row>
 
-                <View style={styles.productSubDetail}>
-                    <View style={{ paddingVertical: 10 }}>
-                        <Text>Grade:</Text>
-                        <Text style={{ fontSize: 13, paddingVertical: 5, paddingLeft: 10 }}>NONE</Text>
-                        <Text >Quanity:</Text>
+                        <View style={styles.productSubDetail}>
+                            <View style={{ paddingVertical: 10 }}>
+                                <Text>Grade:</Text>
+                                <Text style={{ fontSize: 13, paddingVertical: 5, paddingLeft: 10 }}>NONE</Text>
+                                <Text >Quanity:</Text>
 
-                        <Row style={{ alignItems: 'center', paddingTop: 10 }}>
-                            <TouchableOpacity onPress={handleDecrement}
-                                style={styles.MPBotton}>
-                                <AntDesign name="minus" size={23} style={{ color: ICON_COLOR }} />
-                            </TouchableOpacity>
+                                <Row style={{ alignItems: 'center', paddingTop: 10 }}>
+                                    <TouchableOpacity onPress={handleDecrement}
+                                        style={styles.MPBotton}>
+                                        <AntDesign name="minus" size={23} style={{ color: ICON_COLOR }} />
+                                    </TouchableOpacity>
 
-                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
-                                {count * item.items.product_info.units[0].multiplier}
-                            </Text>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
+                                        {count * item.items.product_info.units[0].multiplier}
+                                    </Text>
 
-                            <TouchableOpacity onPress={handleIncrement}
-                                style={styles.MPBotton}>
-                                <AntDesign name="plus" size={18} style={{ color: ICON_COLOR }} />
+                                    <TouchableOpacity onPress={handleIncrement}
+                                        style={styles.MPBotton}>
+                                        <AntDesign name="plus" size={18} style={{ color: ICON_COLOR }} />
+                                    </TouchableOpacity>
+                                </Row>
+                            </View>
+                        </View>
+
+                        <Row style={styles.productDetailQtyContainer}>
+                            <View style={{ paddingVertical: 10 }}>
+                                <Text>Free Shipping</Text>
+                                {item.items.freeShipping == null ? (
+                                    <Text style={{ color: '#aaa' }}>
+                                        free shipping in phnom penh
+                                    </Text>
+                                ) : (
+                                    null
+                                )}
+                            </View>
+                            <TouchableOpacity>
+                                <MaterialIcons name='navigate-next' size={23} color={ICON_COLOR} />
                             </TouchableOpacity>
                         </Row>
-                    </View>
-                </View>
 
-                <Row style={styles.productDetailQtyContainer}>
-                    <View style={{ paddingVertical: 10 }}>
-                        <Text>Free Shipping</Text>
-                        {item.items.freeShipping == null ? (
-                            <Text style={{ color: '#aaa' }}>
-                                free shipping in phnom penh
+                        <View style={styles.productSubDetail}>
+                            <Text style={{ paddingVertical: 10 }}>Product Description</Text>
+                            <Text style={{ paddingBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 17 }}>
+                                {item.items.product_info.product_description}
                             </Text>
-                        ) : (
-                            null
-                        )}
+                        </View>
                     </View>
-                    <TouchableOpacity>
-                        <MaterialIcons name='navigate-next' size={23} color={ICON_COLOR} />
-                    </TouchableOpacity>
-                </Row>
-
-                <View style={styles.productSubDetail}>
-                    <Text style={{ paddingVertical: 10 }}>Product Description</Text>
-                    <Text style={{ paddingBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 17 }}>
-                        {item.items.product_info.product_description}
-                    </Text>
-                </View>
-
-
-            </ScrollView>
+                )}
+            />
 
             <View style={{
                 position: 'absolute',
-                marginTop: screen.width * 18.5 / 10,
-                marginHorizontal: screen.width * 3.2 / 10,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+                bottom: 12,
             }}>
                 <TouchableOpacity
                     style={styles.addToCartBotton}>
@@ -193,7 +207,6 @@ const styles = StyleSheet.create({
     addToCartBotton: {
         height: 50,
         // marginRight: 15,
-        marginBottom: 5,
         paddingHorizontal: 20,
         borderRadius: 25,
         alignSelf: 'center',
@@ -202,15 +215,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: '#224889',
 
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 1,
-        // },
-        // shadowOpacity: 0.18,
-        // shadowRadius: 1.00,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
 
-        // elevation: 2,
+        elevation: 2,
     },
     productDetailQtyContainer: {
         marginTop: 5,
@@ -222,7 +235,8 @@ const styles = StyleSheet.create({
     productSubDetail: {
         marginTop: 5,
         paddingHorizontal: 10,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        marginBottom: 10
     },
     detailImageContainer: {
         paddingTop: 10,
