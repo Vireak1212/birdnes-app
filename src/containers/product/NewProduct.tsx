@@ -76,7 +76,6 @@ const NewProduct = () => {
             </View>
 
             <FlatList
-                scrollEnabled={true}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 listKey={makeid()}

@@ -27,6 +27,8 @@ const HomeScreen = () => {
     const slide_shows = useSelector((state: { slide_shows: any }) => state.slide_shows);
     const style = useSelector((state: { style: any }) => state.style)
     const [isLoadCompleted, setIsLoadCompleted] = useState(false)
+    const dispatch = useDispatch()
+    const navigate = useNavigation();
 
     useEffect(() => {
         if (slide_shows.length) {
@@ -35,7 +37,7 @@ const HomeScreen = () => {
             }, 200);
         }
     }, [slide_shows.length])
-    const navigate = useNavigation();
+
     const rightIcon = () => <TouchableOpacity onPress={() => navigate.navigate('homeSearch')}
         style={{
             alignSelf: 'flex-end',
@@ -55,7 +57,7 @@ const HomeScreen = () => {
         />
     </TouchableOpacity>
 
-    const dispatch = useDispatch()
+
     const _addProudct = () => {
         const product = {
             category_info: {
@@ -169,7 +171,7 @@ const HomeScreen = () => {
                 }} size={35} color={MAIN_COLOR} />
                 :
                 <FlatList
-                    removeClippedSubviews={Platform.OS == 'ios' ? true : false}
+                    removeClippedSubviews={Platform.OS == 'ios' ? false : true}
                     showsVerticalScrollIndicator={false}
                     // disableVirtualization={true}
                     data={[1]}

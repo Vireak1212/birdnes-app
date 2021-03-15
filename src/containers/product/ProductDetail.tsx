@@ -11,7 +11,7 @@ import { Col, Row } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
 
-const screen = Dimensions.get('screen')
+const screen = Dimensions.get('window')
 
 const ProductDetail = (props: any) => {
     const { item } = props.route.params;

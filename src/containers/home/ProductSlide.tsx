@@ -15,7 +15,7 @@ const ProductSlide = () => {
                 showsButtons={false}
                 dotStyle={{ height: 0 }}
                 activeDotStyle={{ height: 0 }}
-                removeClippedSubviews={Platform.OS === 'ios' ? true : false}>
+                removeClippedSubviews={Platform.OS === 'ios' ? false : true}>
                 {
                     slide_shows.map((item: any, index: any) => {
                         return (

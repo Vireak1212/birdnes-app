@@ -12,7 +12,6 @@ import { MAIN_COLOR } from '../styles/index';
 
 const MainCartScreen = (props: any) => {
     const carts = useSelector((state: { carts: any }) => state.carts);
-    console.log(carts)
     const data = [0, 1, 2, 3];
 
     const navigate = useNavigation();
