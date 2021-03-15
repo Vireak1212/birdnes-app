@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Col } from 'native-base';
 import React, { useState } from 'react'
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { FlatGrid } from 'react-native-super-grid';
 import { useSelector } from 'react-redux';
@@ -36,35 +36,34 @@ const ProductItems = (props: any) => {
     const _spacialProduct = ({ item, index }: any) => {
         const _product = item.items;
         return (
-            <TouchableOpacity key={index} onPress={() => navigate.navigate('ProductDetail',
-                { item }
-            )}
-                style={styles.allProductContainer}>
-                <View style={{
-                    margin: 5
-                }}>
-                    <FastImage style={{
-                        height: 150,
-                        width: '100%',
-                        borderRadius: 5,
-                    }}
-                        source={{ uri: _product.product_info.photos[0].photo_url }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                    <Col style={{ paddingTop: 10 }}>
-                        <Text style={{ fontSize: 15, paddingBottom: 2 }} numberOfLines={2}>
-                            {_product.product_info.product_name}
-                        </Text>
-                        <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
-                            {_product.product_info.product_description}
-                        </Text>
-                        <Text style={styles.allProductPrice}
-                            numberOfLines={1}>
-                            {'$' + _product.product_info.units[0].price}
-                        </Text>
-                    </Col>
-                </View>
-            </TouchableOpacity>
+            <View key={index} style={styles.allProductContainer}>
+                <TouchableWithoutFeedback onPress={() => navigate.navigate('ProductDetail',
+                    { item }
+                )}>
+                    <View style={{ margin: 5 }}>
+                        <FastImage style={{
+                            height: 150,
+                            width: '100%',
+                            borderRadius: 5,
+                        }}
+                            source={{ uri: _product.product_info.photos[0].photo_url }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                        <Col style={{ paddingTop: 10 }}>
+                            <Text style={{ fontSize: 15, paddingBottom: 2 }} numberOfLines={2}>
+                                {_product.product_info.product_name}
+                            </Text>
+                            <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
+                                {_product.product_info.product_description}
+                            </Text>
+                            <Text style={styles.allProductPrice}
+                                numberOfLines={1}>
+                                {'$' + _product.product_info.units[0].price}
+                            </Text>
+                        </Col>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
         )
     }
 

@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Dimensions, Image } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Dimensions, Image, TouchableWithoutFeedback } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
 const size = Dimensions.get('screen');
@@ -13,25 +14,30 @@ const FeatureStores = () => {
         const _store = item.items;
 
         return (
-            <TouchableOpacity key={index} style={[styles.featureStoreContainer, {
+            <View key={index} style={[styles.featureStoreContainer, {
                 marginLeft: index === 0 ? 5 : 5,
                 marginRight: item.length - 1 == index ? 10 : 5,
-            }]}
-                onPress={() => navigate.navigate('StoreDetail',
-                    { item }
-                )}>
-                <Image key={index} source={{ uri: _store.store_cover }}
-                    style={{
-                        width: size.width / 3,
-                        height: 90,
-                        borderRadius: 5,
-                        margin: 5
-                    }}>
-                </Image>
-                <Text style={styles.featureStoreName} numberOfLines={2}>
-                    {_store.store_name}
-                </Text>
-            </TouchableOpacity>
+            }]}>
+                <TouchableWithoutFeedback
+                    onPress={() => navigate.navigate('StoreDetail',
+                        { item }
+                    )}>
+                    <View>
+                        <FastImage style={{
+                            width: size.width / 3,
+                            height: 90,
+                            borderRadius: 5,
+                            margin: 5
+                        }}
+                            source={{ uri: _store.store_cover }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                        <Text style={styles.featureStoreName} numberOfLines={2}>
+                            {_store.store_name}
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
         )
     }
 

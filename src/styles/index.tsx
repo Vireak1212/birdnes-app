@@ -184,7 +184,7 @@ export default StyleSheet.create({
         bottom: 10,
     },
     styleCHACKOUT: {
-        backgroundColor: '#224889',
+        backgroundColor: 'rgba(34,72,137,0.9)',
         width: '50%',
         height: 50,
         borderRadius: 10,

@@ -12,7 +12,8 @@ export const loadCart = () => {
         else {
             let uid = await AsyncStorage.getItem("uid");
             subscribe = firestore().collection("carts")
-                // .where("uid", "==", uid)
+                .where("uid", "==", "")
+                .where("is_confirm", "==", false)
                 .onSnapshot(function (snapshot) {
                     let carts: any = []
                     snapshot.docs.forEach(function (data) {
@@ -24,5 +25,36 @@ export const loadCart = () => {
                     dispatch({ type: 'LOAD_CART', carts });
                 });
         }
+    }
+}
+
+export const addToCart = (carts: any) => {
+    return async (dispatch: (arg0: (dispatch: any) => void) => void) => {
+        const data = await firestore().collection('carts');
+        data.add(
+            {
+                ...carts
+            }
+        )
+    }
+}
+
+export const updateCart = (doc: string | undefined, param: { [key: string]: any; }) => {
+    return async (dispatch: (arg0: { type: string; error: any; }) => void) => {
+        const user = await firestore().collection('carts').doc(doc);
+        user.update(
+            param
+        ).catch((error) => {
+            dispatch({ type: 'CART_ERROR', error });
+        })
+    }
+}
+
+export const deleteCart = (doc: string | undefined) => {
+    return async (dispatch: (arg0: { type: string; error: any; }) => void) => {
+        const user = await firestore().collection('carts').doc(doc);
+        user.delete(
+
+        )
     }
 }

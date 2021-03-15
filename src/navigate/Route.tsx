@@ -69,7 +69,7 @@ const Route = () => {
         <Stack.Screen name="AllStore" component={MainStoreScreen} />
         <Stack.Screen name="AllProduct" component={AllProduct} />
         <Stack.Screen name="ProductItem" component={ProductItems} />
-
+        <Stack.Screen name="CartDetail" component={MainCartScreen} />
         <Stack.Screen name="homeSearch" component={HomeSearch} />
         <Stack.Screen name="productCategory" component={ProductOfCategory} />
       </Stack.Navigator>

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Col } from 'native-base'
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { FlatList } from 'react-native-gesture-handler';
 import { FlatGrid } from 'react-native-super-grid'
@@ -18,37 +18,36 @@ const TopProduct = () => {
     const _renderTopProduct = ({ item, index }: any) => {
         const _product = item.items;
         return (
-            <TouchableOpacity key={index} style={[styles.TopProductContainer, {
+            <View key={index} style={[styles.TopProductContainer, {
                 marginLeft: index === 0 ? 10 : 0,
                 marginHorizontal: 10,
                 marginBottom: 10,
-            }]} onPress={() => navigate.navigate('ProductDetail', { item })}>
-
-                <View style={{
-                    margin: 5,
-                }}>
-                    <FastImage style={{
-                        height: 100,
-                        width: '100%',
-                        borderRadius: 5,
-                    }}
-                        source={{ uri: _product.product_info.photos[0].photo_url }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                    <Col style={{ paddingTop: 10 }}>
-                        <Text style={{ fontSize: 13, paddingBottom: 2, color: '#aaa' }} numberOfLines={2}>
-                            {_product.product_info.product_name}
-                        </Text>
-                        {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
+            }]}>
+                <TouchableWithoutFeedback onPress={() => navigate.navigate('ProductDetail', { item })}>
+                    <View style={{ margin: 5, }}>
+                        <FastImage style={{
+                            height: 100,
+                            width: '100%',
+                            borderRadius: 5,
+                        }}
+                            source={{ uri: _product.product_info.photos[0].photo_url }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                        <Col style={{ paddingTop: 10 }}>
+                            <Text style={{ fontSize: 13, paddingBottom: 2, color: '#aaa' }} numberOfLines={2}>
+                                {_product.product_info.product_name}
+                            </Text>
+                            {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_product.description}
                         </Text> */}
-                        <Text style={styles.topProductPrice}
-                            numberOfLines={1}>
-                            {'$' + _product.product_info.units[0].price}
-                        </Text>
-                    </Col>
-                </View>
-            </TouchableOpacity>
+                            <Text style={styles.topProductPrice}
+                                numberOfLines={1}>
+                                {'$' + _product.product_info.units[0].price}
+                            </Text>
+                        </Col>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
         )
     }
     return (

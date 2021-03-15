@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { FlatList, Platform, StyleSheet, SafeAreaView, TouchableOpacity, Image, View, Dimensions, ActivityIndicator } from 'react-native';
+import { FlatList, Platform, StyleSheet, SafeAreaView, TouchableOpacity, Image, View, Dimensions, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import HomeMenu from '../containers/home/HomeMenu';
 import ProductSlide from '../containers/home/ProductSlide'
 import NewProduct from '../containers/product/NewProduct';
@@ -127,35 +127,37 @@ const HomeScreen = () => {
     const _renderAllProduct = ({ item, index }: any) => {
         const _AllProduct = item.items;
         return (
-            <TouchableOpacity key={index} style={styles.allProductContainer}
-                onPress={() => navigate.navigate('ProductDetail',
-                    { item }
-                )}>
-                <View style={{
-                    margin: 5
-                }}>
-                    <FastImage style={{
-                        height: 150,
-                        width: '100%',
-                        borderRadius: 5,
-                    }}
-                        source={{ uri: _AllProduct.product_info.photos[0].photo_url }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                    <Col style={{ paddingTop: 10 }}>
-                        <Text style={{ fontSize: 15, paddingBottom: 2 }} numberOfLines={2}>
-                            {_AllProduct.product_info.product_name}
-                        </Text>
-                        <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
-                            {_AllProduct.product_info.product_description}
-                        </Text>
-                        <Text style={styles.allProductPrice}
-                            numberOfLines={1}>
-                            {'$' + _AllProduct.product_info.units[0].price}
-                        </Text>
-                    </Col>
-                </View>
-            </TouchableOpacity>
+            <View key={index} style={styles.allProductContainer}>
+                <TouchableWithoutFeedback
+                    onPress={() => navigate.navigate('ProductDetail',
+                        { item }
+                    )}>
+                    <View style={{
+                        margin: 5
+                    }}>
+                        <FastImage style={{
+                            height: 150,
+                            width: '100%',
+                            borderRadius: 5,
+                        }}
+                            source={{ uri: _AllProduct.product_info.photos[0].photo_url }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                        <Col style={{ paddingTop: 10 }}>
+                            <Text style={{ fontSize: 15, paddingBottom: 2 }} numberOfLines={2}>
+                                {_AllProduct.product_info.product_name}
+                            </Text>
+                            <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
+                                {_AllProduct.product_info.product_description}
+                            </Text>
+                            <Text style={styles.allProductPrice}
+                                numberOfLines={1}>
+                                {'$' + _AllProduct.product_info.units[0].price}
+                            </Text>
+                        </Col>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
         )
     }
 
@@ -187,13 +189,13 @@ const HomeScreen = () => {
                                 <TopProduct />
 
                                 {/* <TouchableOpacity onPress={() => _addProudct()}
-                        style={{
-                            height: 50, width: 70, borderWidth: 1,
-                            marginBottom: 20,
-                            marginLeft: 20
-                        }}>
+                                    style={{
+                                        height: 50, width: 70, borderWidth: 1,
+                                        marginBottom: 20,
+                                        marginLeft: 20
+                                    }}>
 
-                    </TouchableOpacity> */}
+                                </TouchableOpacity> */}
 
                                 <View style={{
                                     paddingTop: 5,

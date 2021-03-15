@@ -10,24 +10,37 @@ import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 import { Col, Row } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { makeid } from '../../functions/PTFunction';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, updateCart } from '../../actions/Cart';
 
 const screen = Dimensions.get('window')
 
 const ProductDetail = (props: any) => {
     const { item } = props.route.params;
+    const carts = useSelector((state: { carts: any }) => state.carts);
     const navigate = useNavigation();
+    const dispatch = useDispatch()
     const product_neme = item.items.product_info.product_name;
+
 
 
     const [isLoading, setIsLoading] = useState(true)
     const [count, setCount] = useState(1);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([]);
+    const [unit, setUnit] = useState<any>([])
     let controller;
 
     React.useEffect(() => {
+        let unit = item.items.product_info.units.sort(function (a: any, b: any) {
+            return a.multiplier - b.multiplier
+        });
+        if (unit.length > 0) {
+            setUnit(unit[0])
+        }
+
         setTimeout(() => {
             setIsLoading(false)
         }, 200);
@@ -50,15 +63,122 @@ const ProductDetail = (props: any) => {
     </TouchableOpacity>
 
     const rightIcon = () => <TouchableOpacity
-        onPress={() => navigate.navigate('Cart',
-            { header: 'show' }
+        onPress={() => navigate.navigate('CartDetail',
+            { isBack: true }
         )}>
         <View style={styles.itemCountContainer}>
-            <Text style={styles.itemCountText}>0</Text>
+            <Text style={styles.itemCountText}>{carts.length == 0 ? '' : carts.items.order_info.products.length}</Text>
         </View>
         <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
     </TouchableOpacity>;
 
+
+    const onAddToCart = () => {
+        if (unit.length === 0) {
+            console.log('Please select unit');
+            return;
+        }
+        if (carts.length !== 0) {
+            let _carts: any = [];
+            _carts.push(carts);
+            _carts = _carts[0]
+
+            const check = _carts.items.order_info.products.filter((r: any) => r.product_id == item.id && r.unit.unit_id == unit.unit_id);
+            if (check.length > 0) {
+                let product = check[0];
+                let amount = 0;
+                let discount = item.items.discount_info;
+                if (discount.discount_percent > 0) {
+                    amount = product.unit.price - ((product.unit.price * discount.discount_percent) / 100)
+                }
+                else {
+                    if (discount.discount_value > 0)
+                        amount = product.unit.price - discount.discount_value;
+                    else
+                        amount = product.unit.price;
+                }
+
+                check[0].qty += 1;
+                check[0].amount = amount * product.qty
+            }
+            else {
+                let amount = 0;
+                let discount = item.items.discount_info;
+                if (discount.discount_percent > 0) {
+                    amount = unit.price - ((unit.price * discount.discount_percent) / 100)
+                }
+                else {
+                    if (discount.discount_value > 0)
+                        amount = unit.price - discount.discount_value;
+                    else
+                        amount = unit.price;
+                }
+                _carts.items.order_info.products.push({
+                    allow_discount: item.items.allow_discount,
+                    product_id: item.id,
+                    product_name: item.items.product_info.product_name,
+                    product_code: item.items.product_info.product_code,
+                    unit,
+                    discount: item.items.discount_info,
+                    qty: 1,
+                    amount
+                })
+            }
+            let total_amount = 0;
+            _carts.items.order_info.products.map((product: any) => {
+                total_amount += product.amount;
+            })
+            _carts.items.order_info.total_amount = total_amount
+            dispatch(updateCart(_carts.id, _carts.items))
+        }
+        else {
+            let amount = 0;
+            let discount = item.items.discount_info;
+            if (discount.discount_percent > 0) {
+                amount = unit.price - ((unit.price * discount.discount_percent) / 100)
+            }
+            else {
+                if (discount.discount_value > 0)
+                    amount = unit.price - discount.discount_value;
+                else
+                    amount = unit.price;
+            }
+            const _cart = {
+                client_info: {
+                    address: "",
+                    client_id: "",
+                    client_name: "",
+                    phone_number: "",
+                    photo_url: ""
+                },
+                document_number: "",
+                is_confirm: false,
+                order_info: {
+                    products: [{
+                        allow_discount: item.items.allow_discount,
+                        product_id: item.id,
+                        product_name: item.items.product_info.product_name,
+                        product_code: item.items.product_info.product_code,
+                        unit,
+                        discount: item.items.discount_info,
+                        qty: 1,
+                        amount
+                    }],
+                    total_amount: amount
+                },
+                shop_info: {
+                    phone_number: "",
+                    photo_url: "",
+                    shop_id: "",
+                    shop_location: "",
+                    shop_name: ""
+                },
+                shop_uid: "",
+                uid: ""
+            }
+            dispatch(addToCart(_cart));
+        }
+    }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <MainHeader
@@ -70,7 +190,6 @@ const ProductDetail = (props: any) => {
             <FlatList
                 removeClippedSubviews={Platform.OS == 'ios' ? false : true}
                 showsVerticalScrollIndicator={false}
-                // disableVirtualization={true}
                 data={[1]}
                 listKey={makeid()}
                 ListEmptyComponent={null}
@@ -175,11 +294,14 @@ const ProductDetail = (props: any) => {
                 width: '100%',
                 bottom: 12,
             }}>
-                <TouchableOpacity
-                    style={styles.addToCartBotton}>
-                    <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
-                    <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
-                </TouchableOpacity>
+                <TouchableWithoutFeedback
+                    onPress={() => onAddToCart()}
+                >
+                    <View style={styles.addToCartBotton}>
+                        <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
+                        <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
         </SafeAreaView>
     )
@@ -213,7 +335,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: "center",
-        backgroundColor: '#224889',
+        backgroundColor: 'rgba(34,72,137,0.9)',
 
         shadowColor: "#000",
         shadowOffset: {

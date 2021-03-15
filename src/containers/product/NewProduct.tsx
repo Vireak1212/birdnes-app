@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Col } from 'native-base';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Dimensions, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
@@ -25,41 +25,43 @@ const NewProduct = () => {
     const _renderNewProduct = ({ item, index }: any) => {
         const _NewProduct = item.items;
         return (
-            <TouchableOpacity key={index} style={[styles.newProductContainer, {
+            <View key={index} style={[styles.newProductContainer, {
                 marginLeft: index === 0 ? 10 : 0,
                 marginHorizontal: 10,
                 marginBottom: 10,
-            }]}
-                onPress={() => navigate.navigate('ProductDetail',
-                    {
-                        item
-                    }
-                )}>
-                <View style={{
-                    padding: 5,
-                }}>
-                    <FastImage style={{
-                        height: 100,
-                        width: '100%',
-                        borderRadius: 5,
-                    }}
-                        source={{ uri: _NewProduct.product_info.photos[0].photo_url }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                    <Col style={{ paddingTop: 10 }}>
-                        <Text style={{ fontSize: 13, paddingBottom: 2, color: '#aaa' }} numberOfLines={2}>
-                            {_NewProduct.product_info.product_name}
-                        </Text>
-                        {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
+            }]}>
+                <TouchableWithoutFeedback
+                    onPress={() => navigate.navigate('ProductDetail',
+                        {
+                            item
+                        }
+                    )}>
+                    <View style={{
+                        padding: 5,
+                    }}>
+                        <FastImage style={{
+                            height: 100,
+                            width: '100%',
+                            borderRadius: 5,
+                        }}
+                            source={{ uri: _NewProduct.product_info.photos[0].photo_url }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                        <Col style={{ paddingTop: 10 }}>
+                            <Text style={{ fontSize: 13, paddingBottom: 2, color: '#aaa' }} numberOfLines={2}>
+                                {_NewProduct.product_info.product_name}
+                            </Text>
+                            {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_NewProduct.product_info.product_description}
                         </Text> */}
-                        <Text style={styles.newProductPrice}
-                            numberOfLines={1}>
-                            {'$' + _NewProduct.product_info.units[0].price}
-                        </Text>
-                    </Col>
-                </View>
-            </TouchableOpacity>
+                            <Text style={styles.newProductPrice}
+                                numberOfLines={1}>
+                                {'$' + _NewProduct.product_info.units[0].price}
+                            </Text>
+                        </Col>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
         )
     }
     return (

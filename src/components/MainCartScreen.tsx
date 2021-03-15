@@ -1,46 +1,106 @@
 import { Col, Row } from 'native-base';
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Alert } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import style, { ICON_COLOR, PRICE_COLOR } from '../styles/index'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import MainHeader from '../custom_items/MainHeader';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import { MAIN_COLOR } from '../styles/index';
+import { updateCart, deleteCart } from '../actions/Cart';
 
 const MainCartScreen = (props: any) => {
-    const carts = useSelector((state: { carts: any }) => state.carts);
-    const data = [0, 1, 2, 3];
 
+    const carts = useSelector((state: { carts: any }) => state.carts);
+    const dispatch = useDispatch()
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
 
     const [isLoading, setIsLoading] = useState(true)
     const [count, setCount] = useState(1);
 
-    const handleIncrement = () => {
-        setCount(prevCount => prevCount + 1);
+    React.useEffect(() => {
+        console.log(props.route.params)
+    }, [props.route.params])
+
+    const updateQty = (item: any, is_increase: any) => {
+        let _carts: any = [];
+        _carts.push(carts);
+        _carts = _carts[0]
+
+        const check = _carts.items.order_info.products.filter((r: any) => r.product_id == item.product_id && r.unit.unit_id == item.unit.unit_id);
+        if (check.length > 0) {
+            let product = check[0];
+            let amount = 0;
+            let discount = item.discount;
+            if (discount.discount_percent > 0) {
+                amount = product.unit.price - ((product.unit.price * discount.discount_percent) / 100)
+            }
+            else {
+                if (discount.discount_value > 0)
+                    amount = product.unit.price - discount.discount_value;
+                else
+                    amount = product.unit.price;
+            }
+            if (is_increase)
+                check[0].qty += 1;
+            else
+                check[0].qty -= 1;
+            check[0].amount = amount * product.qty
+            let total_amount = 0;
+            _carts.items.order_info.products.map((product: any) => {
+                total_amount += product.amount;
+            })
+            _carts.items.order_info.total_amount = total_amount
+            dispatch(updateCart(_carts.id, _carts.items))
+        }
+    }
+    const handleIncrement = (item: any) => {
+        updateQty(item, true)
     };
-    const handleDecrement = () => {
-        if (count === 1) {
-            setCount((prevCount) => prevCount - 0)
+    const handleDecrement = (item: any) => {
+        if (item.qty === 1) {
+            return;
         } else {
-            setCount(prevCount => prevCount - 1);
+            updateQty(item, false)
         }
     };
+
+    const onRemoveItem = (item: any) => {
+        let _carts: any = [];
+        _carts.push(carts);
+        _carts = _carts[0]
+        _carts.items.order_info.products = _carts.items.order_info.products.filter((r: any) => (r.product_id + r.unit.unit_id) != (item.product_id + item.unit.unit_id))
+        let total_amount = 0;
+        _carts.items.order_info.products.map((product: any) => {
+            total_amount += product.amount;
+        })
+        _carts.items.order_info.total_amount = total_amount
+        dispatch(updateCart(_carts.id, _carts.items))
+    }
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
     </TouchableOpacity>
 
+    const rightIcon = () => <TouchableOpacity style={style.leftRightHeader}
+        onPress={() => _deleteCart()}>
+        <AntDesign name="delete" size={28} color='#fff' />
+    </TouchableOpacity>
+
+    const _deleteCart = () => {
+        dispatch(deleteCart(carts.id))
+    }
     const _renderItem = ({ item, index }: any) => {
+        const _cart = item;
         return (
 
             <View key={index} style={[styles.cartContainer, {
-                marginBottom: index == data.length - 1 ? 10 : 0,
+                marginBottom: index == carts.items.order_info.products.length - 1 ? 10 : 0,
             }]}>
                 <TouchableOpacity>
                     <FastImage
@@ -64,17 +124,38 @@ const MainCartScreen = (props: any) => {
                                 color: '#000',
                                 fontSize: 16
                             }} numberOfLines={1}>
-                                Bird Nest
+                                {_cart.product_name}
                             </Text>
                             <Text style={{ color: '#aaa' }} numberOfLines={2}>
-                                Bird Nest is goods from Phum Trojeakam in Cambodia
+                                code: {_cart.product_code}
+                            </Text>
+                            <Text style={{ color: '#444' }} numberOfLines={2}>
+                                price: ${_cart.unit.price}
                             </Text>
                         </Col>
 
-                        <TouchableOpacity style={styles.deleteCartContainer}>
-                            <AntDesign name="delete" size={23} color='red' />
+                        <TouchableOpacity style={styles.deleteCartContainer}
+                            onPress={() => {
+                                Alert.alert(
+                                    "Delete Product",
+                                    "Are you sure to delete this Product?",
+                                    [
+                                        {
+                                            text: "No",
+                                            onPress: () => console.log("No Pressed"),
+                                            style: "cancel"
+                                        },
+                                        {
+                                            text: "Yes",
+                                            onPress: () => onRemoveItem(item),
+                                        }
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }}
+                        >
+                            <MaterialCommunityIcons name="delete-circle-outline" size={32} color='red' />
                         </TouchableOpacity>
-
                     </Row>
 
                     <View style={styles.cartActionContainer}>
@@ -82,10 +163,10 @@ const MainCartScreen = (props: any) => {
                             fontSize: 16,
                             color: MAIN_COLOR,
                             fontWeight: 'bold',
-                        }}>$15</Text>
+                        }}>${_cart.amount}</Text>
 
                         <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                            <TouchableOpacity onPress={handleDecrement}
+                            <TouchableOpacity onPress={() => handleDecrement(_cart)}
                                 style={[styles.MPBotton, {
                                     marginHorizontal: 10
                                 }]}>
@@ -93,10 +174,10 @@ const MainCartScreen = (props: any) => {
                             </TouchableOpacity>
 
                             <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
-                                {count}
+                                {item.qty}
                             </Text>
 
-                            <TouchableOpacity onPress={handleIncrement}
+                            <TouchableOpacity onPress={() => handleIncrement(_cart)}
                                 style={[styles.MPBotton, {
                                     marginLeft: 10
                                 }]}>
@@ -110,53 +191,72 @@ const MainCartScreen = (props: any) => {
         )
     }
 
+    const onCheckOut = () => {
+        if (carts.length != 0) {
+            if (carts.items.order_info.products.length > 0) {
+                dispatch(updateCart(carts.id, {
+                    is_confirm: true
+                }))
+                navigate.goBack()
+            }
+        }
+    }
+
+    const noItem = () => {
+        return (
+            <View style={style.cartImageContainer}>
+                <Image style={{
+                    height: 200,
+                    width: 200,
+                }}
+                    source={require('../images/empty-cart-rappi.png')}
+                    resizeMode='cover'
+                    resizeMethod='resize'
+                />
+                <Text style={{ opacity: 0.5 }}>Cart Empty</Text>
+            </View>
+        )
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {
-                props.route.params !== undefined ?
-                    props.route.params.header === 'show' ?
-                        <MainHeader
-                            title={'Cart'}
-                            leftIcon={leftIcon()}
-                        /> : null :
-                    <MainHeader
-                        title={'Cart'}
-                    />
-            }
+
+            {props.route.params !== undefined ?
+                <MainHeader
+                    title={'Cart'}
+                    leftIcon={leftIcon()}
+                    rightIcon={carts.length == 0 ? null :
+                        rightIcon()
+                    }
+                /> :
+                <MainHeader
+                    title={'Cart'}
+                />}
 
 
-            {data.length > 0 ? (
-                <FlatList
-                    style={{
-                        marginHorizontal: 10
-                    }}
-                    data={data}
-                    renderItem={_renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                    showsVerticalScrollIndicator={false}
-                />
-            ) : (
-                <View style={style.cartImageContainer}>
-                    <Image style={{
-                        height: 200,
-                        width: 200,
-                    }}
-                        source={require('../images/empty-cart-rappi.png')}
-                        resizeMode='cover'
-                        resizeMethod='resize'
-                    />
-                    <Text style={{ opacity: 0.5 }}>Cart Empty</Text>
-                </View>
-            )}
 
-
+            {carts.length !== 0 ?
+                carts.items.order_info.products.length == 0 ?
+                    noItem()
+                    : (
+                        <FlatList
+                            style={{
+                                marginHorizontal: 10
+                            }}
+                            data={carts.items.order_info.products}
+                            renderItem={_renderItem}
+                            keyExtractor={(item, index) => index.toString()}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    ) : noItem()}
 
             <View style={style.checkOutContainer}>
                 <Col>
                     <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
-                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>$0</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>${carts.length === 0 ? 0 : carts.items.order_info.total_amount}</Text>
                 </Col>
-                <TouchableOpacity style={style.styleCHACKOUT}>
+                <TouchableOpacity onPress={() => onCheckOut()}
+                    style={style.styleCHACKOUT}>
                     <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
                     <AntDesign name='playcircleo' size={20}
                         style={{ color: '#fff', marginLeft: 10 }} color='#000' />
