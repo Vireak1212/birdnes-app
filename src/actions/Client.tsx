@@ -30,6 +30,17 @@ export const loadClient = (is_logout: any = false) => {
 
 }
 
+export const updateClient = (doc: string | undefined, param: { [key: string]: any; }) => {
+    return async (dispatch: (arg0: { type: string; error: any; }) => void) => {
+        const client = await firestore().collection('clients').doc(doc);
+        client.update(
+            param
+        ).catch((error) => {
+            dispatch({ type: 'CLINT_ERROR', error });
+        })
+    }
+}
+
 // export const loadClient = (is_logout: any = false) => {
 //     return async (dispatch: (arg0: { type: string; clients: { id: string; items: { [key: string]: any; }; }[]; }) => void) => {
 //         if (subscribe !== null && is_logout) {

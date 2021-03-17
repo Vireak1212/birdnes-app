@@ -44,7 +44,7 @@ const ProfileScreen = () => {
                         justifyContent: 'center'
                     }}>
                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: MAIN_COLOR }}>
-                            {clients.items.client_info.first_name}
+                            {clients.items.client_info.first_name} {clients.items.client_info.last_name}
                         </Text>
                         <Text style={{ color: '#aaa' }}>{'(+855)' + clients.items.client_info.phone_number}</Text>
                     </Col>
