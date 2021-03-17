@@ -146,11 +146,7 @@ const EditProfile = () => {
                 </View>
 
                 <View style={{ marginHorizontal: 30 }}>
-<<<<<<< HEAD
-                    <Button onPress={() => navigate.navigate('CheckOut')}
-=======
                     <Button onPressIn={() => _onSave()}
->>>>>>> 81c1d36eebddf40fd832497105c3781fd64177aa
                         // onPress={() => onSave()}
                         full rounded style={style.ButtonUpdate}>
                         <Row style={{ justifyContent: 'center', alignItems: 'center' }}>

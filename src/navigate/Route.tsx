@@ -61,14 +61,17 @@ const Route = () => {
         <Stack.Screen name="Tab" component={MainTab} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Comfirm" component={VerifyScreen} />
+
         <Stack.Screen name="Order" component={OrderHistory} />
         <Stack.Screen name="Favorite" component={Wishlish} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="ShippingAdress" component={ShippingAddress} />
+
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="CheckOut" component={CheakoutScreen} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="StoreDetail" component={StoreDetail} />
+
         <Stack.Screen name="Successful" component={OrderSuccessful} />
         <Stack.Screen name="AllStore" component={MainStoreScreen} />
         <Stack.Screen name="AllProduct" component={AllProduct} />

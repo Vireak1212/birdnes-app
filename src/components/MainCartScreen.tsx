@@ -222,7 +222,7 @@ const MainCartScreen = (props: any) => {
                 dispatch(updateCart(carts.id, {
                     is_confirm: true
                 }))
-                navigate.goBack()
+                navigate.navigate('CheckOut')
             }
         }
     }
@@ -283,6 +283,7 @@ const MainCartScreen = (props: any) => {
                     <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>${carts.length === 0 ? 0 : carts.items.order_info.total_amount}</Text>
                 </Col>
+
                 <TouchableOpacity onPress={() => onCheckOut()}
                     style={style.styleCHACKOUT}>
                     <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
