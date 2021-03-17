@@ -20,6 +20,16 @@ export const GetImage = async (imageAsFileName, folderPath = '') => {
 
 };
 
+export function createKeyWords(names) {
+    const arrNames = []
+    let curName = ''
+    names.split('').forEach((letter) => {
+        curName += letter
+        arrNames.push(curName)
+    });
+    return arrNames;
+}
+
 export function fetchApi(dispatch, access_token, alias, id, page, search = '') {
     return new Promise(async (resolve, reject) => {
         let _page = (page === '' ? '' : `page=${page}${search === '' ? '' : '&'}`);
@@ -76,4 +86,14 @@ export function fetchApiWithAccessToken(dispatch, alias, id, page, search = '') 
                 });
         })
     })
+}
+
+export const isEmail = (text) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(text) === false) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }

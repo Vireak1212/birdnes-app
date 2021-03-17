@@ -2,6 +2,7 @@ import { Col, Row } from 'native-base';
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Alert } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import style, { ICON_COLOR, PRICE_COLOR } from '../styles/index'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -58,6 +59,7 @@ const MainCartScreen = (props: any) => {
             dispatch(updateCart(_carts.id, _carts.items))
         }
     }
+
     const handleIncrement = (item: any) => {
         updateQty(item, true)
     };
@@ -87,14 +89,34 @@ const MainCartScreen = (props: any) => {
         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
     </TouchableOpacity>
 
-    const rightIcon = () => <TouchableOpacity style={style.leftRightHeader}
-        onPress={() => _deleteCart()}>
-        <AntDesign name="delete" size={28} color='#fff' />
-    </TouchableOpacity>
-
     const _deleteCart = () => {
         dispatch(deleteCart(carts.id))
     }
+
+    const rightIcon = () => <TouchableOpacity style={style.leftRightHeader}
+        onPress={() => {
+            Alert.alert(
+                "Delete Cart",
+                "Are you sure to delete this Cart?",
+                [
+                    {
+                        text: "No",
+                        onPress: () => console.log("No Pressed"),
+                        style: "cancel"
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => _deleteCart(),
+                    }
+                ],
+                { cancelable: false }
+            );
+        }}>
+        {carts.items.order_info.products.length == 0 ? null :
+            <AntDesign name="delete" size={28} color='#fff' />}
+    </TouchableOpacity>
+
+
     const _renderItem = ({ item, index }: any) => {
         const _cart = item;
         return (
@@ -104,7 +126,7 @@ const MainCartScreen = (props: any) => {
             }]}>
                 <TouchableOpacity>
                     <FastImage
-                        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/1/16/Edible-birds-nest-bowl-shape.png' }}
+                        source={{ uri: _cart.photo_url }}
                         style={{
                             height: 110,
                             width: 110,
@@ -131,6 +153,9 @@ const MainCartScreen = (props: any) => {
                             </Text>
                             <Text style={{ color: '#444' }} numberOfLines={2}>
                                 price: ${_cart.unit.price}
+                            </Text>
+                            <Text style={{ color: '#444' }} numberOfLines={2}>
+                                {_cart.unit.unit_name}
                             </Text>
                         </Col>
 
@@ -167,21 +192,21 @@ const MainCartScreen = (props: any) => {
 
                         <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                             <TouchableOpacity onPress={() => handleDecrement(_cart)}
-                                style={[styles.MPBotton, {
+                                style={[styles.cartMPBotton, {
                                     marginHorizontal: 10
                                 }]}>
-                                <AntDesign name="minus" size={23} style={{ color: ICON_COLOR }} />
+                                <Fontisto name="minus-a" size={18} style={{ color: "#aaa" }} />
                             </TouchableOpacity>
 
-                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
+                            <Text style={{ fontSize: 16 }}>
                                 {item.qty}
                             </Text>
 
                             <TouchableOpacity onPress={() => handleIncrement(_cart)}
-                                style={[styles.MPBotton, {
+                                style={[styles.cartMPBotton, {
                                     marginLeft: 10
                                 }]}>
-                                <AntDesign name="plus" size={18} style={{ color: ICON_COLOR }} />
+                                <Fontisto name="plus-a" size={18} style={{ color: "#aaa" }} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -231,6 +256,9 @@ const MainCartScreen = (props: any) => {
                 /> :
                 <MainHeader
                     title={'Cart'}
+                    rightIcon={carts.length == 0 ? null :
+                        rightIcon()
+                    }
                 />}
 
 
@@ -298,21 +326,13 @@ const styles = StyleSheet.create({
 
         elevation: 1,
     },
-    MPBotton: {
-        height: 25,
-        width: 25,
-        borderRadius: 12.5,
-        backgroundColor: '#eee',
+    cartMPBotton: {
+        height: 30,
+        width: 30,
+        borderRadius: 15,
+        borderWidth: 0.2,
+        // backgroundColor: '#eee',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-
-        elevation: 1,
     },
 })
