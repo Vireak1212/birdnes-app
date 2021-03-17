@@ -1,139 +1,107 @@
-// import React from 'react'
-// import { StyleSheet, Text, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+import { View } from 'native-base';
+import React, { useState } from 'react';
+import { SafeAreaView, Text, StyleSheet, Image } from 'react-native';
 
-// const VerifyScreen = () => {
-//     return (
-//         <View style={{ flex: 1 }}>
-//             <Text>Hello</Text>
-//         </View>
-//     )
-// }
+import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell, } from 'react-native-confirmation-code-field';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// export default VerifyScreen;
+const styles = StyleSheet.create({
+  root: { flex: 1, padding: 20, backgroundColor: '#fff', },
+  title: { textAlign: 'center', fontSize: 30 },
+  codeFieldRoot: { marginTop: 60 },
+  cell: {
+    backgroundColor: '#eee',
+    width: 40,
+    height: 40,
+    lineHeight: 38,
+    fontSize: 24,
+    borderWidth: 2,
+    borderColor: '#eee',
+    textAlign: 'center',
+    flexDirection: 'row'
+  },
+  focusCell: {
+    borderColor: '#000',
+  },
+});
 
-// const styles = StyleSheet.create({})
+const CELL_COUNT = 6;
 
+const VerifyScreen = () => {
+  const navigate = useNavigation();
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
 
-// import * as React from 'react';
-// import { View, StyleSheet, Text, SafeAreaView, TouchableOpacity } from 'react-native';
-// import Icon from 'react-native-vector-icons/FontAwesome5';
-// import { TextField } from 'react-native-material-textfield';
-// import LinearGradient from 'react-native-linear-gradient';
+  return (
+    <SafeAreaView style={styles.root}>
+      <View style={{
+        flexDirection: 'row',
+        height: 50,
+        width: '100%',
+        alignItems: 'center',
+      }}>
+        <TouchableOpacity onPress={() => navigate.goBack()}>
+          <AntDesign name='left'
+            style={{ color: '#000' }} size={25} />
+        </TouchableOpacity>
+        <Text style={{
+          fontSize: 20,
+          color: '#000',
+          textAlign: 'center',
+          justifyContent: 'center',
+          flex: 1
+        }}>Verification</Text>
+      </View>
+      <View style={{ alignItems: 'center', marginTop: 20 }}>
+        <Image source={require('../../images/icon/security-otp.jpg')}
+          style={{
+            height: 110,
+            width: 100,
+          }}></Image>
+      </View>
+      <View style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20
+      }}>
+        <Text style={{ fontSize: 19 }}>វាយបញ្ចូលលេខកូដដែលយើងបានផ្ញើទៅកាន់</Text>
+        <Text style={{ fontSize: 19 }}>លេខទូរស័េព្ទរបស់លោកអ្នក</Text>
+      </View>
+      <CodeField
+        ref={ref}
+        {...props}
+        value={value}
+        onChangeText={setValue}
+        cellCount={CELL_COUNT}
+        rootStyle={styles.codeFieldRoot}
+        keyboardType="number-pad"
+        textContentType="oneTimeCode"
+        renderCell={({ index, symbol, isFocused }) => (
+          <Text
+            key={index}
+            style={[styles.cell, isFocused && styles.focusCell]}
+            onLayout={getCellOnLayoutHandler(index)}>
+            {symbol || (isFocused ? <Cursor /> : null)}
+          </Text>
+        )}
+      />
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 10
+      }}>
+        <Text style={{ opacity: 0.5 }}>code expires in: </Text>
+        <Text style={{ color: 'red' }}> 00:45</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
 
-// export interface AppProps {
-// 	navigation: any;
-// 	onConfirmCode: any;
-// 	process: boolean;
-// }
-
-// export interface AppState {
-// 	code: any;
-// }
-
-// export default class ConfirmCodeScreen extends React.Component<AppProps, AppState> {
-// 	constructor(props: AppProps) {
-// 		super(props);
-// 		this.state = { code: '' };
-// 	}
-
-// 	_renderHeader = () => {
-// 		return (
-// 			<View style={styles.headerContainer}>
-// 				<TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-// 					<Icon style={styles.iconBack} name="arrow-left" />
-// 				</TouchableOpacity>
-// 			</View>
-// 		);
-// 	};
-
-// 	_renderLoginForm = () => {
-// 		const { code } = this.state;
-// 		const { process } = this.props;
-// 		return (
-// 			<View style={styles.formContainer}>
-// 				<Text style={styles.welcomeText}>Verification</Text>
-
-// 				<Text style={styles.text}>Please enter the 6 digits code send to you with your phone number.</Text>
-// 				<View style={styles.textBoxContainer}>
-// 					<TextField
-// 						value={code}
-// 						// onChangeText={(code: any) => {
-// 						// 	if (code.length > 6) this.setState({ code: code });
-// 						// 	// if (code.length == 6) {
-// 						// 	// 	this.props.onConfirmCode(code);
-// 						// 	// }
-// 						// this.setState((code)=>{code:code})
-// 						// }}
-// 						onChangeText={(code: any) => this.setState({ code })}
-// 						tintColor="#555"
-// 						label="Code"
-// 						keyboardType="numeric"
-// 					/>
-// 				</View>
-
-// 				<TouchableOpacity onPress={() => this.props.onConfirmCode(this.state.code)} disabled={process}>
-// 					<LinearGradient
-// 						style={styles.buttonRead}
-// 						start={{ x: 0, y: 0 }}
-// 						end={{ x: 1, y: 0 }}
-// 						colors={[]}
-// 					>
-// 						{process ? (
-// 							<Text style={styles.orderText}>Verifying.......</Text>
-// 						) : (
-// 							<Text style={styles.orderText}>Verify</Text>
-// 						)}
-// 					</LinearGradient>
-// 				</TouchableOpacity>
-// 			</View>
-// 		);
-// 	};
-
-// 	public render() {
-// 		return (
-// 			<SafeAreaView style={[]}>
-// 				{this._renderHeader()}
-// 				<View style={[]}>{this._renderLoginForm()}</View>
-// 			</SafeAreaView>
-// 		);
-// 	}
-// }
-
-// const styles = StyleSheet.create({
-// 	headerContainer: {
-// 		marginHorizontal: 10
-// 	},
-// 	iconBack: {
-// 		fontSize: 16,
-// 		color: '#555'
-// 	},
-// 	welcomeText: {
-// 		fontSize: 16,
-// 		color: '#222'
-// 	},
-// 	formContainer: {
-// 		marginHorizontal: 10,
-// 		marginTop: 10,
-// 		width: 50
-// 	},
-// 	text: {
-// 		color: '#999',
-// 		marginTop: 10,
-// 		width: '90%',
-// 		lineHeight: 20
-// 	},
-// 	buttonRead: {
-// 		justifyContent: 'center',
-// 		alignItems: 'center',
-// 		padding: 10,
-// 		borderRadius: 5,
-// 		marginTop: 10
-// 	},
-// 	orderText: {
-// 		color: '#000',
-// 		fontSize: 16
-// 	},
-// 	textBoxContainer: {
-// 		marginTop: 10
-// 	}
-// });
+export default VerifyScreen;

@@ -39,7 +39,7 @@ const LoginScreen = () => {
 						</Text>
 
 				<TouchableOpacity style={style.arrowContinue}
-				//onPress={() => navigate.navigate('Comfirm')}
+					onPress={() => navigate.navigate('Comfirm')}
 				>
 					<AntDesign style={style.ArrowContinue} name="arrowright" />
 				</TouchableOpacity>
