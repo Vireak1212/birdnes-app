@@ -34,9 +34,10 @@ import OrderHistory from '../containers/order/OrderHistory';
 import Wishlish from '../containers/order/Wishlish';
 import ProductItems from '../containers/product/ProductItems';
 import VerifyScreen from '../components/auth/VerifyScreen';
-import CheakoutScreen from './../containers/product/CheakoutScreen';
+import CheakoutScreen from '../containers/order/CheakoutScreen';
 import MapScreen from './../components/MapScreen';
 import OrderSuccessful from './../containers/product/OrderSuccessful';
+
 
 
 
@@ -58,7 +59,7 @@ const Route = () => {
       <Stack.Navigator screenOptions={{
         headerShown: false,
       }}>
-        <Stack.Screen name="Tab" component={MainTab} />
+        <Stack.Screen name="Home" component={MainTab} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Comfirm" component={VerifyScreen} />
 
@@ -79,6 +80,7 @@ const Route = () => {
         <Stack.Screen name="CartDetail" component={MainCartScreen} />
         <Stack.Screen name="homeSearch" component={HomeSearch} />
         <Stack.Screen name="productCategory" component={ProductOfCategory} />
+
       </Stack.Navigator>
     );
   }

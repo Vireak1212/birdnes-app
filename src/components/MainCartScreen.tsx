@@ -24,7 +24,7 @@ const MainCartScreen = (props: any) => {
     const [count, setCount] = useState(1);
 
     React.useEffect(() => {
-        console.log(props.route.params)
+
     }, [props.route.params])
 
     const updateQty = (item: any, is_increase: any) => {
@@ -126,10 +126,10 @@ const MainCartScreen = (props: any) => {
             }]}>
                 <TouchableOpacity>
                     <FastImage
-                        source={{ uri: _cart.photo_url }}
+                        source={{ uri: _cart.unit.photo_url }}
                         style={{
                             height: 110,
-                            width: 110,
+                            width: 120,
                             borderRadius: 10,
                             margin: 5,
                         }} />
@@ -179,7 +179,7 @@ const MainCartScreen = (props: any) => {
                                 );
                             }}
                         >
-                            <MaterialCommunityIcons name="delete-circle-outline" size={32} color='red' />
+                            <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />
                         </TouchableOpacity>
                     </Row>
 
@@ -262,7 +262,6 @@ const MainCartScreen = (props: any) => {
                 />}
 
 
-
             {carts.length !== 0 ?
                 carts.items.order_info.products.length == 0 ?
                     noItem()
@@ -278,19 +277,26 @@ const MainCartScreen = (props: any) => {
                         />
                     ) : noItem()}
 
-            <View style={style.checkOutContainer}>
-                <Col>
-                    <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
-                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>${carts.length === 0 ? 0 : carts.items.order_info.total_amount}</Text>
-                </Col>
 
-                <TouchableOpacity onPress={() => onCheckOut()}
-                    style={style.styleCHACKOUT}>
-                    <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
-                    <AntDesign name='playcircleo' size={20}
-                        style={{ color: '#fff', marginLeft: 10 }} color='#000' />
-                </TouchableOpacity>
-            </View>
+            {carts.length !== 0 ?
+                carts.items.order_info.products.length == 0 ?
+                    null
+                    : (<View style={style.checkOutContainer}>
+                        <Col>
+                            <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>${carts.length === 0 ? 0 : carts.items.order_info.total_amount}</Text>
+                        </Col>
+
+                        <TouchableOpacity onPress={() => navigate.navigate('CheckOut')}
+                            style={style.styleCHACKOUT}>
+                            <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
+                            <AntDesign name='playcircleo' size={20}
+                                style={{ color: '#fff', marginLeft: 10 }} color='#000' />
+                        </TouchableOpacity>
+                    </View>
+                    ) : null
+            }
+
         </SafeAreaView>
     )
 }
@@ -309,6 +315,8 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         alignItems: 'center',
         justifyContent: 'center',
+        borderWidth: 0.2,
+        borderColor: '#FF0000'
     },
     cartContainer: {
         flexDirection: 'row',

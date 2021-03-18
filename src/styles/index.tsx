@@ -172,7 +172,8 @@ export default StyleSheet.create({
     cartImageContainer: {
         width: '100%',
         alignItems: 'center',
-        paddingTop: 130
+        justifyContent: 'center',
+        flex: 1,
     },
     checkOutContainer: {
         justifyContent: 'space-between',
@@ -180,8 +181,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         paddingHorizontal: 20,
-        position: 'absolute',
-        bottom: 10,
+        paddingVertical: 10
     },
     styleCHACKOUT: {
         backgroundColor: 'rgba(34,72,137,0.9)',

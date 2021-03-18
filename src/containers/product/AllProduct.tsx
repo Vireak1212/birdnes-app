@@ -107,7 +107,7 @@ const AllProduct = () => {
                             width: '100%',
                             borderRadius: 5,
                         }}
-                            source={{ uri: _AllProduct.product_info.photos[0].photo_url }}
+                            source={{ uri: _AllProduct.product_info.photos.photo_url }}
                             resizeMode={FastImage.resizeMode.cover}
                         />
                         <Col style={{ paddingTop: 10 }}>

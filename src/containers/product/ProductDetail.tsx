@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Dimensions, Platform, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Dimensions, Platform, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import MainHeader from '../../custom_items/MainHeader';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -11,16 +11,19 @@ import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 import { Col, Row } from 'native-base';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
-import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { makeid } from '../../functions/PTFunction';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateCart } from '../../actions/Cart';
+import { MAIN_COLOR } from '../../styles/index';
+import Swiper from 'react-native-swiper'
 
 
-const screen = Dimensions.get('window')
+const screen = Dimensions.get('screen')
 
 const ProductDetail = (props: any) => {
     const { item } = props.route.params;
+    const style = useSelector((state: { style: any }) => state.style);
     const carts = useSelector((state: { carts: any }) => state.carts);
     const navigate = useNavigation();
     const dispatch = useDispatch()
@@ -30,6 +33,7 @@ const ProductDetail = (props: any) => {
     const [qty, setQty] = useState(1);
     const [isLoading, setIsLoading] = useState(true)
     const [unit, setUnit] = useState<any>([])
+    const [galleries, setGalleries] = useState([])
     let controller;
 
     React.useEffect(() => {
@@ -40,10 +44,28 @@ const ProductDetail = (props: any) => {
             setUnit(unit[0])
         }
 
+        loadGalleries();
         setTimeout(() => {
             setIsLoading(false)
         }, 200);
     }, [])
+
+
+    const loadGalleries = () => {
+        let _gallery: any = []
+        item.items.product_info.units.map((_unit: any) => {
+            _gallery.push({
+                photo_url: _unit.photo_url
+            })
+        })
+
+        item.items.product_info.photos.map((_photo: any) => {
+            _gallery.push({
+                photo_url: _photo.photo_url
+            })
+        })
+        setGalleries(_gallery)
+    }
 
 
     const onAddToCart = () => {
@@ -88,8 +110,8 @@ const ProductDetail = (props: any) => {
                 }
                 _carts.items.order_info.products.push({
                     allow_discount: item.items.allow_discount,
-                    photo_url: item.items.product_info.photos[0].photo_url,
-                    photo_url_file_name: item.items.product_info.photos[0].photo_url_file_name,
+                    photo_url: item.items.product_info.units.photo_url,
+                    photo_url_file_name: item.items.product_info.units.photo_url_file_name,
                     product_id: item.id,
                     product_name: item.items.product_info.product_name,
                     product_code: item.items.product_info.product_code,
@@ -129,18 +151,20 @@ const ProductDetail = (props: any) => {
                 document_number: "",
                 is_confirm: false,
                 order_info: {
-                    products: [{
-                        allow_discount: item.items.allow_discount,
-                        photo_url: item.items.product_info.photos[0].photo_url,
-                        photo_url_file_name: item.items.product_info.photos[0].photo_url_file_name,
-                        product_id: item.id,
-                        product_name: item.items.product_info.product_name,
-                        product_code: item.items.product_info.product_code,
-                        unit,
-                        discount: item.items.discount_info,
-                        qty,
-                        amount
-                    }],
+                    products: [
+                        {
+                            allow_discount: item.items.allow_discount,
+                            photo_url: item.items.product_info.units.photo_url,
+                            photo_url_file_name: item.items.product_info.units.photo_url_file_name,
+                            product_id: item.id,
+                            product_name: item.items.product_info.product_name,
+                            product_code: item.items.product_info.product_code,
+                            unit,
+                            discount: item.items.discount_info,
+                            qty,
+                            amount
+                        }
+                    ],
                     amount: qty * amount
                 },
                 shop_info: {
@@ -213,51 +237,91 @@ const ProductDetail = (props: any) => {
                 renderItem={({ index }: any) => {
                     return (
                         <>
-                            <View style={styles.detailImageContainer}>
-                                <FastImage style={{
-                                    height: 250,
-                                    width: '100%',
-                                    borderRadius: 10,
-                                }}
-                                    source={{ uri: item.items.product_info.photos[0].photo_url }}
-                                    resizeMode={FastImage.resizeMode.cover}
-                                />
+                            {/* <View style={styles.detailImageContainer}>
+                                {galleries.map((gallery: any, index: any) => (
+                                    <FastImage key={index} style={{
+                                        height: 250,
+                                        width: '100%',
+                                        borderRadius: 10,
+                                    }}
+                                        source={{ uri: gallery.photo_url }}
+                                        resizeMode={FastImage.resizeMode.cover}
+                                    />
+                                ))}
+
+
+                            </View> */}
+
+                            <View style={styles.carouselArea}>
+                                <Swiper style={styles.wrapper}
+                                    horizontal
+                                    autoplay={false}
+                                    showsButtons={false}
+                                    dotStyle={{ height: 7, width: 20 }}
+                                    activeDotStyle={{ height: 7, width: 20, }}
+                                    activeDotColor={MAIN_COLOR}
+                                    dotColor={'#ddd'}
+                                    removeClippedSubviews={false}>
+                                    {
+                                        galleries.map((gallery: any, index: any) => {
+                                            return (
+                                                <View key={index} style={styles.slide1}>
+                                                    <TouchableWithoutFeedback>
+                                                        <FastImage style={styles.slideImage}
+                                                            source={{ uri: gallery.photo_url }}
+                                                            resizeMode={FastImage.resizeMode.cover}
+                                                        />
+                                                    </TouchableWithoutFeedback>
+                                                </View>
+                                            )
+
+                                        })
+                                    }
+                                </Swiper>
+
                             </View>
-                            <Row style={styles.productDetailContainer}>
-                                <Col>
-                                    <Text style={{
-                                        fontSize: 19,
-                                        fontWeight: 'bold'
-                                    }}>
-                                        {item.items.product_info.product_name}
-                                    </Text>
-                                    <Text style={{ fontWeight: 'bold' }}>
-                                        {item.items.product_info.product_code}
-                                    </Text>
-                                    <View style={{ alignSelf: 'flex-start' }}>
-                                        <Rating
-                                            type='star'
-                                            ratingCount={5}
-                                            imageSize={16}
-                                        //   onFinishRating={ratingCompleted}
-                                        />
+
+                            <View style={{
+                                paddingHorizontal: 10,
+                                paddingVertical: 10,
+                                backgroundColor: '#fff'
+                            }}>
+                                <Row style={styles.productDetailContainer}>
+                                    <Col>
+                                        <Text style={{
+                                            fontSize: 19,
+                                            fontWeight: 'bold'
+                                        }}>
+                                            {item.items.product_info.product_name}
+                                        </Text>
+                                        <Text style={{ fontWeight: 'bold' }}>
+                                            {item.items.product_info.product_code}
+                                        </Text>
+                                        <View style={{ alignSelf: 'flex-start' }}>
+                                            <Rating
+                                                type='star'
+                                                ratingCount={5}
+                                                imageSize={16}
+                                            //   onFinishRating={ratingCompleted}
+                                            />
+                                        </View>
+                                    </Col>
+                                    <View style={{ alignItems: 'center' }}>
+                                        <TouchableOpacity onPress={() => {
+                                            addToFavorite()
+                                        }}
+                                            style={{ paddingBottom: 5 }}>
+                                            {/* <Feather name='star' size={30} /> */}
+                                            <FontAwesome name={!isFavorite ? "star-o" : "star"} size={30}
+                                                color={!isFavorite ? '#aaa' : '#FFD700'} />
+                                        </TouchableOpacity>
+                                        <Text style={styles.productDetailPrice}>
+                                            {unit.price + '$'}
+                                        </Text>
                                     </View>
 
-                                </Col>
-                                <View style={{ alignItems: 'center' }}>
-                                    <TouchableOpacity onPress={() => {
-                                        addToFavorite()
-                                    }}
-                                        style={{ paddingBottom: 5 }}>
-                                        {/* <Feather name='star' size={30} /> */}
-                                        <FontAwesome name={!isFavorite ? "star-o" : "star"} size={30}
-                                            color={!isFavorite ? '#aaa' : '#FFD700'} />
-                                    </TouchableOpacity>
-                                    <Text style={styles.productDetailPrice}>
-                                        {unit.price + '$'}
-                                    </Text>
-                                </View>
-                            </Row>
+                                </Row>
+                            </View>
 
                             <View style={styles.productSubDetail}>
                                 <View style={{
@@ -356,6 +420,28 @@ const ProductDetail = (props: any) => {
 export default ProductDetail
 
 const styles = StyleSheet.create({
+    carouselArea: {
+        height: screen.width / 1.6,
+    },
+    wrapper: {},
+    slide1: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10
+    },
+    text: {
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold'
+    },
+    slideImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10,
+    },
+
+
     addToCartContaier: {
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -411,16 +497,15 @@ const styles = StyleSheet.create({
     },
     productDetailQtyContainer: {
         marginTop: 5,
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
     productSubDetail: {
         marginTop: 5,
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         backgroundColor: '#fff',
-        marginBottom: 10
     },
     detailImageContainer: {
         paddingTop: 10,
@@ -437,12 +522,9 @@ const styles = StyleSheet.create({
         borderWidth: 0.2
     },
     productDetailContainer: {
-        paddingHorizontal: 10,
-        paddingVertical: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#fff'
     },
     productDetailName: {
         fontSize: 12,
