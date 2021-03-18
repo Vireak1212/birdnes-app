@@ -1,5 +1,5 @@
 import { Col, Row } from 'native-base';
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -10,12 +10,34 @@ import { useNavigation } from '@react-navigation/native';
 import { MAIN_COLOR } from '../styles/index'
 import MainHeader from '../custom_items/MainHeader';
 import { useSelector } from 'react-redux';
+import MultiImage from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-picker'
 
 const ProfileScreen = () => {
     const clients = useSelector((state: { clients: any }) => state.clients);
-
+    const [photo_url, setPhoto_url] = useState({ uri: '' });
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
+    const [Gallery, setGallery] = useState()
+    const selectGallery = () => {
+        MultiImage.openPicker({
+            mediaType: "photo",
+            quality: 0.8,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true,
+            },
+        }).then(image => {
+            console.log(image)
+            setPhoto_url({ uri: image.path })
+        })
+            .catch((error) => {
+                console.log(error)
+            });
+    };
+
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#eee' }}>
             <MainHeader
@@ -29,12 +51,12 @@ const ProfileScreen = () => {
                 }}>
                     <View style={style.backgroundImage}>
                         <Image style={style.Imagestyle}
-                            source={require('../images/placeholder400x400.jpg')}
+                            source={photo_url}
                             resizeMethod="auto"
                             resizeMode="cover"
                         />
 
-                        <TouchableOpacity style={style.Camera}>
+                        <TouchableOpacity style={style.Camera} onPress={selectGallery}>
                             <Entypo name='camera' size={20} color='#000' />
                         </TouchableOpacity>
                     </View>
