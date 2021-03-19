@@ -18,25 +18,35 @@ const ProfileScreen = () => {
     const [photo_url, setPhoto_url] = useState({ uri: '' });
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
-    const [Gallery, setGallery] = useState()
-    const selectGallery = () => {
-        MultiImage.openPicker({
-            mediaType: "photo",
+
+    const selectImage = () => {
+        const options = {
+            title: 'Choose Image',
+            cancelButtonTitle: 'Cancel',
+            takePhotoButtonTitle: 'Take Photo...',
+            chooseFromLibraryButtonTitle: 'Choose From Gallery...',
             quality: 0.8,
             maxWidth: 500,
             maxHeight: 500,
             storageOptions: {
                 skipBackup: true,
             },
-        }).then(image => {
-            console.log(image)
-            setPhoto_url({ uri: image.path })
-        })
-            .catch((error) => {
-                console.log(error)
-            });
-    };
+        };
 
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+                return;
+            } else if (response.error) {
+                console.log(response.error)
+
+            } else {
+                let source = { uri: response.uri };
+                // You can also display the image using data:
+                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+                setPhoto_url(source);
+            }
+        });
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#eee' }}>
@@ -56,7 +66,7 @@ const ProfileScreen = () => {
                             resizeMode="cover"
                         />
 
-                        <TouchableOpacity style={style.Camera} onPress={selectGallery}>
+                        <TouchableOpacity style={style.Camera} onPress={selectImage}>
                             <Entypo name='camera' size={20} color='#000' />
                         </TouchableOpacity>
                     </View>
