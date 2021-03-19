@@ -25,6 +25,7 @@ export default StyleSheet.create({
         height: 100,
         width: 100,
         borderRadius: 50,
+        backgroundColor: '#eee'
     },
     Camera: {
         backgroundColor: '#fff',
