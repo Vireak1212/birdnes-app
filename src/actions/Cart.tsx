@@ -28,6 +28,31 @@ export const loadCart = () => {
     }
 }
 
+export const loadOrder = () => {
+    return async (dispatch: (arg0: { type: string; order_history: any }) => void) => {
+        if (subscribe !== null) {
+            subscribe()
+            subscribe = null
+        }
+        else {
+            let uid = await AsyncStorage.getItem("uid");
+            subscribe = firestore().collection("carts")
+                .where("uid", "==", "")
+                .where("is_confirm", "==", true)
+                .onSnapshot(function (snapshot) {
+                    let order_history: any = []
+                    snapshot.docs.forEach(function (data) {
+                        order_history.push({
+                            items: data.data(),
+                            id: data.id
+                        })
+                    })
+                    dispatch({ type: 'LOAD_ORDER', order_history });
+                });
+        }
+    }
+}
+
 export const addToCart = (carts: any) => {
     return async (dispatch: (arg0: (dispatch: any) => void) => void) => {
         const data = await firestore().collection('carts');

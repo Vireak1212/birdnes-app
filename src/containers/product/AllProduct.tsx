@@ -88,11 +88,6 @@ const AllProduct = () => {
         )
     }
 
-    const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
-        onPress={() => navigate.goBack()}>
-        <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
-    </TouchableOpacity>
-
     const _renderAllProduct = ({ item, index }: any) => {
         const _AllProduct = item.items;
         return (
@@ -107,7 +102,7 @@ const AllProduct = () => {
                             width: '100%',
                             borderRadius: 5,
                         }}
-                            source={{ uri: _AllProduct.product_info.photos.photo_url }}
+                            source={{ uri: _AllProduct.product_info.photos[0].photo_url }}
                             resizeMode={FastImage.resizeMode.cover}
                         />
                         <Col style={{ paddingTop: 10 }}>
@@ -130,12 +125,8 @@ const AllProduct = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {/* <MainHeader
-                title={'All Type'}
-                leftIcon={leftIcon()}
-            /> */}
             <View style={{
-                paddingTop: 15,
+                paddingTop: 5,
                 paddingHorizontal: 12,
                 paddingBottom: 15,
                 flexDirection: 'row',
@@ -150,11 +141,15 @@ const AllProduct = () => {
                 showsVerticalScrollIndicator={false}
                 listKey={makeid()}
                 itemDimension={130}
+                initialNumToRender={4}
+                maxToRenderPerBatch={8}
+                windowSize={8}
                 style={{
                     height: 'auto',
                     width: '100%',
                     borderRadius: 10,
-                    marginTop: -10,
+                    marginBottom: -10,
+                    marginTop: -10
                 }}
                 renderItem={_renderAllProduct}
                 data={products}

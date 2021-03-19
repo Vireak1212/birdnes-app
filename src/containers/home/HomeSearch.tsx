@@ -54,7 +54,7 @@ const HomeSearch = () => {
                     </Row>
                 </Col>
             </View>
-            <View style={{ flex: 1, paddingTop: 10 }}>
+            <View style={{ flex: 1, paddingTop: 10, paddingBottom: 10 }}>
                 <AllProduct />
             </View>
 

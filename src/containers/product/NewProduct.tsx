@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Col } from 'native-base';
+import { Col, Item } from 'native-base';
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Dimensions, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
@@ -69,9 +69,11 @@ const NewProduct = () => {
 
             <View style={styles.newProductGrid}>
                 <Text>New Products</Text>
-                {new_products.length > 8 && <TouchableOpacity onPress={() => navigate.navigate('ProductItem', {
-                    title: 'New Products'
-                })}>
+                {new_products.length > 8 && <TouchableOpacity onPress={() => navigate.navigate('ProductItem',
+                    {
+                        title: 'New Products',
+                        products: new_products
+                    })}>
                     <Text style={{ fontSize: 13, color: '#224889' }}>More</Text>
                 </TouchableOpacity>
                 }

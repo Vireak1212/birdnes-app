@@ -4,7 +4,7 @@ import ProductSlider from "./ProductSlider";
 import Category from "./Category";
 import { NewProduct, Product, TopProduct } from "./Product";
 import Client from './Client';
-import Cart from './Cart';
+import { Cart, OrderHistory } from './Cart';
 
 const isLoadingHome = (state = true, action: { type: any; }) => {
     switch (action.type) {
@@ -39,6 +39,8 @@ const rootReducers = combineReducers({
     categories: Category,
     store: Store,
     carts: Cart,
+    order_history: OrderHistory,
+
 
 });
 

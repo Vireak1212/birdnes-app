@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Dimensions, Platform, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Dimensions, Platform, ScrollView, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import MainHeader from '../../custom_items/MainHeader';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateCart } from '../../actions/Cart';
 import { MAIN_COLOR } from '../../styles/index';
 import Swiper from 'react-native-swiper'
+import ImageView from './ImageView';
 
 
 const screen = Dimensions.get('screen')
@@ -29,12 +30,23 @@ const ProductDetail = (props: any) => {
     const dispatch = useDispatch()
     const product_neme = item.items.product_info.product_name;
 
+    const [isLoadCompleted, setIsLoadCompleted] = useState(false)
     const [isFavorite, setIsFavorite] = useState(false)
     const [qty, setQty] = useState(1);
     const [isLoading, setIsLoading] = useState(true)
     const [unit, setUnit] = useState<any>([])
     const [galleries, setGalleries] = useState([])
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [isViewImage, setIsViewImage] = useState(false)
     let controller;
+
+    useEffect(() => {
+        if (item.items.product_info.units) {
+            setTimeout(() => {
+                setIsLoadCompleted(true)
+            }, 200);
+        }
+    }, [item.items.product_info.units.length])
 
     React.useEffect(() => {
         let unit = item.items.product_info.units.sort(function (a: any, b: any) {
@@ -55,16 +67,26 @@ const ProductDetail = (props: any) => {
         let _gallery: any = []
         item.items.product_info.units.map((_unit: any) => {
             _gallery.push({
-                photo_url: _unit.photo_url
+                photo_url: _unit.photo_url,
+                id: _unit.id,
+                photo_url_file_name: _unit.photo_url_file_name,
+                is_selected: false,
             })
         })
 
         item.items.product_info.photos.map((_photo: any) => {
             _gallery.push({
-                photo_url: _photo.photo_url
+                photo_url: _photo.photo_url,
+                id: _photo.id,
+                photo_url_file_name: _photo.photo_url_file_name,
+                is_selected: false,
+
             })
         })
         setGalleries(_gallery)
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 200);
     }
 
 
@@ -219,25 +241,40 @@ const ProductDetail = (props: any) => {
     </TouchableOpacity>;
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <MainHeader
-                title={product_neme}
-                leftIcon={leftIcon()}
-                rightIcon={rightIcon()}
-            />
-
-            <FlatList
-                removeClippedSubviews={Platform.OS == 'ios' ? false : true}
-                showsVerticalScrollIndicator={false}
-                // disableVirtualization={true}
-                data={[1]}
-                listKey={makeid()}
-                ListEmptyComponent={null}
-                keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
-                renderItem={({ index }: any) => {
-                    return (
-                        <>
-                            {/* <View style={styles.detailImageContainer}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: isViewImage ? '#000' : '#f6f6f6' }}>
+            {isViewImage ? (
+                <>
+                    <ImageView
+                        leftViewImageIcon={() => {
+                            setIsViewImage(false)
+                        }}
+                        galleries={galleries}
+                        index={currentIndex}
+                    />
+                </>
+            ) : <>
+                <MainHeader
+                    title={product_neme}
+                    leftIcon={leftIcon()}
+                    rightIcon={rightIcon()}
+                />
+                {!isLoadCompleted ?
+                    <ActivityIndicator style={{
+                        marginTop: 20
+                    }} size={35} color={MAIN_COLOR} />
+                    :
+                    <FlatList
+                        removeClippedSubviews={Platform.OS == 'ios' ? false : true}
+                        showsVerticalScrollIndicator={false}
+                        // disableVirtualization={true}
+                        data={[1]}
+                        listKey={makeid()}
+                        ListEmptyComponent={null}
+                        keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
+                        renderItem={({ index }: any) => {
+                            return (
+                                <>
+                                    {/* <View style={styles.detailImageContainer}>
                                 {galleries.map((gallery: any, index: any) => (
                                     <FastImage key={index} style={{
                                         height: 250,
@@ -252,167 +289,173 @@ const ProductDetail = (props: any) => {
 
                             </View> */}
 
-                            <View style={styles.carouselArea}>
-                                <Swiper style={styles.wrapper}
-                                    horizontal
-                                    autoplay={false}
-                                    showsButtons={false}
-                                    dotStyle={{ height: 7, width: 20 }}
-                                    activeDotStyle={{ height: 7, width: 20, }}
-                                    activeDotColor={MAIN_COLOR}
-                                    dotColor={'#ddd'}
-                                    removeClippedSubviews={false}>
-                                    {
-                                        galleries.map((gallery: any, index: any) => {
-                                            return (
-                                                <View key={index} style={styles.slide1}>
-                                                    <TouchableWithoutFeedback>
-                                                        <FastImage style={styles.slideImage}
-                                                            source={{ uri: gallery.photo_url }}
-                                                            resizeMode={FastImage.resizeMode.cover}
-                                                        />
-                                                    </TouchableWithoutFeedback>
+                                    <View style={styles.carouselArea}>
+                                        <Swiper style={styles.wrapper}
+                                            horizontal
+                                            autoplay={false}
+                                            showsButtons={false}
+                                            dotStyle={{ height: 7, width: 20 }}
+                                            activeDotStyle={{ height: 7, width: 20, }}
+                                            activeDotColor={MAIN_COLOR}
+                                            dotColor={'#ddd'}
+                                            removeClippedSubviews={false}>
+                                            {
+                                                galleries.map((gallery: any, index: any) => {
+                                                    return (
+                                                        <View key={index} style={styles.slide1}>
+                                                            <TouchableWithoutFeedback onPress={() => {
+                                                                setCurrentIndex(index)
+                                                                setIsViewImage(true)
+                                                            }}>
+                                                                <FastImage style={styles.slideImage}
+                                                                    source={{ uri: gallery.photo_url }}
+                                                                    resizeMode={FastImage.resizeMode.cover}
+                                                                />
+                                                            </TouchableWithoutFeedback>
+                                                        </View>
+                                                    )
+
+                                                })
+                                            }
+                                        </Swiper>
+
+                                    </View>
+
+                                    <View style={{
+                                        paddingHorizontal: 10,
+                                        paddingVertical: 10,
+                                        backgroundColor: '#fff'
+                                    }}>
+                                        <Row style={styles.productDetailContainer}>
+                                            <Col>
+                                                <Text style={{
+                                                    fontSize: 19,
+                                                    fontWeight: 'bold'
+                                                }}>
+                                                    {item.items.product_info.product_name}
+                                                </Text>
+                                                <Text style={{ fontWeight: 'bold' }}>
+                                                    {item.items.product_info.product_code}
+                                                </Text>
+                                                <View style={{ alignSelf: 'flex-start' }}>
+                                                    <Rating
+                                                        type='star'
+                                                        ratingCount={5}
+                                                        imageSize={16}
+                                                    //   onFinishRating={ratingCompleted}
+                                                    />
                                                 </View>
-                                            )
+                                            </Col>
+                                            <View style={{ alignItems: 'center' }}>
+                                                <TouchableOpacity onPress={() => {
+                                                    addToFavorite()
+                                                }}
+                                                    style={{ paddingBottom: 5 }}>
+                                                    {/* <Feather name='star' size={30} /> */}
+                                                    <FontAwesome name={!isFavorite ? "star-o" : "star"} size={30}
+                                                        color={!isFavorite ? '#aaa' : '#FFD700'} />
+                                                </TouchableOpacity>
+                                                <Text style={styles.productDetailPrice}>
+                                                    {unit.price + '$'}
+                                                </Text>
+                                            </View>
 
-                                        })
-                                    }
-                                </Swiper>
+                                        </Row>
+                                    </View>
 
-                            </View>
-
-                            <View style={{
-                                paddingHorizontal: 10,
-                                paddingVertical: 10,
-                                backgroundColor: '#fff'
-                            }}>
-                                <Row style={styles.productDetailContainer}>
-                                    <Col>
-                                        <Text style={{
-                                            fontSize: 19,
-                                            fontWeight: 'bold'
+                                    <View style={styles.productSubDetail}>
+                                        <View style={{
+                                            paddingVertical: 10,
+                                            justifyContent: 'space-around',
+                                            flexDirection: 'row',
                                         }}>
-                                            {item.items.product_info.product_name}
-                                        </Text>
-                                        <Text style={{ fontWeight: 'bold' }}>
-                                            {item.items.product_info.product_code}
-                                        </Text>
-                                        <View style={{ alignSelf: 'flex-start' }}>
-                                            <Rating
-                                                type='star'
-                                                ratingCount={5}
-                                                imageSize={16}
-                                            //   onFinishRating={ratingCompleted}
-                                            />
-                                        </View>
-                                    </Col>
-                                    <View style={{ alignItems: 'center' }}>
-                                        <TouchableOpacity onPress={() => {
-                                            addToFavorite()
-                                        }}
-                                            style={{ paddingBottom: 5 }}>
-                                            {/* <Feather name='star' size={30} /> */}
-                                            <FontAwesome name={!isFavorite ? "star-o" : "star"} size={30}
-                                                color={!isFavorite ? '#aaa' : '#FFD700'} />
-                                        </TouchableOpacity>
-                                        <Text style={styles.productDetailPrice}>
-                                            {unit.price + '$'}
-                                        </Text>
-                                    </View>
+                                            <View>
+                                                <Text style={{ paddingTop: 7, color: '#aaa' }}>Unit :</Text>
+                                                <Text style={{ paddingTop: 32, color: '#aaa' }}>Quanity :</Text>
+                                            </View>
 
-                                </Row>
-                            </View>
+                                            <Col>
+                                                <Row style={{ marginBottom: 20, height: 35, alignItems: 'center' }}>
+                                                    {item.items.product_info.units.map((_unit: any) => {
+                                                        return (
+                                                            <TouchableOpacity key={_unit.unit_id} onPress={() => onUnitPress(_unit)}
+                                                                style={[styles.unitButton, {
+                                                                    borderColor: _unit.unit_id === unit.unit_id ? '#224889' : '#000',
+                                                                }]}>
+                                                                <Text style={{
+                                                                    paddingHorizontal: 15,
+                                                                    color: _unit.unit_id === unit.unit_id ? '#224889' : '#000',
+                                                                }}>
+                                                                    {_unit.unit_name}
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    })}
 
-                            <View style={styles.productSubDetail}>
-                                <View style={{
-                                    paddingVertical: 10,
-                                    justifyContent: 'space-around',
-                                    flexDirection: 'row',
-                                }}>
-                                    <View>
-                                        <Text style={{ paddingTop: 7, color: '#aaa' }}>Unit :</Text>
-                                        <Text style={{ paddingTop: 32, color: '#aaa' }}>Quanity :</Text>
-                                    </View>
+                                                </Row>
 
-                                    <Col>
-                                        <Row style={{ marginBottom: 20, height: 35, alignItems: 'center' }}>
-                                            {item.items.product_info.units.map((_unit: any) => {
-                                                return (
-                                                    <TouchableOpacity key={_unit.unit_id} onPress={() => onUnitPress(_unit)}
-                                                        style={[styles.unitButton, {
-                                                            borderColor: _unit.unit_id === unit.unit_id ? '#224889' : '#000',
-                                                        }]}>
-                                                        <Text style={{
-                                                            paddingHorizontal: 15,
-                                                            color: _unit.unit_id === unit.unit_id ? '#224889' : '#000',
-                                                        }}>
-                                                            {_unit.unit_name}
-                                                        </Text>
+                                                <Row style={{ alignItems: 'center', height: 35 }}>
+
+                                                    <TouchableOpacity onPress={() => handleDecrement()}
+                                                        style={styles.MPBotton}>
+                                                        <Fontisto name="minus-a" size={18} style={{ color: "#aaa" }} />
                                                     </TouchableOpacity>
-                                                )
-                                            })}
 
-                                        </Row>
+                                                    <Text style={{ fontSize: 16, }}>
+                                                        {qty}
+                                                    </Text>
 
-                                        <Row style={{ alignItems: 'center', height: 35 }}>
+                                                    <TouchableOpacity onPress={() => handleIncrement()}
+                                                        style={styles.MPBotton}>
+                                                        <Fontisto name="plus-a" size={18} style={{ color: "#aaa" }} />
+                                                    </TouchableOpacity>
 
-                                            <TouchableOpacity onPress={() => handleDecrement()}
-                                                style={styles.MPBotton}>
-                                                <Fontisto name="minus-a" size={18} style={{ color: "#aaa" }} />
-                                            </TouchableOpacity>
-
-                                            <Text style={{ fontSize: 16, }}>
-                                                {qty}
-                                            </Text>
-
-                                            <TouchableOpacity onPress={() => handleIncrement()}
-                                                style={styles.MPBotton}>
-                                                <Fontisto name="plus-a" size={18} style={{ color: "#aaa" }} />
-                                            </TouchableOpacity>
-
-                                        </Row>
-                                    </Col>
+                                                </Row>
+                                            </Col>
 
 
-                                </View>
-                            </View>
+                                        </View>
+                                    </View>
 
-                            <Row style={styles.productDetailQtyContainer}>
-                                <View style={{ paddingVertical: 10 }}>
-                                    <Text>Free Shipping</Text>
-                                    {item.items.freeShipping == null ? (
-                                        <Text style={{ color: '#aaa' }}>
-                                            free shipping in phnom penh
+                                    <Row style={styles.productDetailQtyContainer}>
+                                        <View style={{ paddingVertical: 10 }}>
+                                            <Text>Free Shipping</Text>
+                                            {item.items.freeShipping == null ? (
+                                                <Text style={{ color: '#aaa' }}>
+                                                    free shipping in phnom penh
+                                                </Text>
+                                            ) : (
+                                                null
+                                            )}
+                                        </View>
+                                        <TouchableOpacity>
+                                            <MaterialIcons name='navigate-next' size={23} color={ICON_COLOR} />
+                                        </TouchableOpacity>
+                                    </Row>
+
+                                    <View style={styles.productSubDetail}>
+                                        <Text style={{ paddingVertical: 10 }}>Product Description</Text>
+                                        <Text style={{ paddingBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 17 }}>
+                                            {item.items.product_info.product_description}
                                         </Text>
-                                    ) : (
-                                        null
-                                    )}
-                                </View>
-                                <TouchableOpacity>
-                                    <MaterialIcons name='navigate-next' size={23} color={ICON_COLOR} />
-                                </TouchableOpacity>
-                            </Row>
+                                    </View>
 
-                            <View style={styles.productSubDetail}>
-                                <Text style={{ paddingVertical: 10 }}>Product Description</Text>
-                                <Text style={{ paddingBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 17 }}>
-                                    {item.items.product_info.product_description}
-                                </Text>
-                            </View>
+                                </>
+                            )
+                        }}
+                    />
+                }
+                <View style={styles.addToCartContaier}>
+                    <TouchableOpacity onPress={() => onAddToCart()}
+                        style={styles.addToCartBotton}>
+                        <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
+                        <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
+                    </TouchableOpacity>
 
-                        </>
-                    )
-                }}
-            />
+                </View>
+            </>
+            }
 
-            <View style={styles.addToCartContaier}>
-                <TouchableOpacity onPress={() => onAddToCart()}
-                    style={styles.addToCartBotton}>
-                    <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
-                    <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
-                </TouchableOpacity>
-
-            </View>
         </SafeAreaView>
     )
 }

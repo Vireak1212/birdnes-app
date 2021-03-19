@@ -124,42 +124,6 @@ const HomeScreen = () => {
         dispatch(createProduct(product))
     }
 
-    const _renderAllProduct = ({ item, index }: any) => {
-        const _AllProduct = item.items;
-        return (
-            <View key={index} style={styles.allProductContainer}>
-                <TouchableWithoutFeedback
-                    onPress={() => navigate.navigate('ProductDetail',
-                        { item }
-                    )}>
-                    <View style={{
-                        margin: 5
-                    }}>
-                        <FastImage style={{
-                            height: 150,
-                            width: '100%',
-                            borderRadius: 5,
-                        }}
-                            source={{ uri: _AllProduct.product_info.photos[0].photo_url }}
-                            resizeMode={FastImage.resizeMode.cover}
-                        />
-                        <Col style={{ paddingTop: 10 }}>
-                            <Text style={{ fontSize: 15, paddingBottom: 2 }} numberOfLines={2}>
-                                {_AllProduct.product_info.product_name}
-                            </Text>
-                            <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
-                                {_AllProduct.product_info.product_description}
-                            </Text>
-                            <Text style={styles.allProductPrice}
-                                numberOfLines={1}>
-                                {'$' + _AllProduct.product_info.units[0].price}
-                            </Text>
-                        </Col>
-                    </View>
-                </TouchableWithoutFeedback>
-            </View>
-        )
-    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -187,6 +151,7 @@ const HomeScreen = () => {
                                 <NewProduct />
                                 <FeatureStores />
                                 <TopProduct />
+                                <AllProduct />
 
                                 {/* <TouchableOpacity onPress={() => _addProudct()}
                                     style={{
@@ -197,31 +162,8 @@ const HomeScreen = () => {
 
                                 </TouchableOpacity> */}
 
-                                <View style={{
-                                    paddingTop: 5,
-                                    paddingHorizontal: 12,
-                                    paddingBottom: 15,
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <Text>All Product</Text>
-                                </View>
-                                <FlatGrid
-                                    scrollEnabled={true}
-                                    showsVerticalScrollIndicator={false}
-                                    listKey={makeid()}
-                                    itemDimension={130}
-                                    style={{
-                                        height: 'auto',
-                                        width: '100%',
-                                        borderRadius: 10,
-                                        marginBottom: -10,
-                                        marginTop: -10,
-                                    }}
-                                    renderItem={_renderAllProduct}
-                                    data={products}
-                                // data={color.slice(0, (Math.floor((width / 80)) * 2))}
-                                />
+
+
                             </>
                         )
                     }}

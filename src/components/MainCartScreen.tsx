@@ -19,9 +19,7 @@ const MainCartScreen = (props: any) => {
     const dispatch = useDispatch()
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
-
-    const [isLoading, setIsLoading] = useState(true)
-    const [count, setCount] = useState(1);
+    const [isLoadCompleted, setIsLoadCompleted] = useState(false)
 
     React.useEffect(() => {
 
@@ -287,7 +285,9 @@ const MainCartScreen = (props: any) => {
                             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>${carts.length === 0 ? 0 : carts.items.order_info.total_amount}</Text>
                         </Col>
 
-                        <TouchableOpacity onPress={() => navigate.navigate('CheckOut')}
+                        <TouchableOpacity onPress={() => navigate.navigate('CheckOut',
+                            { carts }
+                        )}
                             style={style.styleCHACKOUT}>
                             <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
                             <AntDesign name='playcircleo' size={20}

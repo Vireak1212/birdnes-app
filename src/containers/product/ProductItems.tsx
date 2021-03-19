@@ -14,8 +14,7 @@ import MainHeader from '../../custom_items/MainHeader';
 const screen = Dimensions.get('screen')
 
 const ProductItems = (props: any) => {
-    const { title } = props.route.params;
-    const products = useSelector((state: { products: any }) => state.products);
+    const { products, title } = props.route.params;
     const style = useSelector((state: { style: any }) => state.style)
     const navigate = useNavigation();
 

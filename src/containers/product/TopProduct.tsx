@@ -60,7 +60,8 @@ const TopProduct = () => {
             }}>
                 <Text>Top Products</Text>
                 {top_products.length > 8 && <TouchableOpacity onPress={() => navigate.navigate('ProductItem', {
-                    title: 'Top Products'
+                    title: 'Top Products',
+                    products: top_products,
                 })}>
                     <Text style={{ fontSize: 13, color: '#224889' }}>More</Text>
                 </TouchableOpacity>}

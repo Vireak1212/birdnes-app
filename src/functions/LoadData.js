@@ -1,4 +1,4 @@
-import { loadCart } from "../actions/Cart";
+import { loadCart, loadOrder } from "../actions/Cart";
 import { loadCategory } from "../actions/Category";
 import { loadClient } from "../actions/Client";
 import { loadNewProduct, loadProduct, loadTopProduct } from "../actions/Product";
@@ -15,4 +15,5 @@ export function loadData(dispatch) {
     dispatch(loadCategory());
     dispatch(loadStore());
     dispatch(loadCart());
+    dispatch(loadOrder());
 }

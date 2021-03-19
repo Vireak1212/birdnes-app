@@ -1,4 +1,4 @@
-const Cart = (state = [], action: { type: any; carts: any[]; error: any; }) => {
+export const Cart = (state = [], action: { type: any; carts: any[]; error: any; }) => {
     switch (action.type) {
         case 'LOAD_CART':
             return action.carts.length === 0 ? [] : action.carts[0];
@@ -9,4 +9,13 @@ const Cart = (state = [], action: { type: any; carts: any[]; error: any; }) => {
     }
 }
 
-export default Cart;
+export const OrderHistory = (state = [], action: { type: any; order_history: any[]; error: any; }) => {
+    switch (action.type) {
+        case 'LOAD_ORDER':
+            return action.order_history.length === 0 ? [] : action.order_history[0];
+        case 'ORDER_ERROR':
+            return action.error;
+        default:
+            return state;
+    }
+}

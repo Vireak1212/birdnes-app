@@ -12,6 +12,7 @@ import MainHeader from '../../custom_items/MainHeader';
 import { makeid } from '../../functions/PTFunction';
 
 const CheakoutScreen = (props: any) => {
+    const { data } = props.route.params;
     const navigate = useNavigation();
     const carts = useSelector((state: { carts: any }) => state.carts);
     const style = useSelector((state: { style: any }) => state.style)
@@ -50,7 +51,7 @@ const CheakoutScreen = (props: any) => {
                                 backgroundColor: '#fff',
                                 height: 80,
                                 width: '100%',
-                                borderWidth: 0.2,
+                                borderWidth: 0.5,
                                 marginTop: 10,
                                 borderColor: '#224889',
                                 borderRadius: 5,
@@ -72,14 +73,15 @@ const CheakoutScreen = (props: any) => {
                                             backgroundColor: '#eee'
                                         }} />
                                 </TouchableOpacity>
-
                             </Row>
+
                             <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
+
                             <Row style={{
                                 backgroundColor: '#fff',
                                 height: 80,
                                 width: '100%',
-                                borderWidth: 0.2,
+                                borderWidth: 0.5,
                                 marginTop: 10,
                                 borderColor: '#224889',
                                 borderRadius: 5,
@@ -108,10 +110,9 @@ const CheakoutScreen = (props: any) => {
                                     flexDirection: 'row',
                                     backgroundColor: '#fff',
                                     alignItems: 'center',
-                                    width: '100%',
                                     borderRadius: 10,
                                     marginTop: 10,
-                                    shadowColor: "#000",
+                                    marginHorizontal: 15
                                 }}>
                                     <TouchableOpacity>
                                         <FastImage
@@ -124,21 +125,25 @@ const CheakoutScreen = (props: any) => {
                                             }} />
 
                                     </TouchableOpacity>
-                                    <Col style={{ marginLeft: 15 }}>
+                                    <Col style={{ marginLeft: 5 }}>
                                         <Text style={{
                                             color: '#000',
-                                            fontSize: 18
+                                            fontSize: 16
                                         }} numberOfLines={1}>
                                             {_product.product_name}
                                         </Text>
                                         <Text style={{ color: '#aaa' }} numberOfLines={2}>
                                             code: {_product.product_code}
                                         </Text>
-                                        <Text style={{ color: 'red' }} numberOfLines={2}>
-                                            price: ${_product.unit.price}
-                                        </Text>
-                                        <Text style={{ color: '#aaa' }} numberOfLines={2}>
+
+                                        {/* <Text style={{ color: '#aaa' }} numberOfLines={2}>
                                             {_product.unit.unit_name}
+                                        </Text> */}
+                                        <Text style={{ color: '#aaa' }} numberOfLines={2}>
+                                            x{_product.qty} {_product.unit.unit_name}
+                                        </Text>
+                                        <Text style={{ color: 'red' }} numberOfLines={2}>
+                                            price: ${_product.amount}
                                         </Text>
                                     </Col>
                                 </View>
@@ -151,7 +156,7 @@ const CheakoutScreen = (props: any) => {
                     <View style={style.checkOutContainer}>
                         <Col>
                             <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>${carts.items.order_info.amount}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>${carts.items.order_info.total_amount}</Text>
                         </Col>
 
                         <TouchableOpacity onPress={() => {
@@ -182,7 +187,6 @@ const CheakoutScreen = (props: any) => {
         </SafeAreaView>
     );
 }
-
 
 export default CheakoutScreen;
 const styles = StyleSheet.create({})
