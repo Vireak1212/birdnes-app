@@ -18,6 +18,7 @@ import { addToCart, updateCart } from '../../actions/Cart';
 import { MAIN_COLOR } from '../../styles/index';
 import Swiper from 'react-native-swiper'
 import ImageView from './ImageView';
+import NumberFormat from 'react-number-format';
 
 
 const screen = Dimensions.get('screen')
@@ -227,14 +228,13 @@ const ProductDetail = (props: any) => {
         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
     </TouchableOpacity>
 
-    console.log(carts.length)
     const rightIcon = () => <TouchableOpacity
         onPress={() => navigate.navigate('CartDetail',
             { isBack: true }
         )}>
         {carts.length == 0 ? null :
-            <View style={styles.itemCountContainer}>
-                <Text style={styles.itemCountText}>{carts.length === 0 ? '' : carts.items.order_info.products.length}</Text>
+            <View style={style.itemCountContainer}>
+                <Text style={style.itemCountText}>{carts.length === 0 ? '' : carts.items.order_info.products.length}</Text>
             </View>
         }
         <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
@@ -274,23 +274,9 @@ const ProductDetail = (props: any) => {
                         renderItem={({ index }: any) => {
                             return (
                                 <>
-                                    {/* <View style={styles.detailImageContainer}>
-                                {galleries.map((gallery: any, index: any) => (
-                                    <FastImage key={index} style={{
-                                        height: 250,
-                                        width: '100%',
-                                        borderRadius: 10,
-                                    }}
-                                        source={{ uri: gallery.photo_url }}
-                                        resizeMode={FastImage.resizeMode.cover}
-                                    />
-                                ))}
 
-
-                            </View> */}
-
-                                    <View style={styles.carouselArea}>
-                                        <Swiper style={styles.wrapper}
+                                    <View style={{ height: screen.width / 1.6, }}>
+                                        <Swiper
                                             horizontal
                                             autoplay={false}
                                             showsButtons={false}
@@ -302,12 +288,12 @@ const ProductDetail = (props: any) => {
                                             {
                                                 galleries.map((gallery: any, index: any) => {
                                                     return (
-                                                        <View key={index} style={styles.slide1}>
+                                                        <View key={index} style={style.productDetailSlide}>
                                                             <TouchableWithoutFeedback onPress={() => {
                                                                 setCurrentIndex(index)
                                                                 setIsViewImage(true)
                                                             }}>
-                                                                <FastImage style={styles.slideImage}
+                                                                <FastImage style={style.slideImage}
                                                                     source={{ uri: gallery.photo_url }}
                                                                     resizeMode={FastImage.resizeMode.cover}
                                                                 />
@@ -326,7 +312,7 @@ const ProductDetail = (props: any) => {
                                         paddingVertical: 10,
                                         backgroundColor: '#fff'
                                     }}>
-                                        <Row style={styles.productDetailContainer}>
+                                        <Row style={style.productDetailContainer}>
                                             <Col>
                                                 <Text style={{
                                                     fontSize: 19,
@@ -346,6 +332,7 @@ const ProductDetail = (props: any) => {
                                                     />
                                                 </View>
                                             </Col>
+
                                             <View style={{ alignItems: 'center' }}>
                                                 <TouchableOpacity onPress={() => {
                                                     addToFavorite()
@@ -355,15 +342,25 @@ const ProductDetail = (props: any) => {
                                                     <FontAwesome name={!isFavorite ? "star-o" : "star"} size={30}
                                                         color={!isFavorite ? '#aaa' : '#FFD700'} />
                                                 </TouchableOpacity>
-                                                <Text style={styles.productDetailPrice}>
-                                                    {unit.price + '$'}
-                                                </Text>
+
+                                                <NumberFormat
+                                                    value={unit.price}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    decimalScale={2}
+                                                    fixedDecimalScale={true}
+                                                    prefix={''}
+                                                    renderText={value =>
+                                                        <Text style={style.productDetailPrice}
+                                                            numberOfLines={1}
+                                                        >{"$ " + value}
+                                                        </Text>} />
                                             </View>
 
                                         </Row>
                                     </View>
 
-                                    <View style={styles.productSubDetail}>
+                                    <View style={style.productSubDetail}>
                                         <View style={{
                                             paddingVertical: 10,
                                             justifyContent: 'space-around',
@@ -379,7 +376,7 @@ const ProductDetail = (props: any) => {
                                                     {item.items.product_info.units.map((_unit: any) => {
                                                         return (
                                                             <TouchableOpacity key={_unit.unit_id} onPress={() => onUnitPress(_unit)}
-                                                                style={[styles.unitButton, {
+                                                                style={[style.unitButton, {
                                                                     borderColor: _unit.unit_id === unit.unit_id ? '#224889' : '#000',
                                                                 }]}>
                                                                 <Text style={{
@@ -397,7 +394,7 @@ const ProductDetail = (props: any) => {
                                                 <Row style={{ alignItems: 'center', height: 35 }}>
 
                                                     <TouchableOpacity onPress={() => handleDecrement()}
-                                                        style={styles.MPBotton}>
+                                                        style={style.MPBotton}>
                                                         <Fontisto name="minus-a" size={18} style={{ color: "#aaa" }} />
                                                     </TouchableOpacity>
 
@@ -406,7 +403,7 @@ const ProductDetail = (props: any) => {
                                                     </Text>
 
                                                     <TouchableOpacity onPress={() => handleIncrement()}
-                                                        style={styles.MPBotton}>
+                                                        style={style.MPBotton}>
                                                         <Fontisto name="plus-a" size={18} style={{ color: "#aaa" }} />
                                                     </TouchableOpacity>
 
@@ -417,7 +414,7 @@ const ProductDetail = (props: any) => {
                                         </View>
                                     </View>
 
-                                    <Row style={styles.productDetailQtyContainer}>
+                                    <Row style={style.productDetailQtyContainer}>
                                         <View style={{ paddingVertical: 10 }}>
                                             <Text>Free Shipping</Text>
                                             {item.items.freeShipping == null ? (
@@ -433,9 +430,9 @@ const ProductDetail = (props: any) => {
                                         </TouchableOpacity>
                                     </Row>
 
-                                    <View style={styles.productSubDetail}>
+                                    <View style={style.productSubDetail}>
                                         <Text style={{ paddingVertical: 10 }}>Product Description</Text>
-                                        <Text style={{ paddingBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 17 }}>
+                                        <Text style={style.productDetailDescriptions}>
                                             {item.items.product_info.product_description}
                                         </Text>
                                     </View>
@@ -445,9 +442,9 @@ const ProductDetail = (props: any) => {
                         }}
                     />
                 }
-                <View style={styles.addToCartContaier}>
+                <View style={style.addToCartContaier}>
                     <TouchableOpacity onPress={() => onAddToCart()}
-                        style={styles.addToCartBotton}>
+                        style={style.addToCartBotton}>
                         <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
                         <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
                     </TouchableOpacity>
@@ -462,123 +459,4 @@ const ProductDetail = (props: any) => {
 
 export default ProductDetail
 
-const styles = StyleSheet.create({
-    carouselArea: {
-        height: screen.width / 1.6,
-    },
-    wrapper: {},
-    slide1: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10
-    },
-    text: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold'
-    },
-    slideImage: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 10,
-    },
-
-
-    addToCartContaier: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        position: 'absolute',
-        bottom: 12,
-    },
-    unitButton: {
-        marginLeft: 15,
-        borderWidth: 0.2,
-        borderRadius: 5,
-        height: 23,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    itemCountContainer: {
-        position: 'absolute',
-        height: 20,
-        width: 20,
-        borderRadius: 10,
-        backgroundColor: 'rgba(255, 99, 71, 0.8)',
-        right: 20,
-        bottom: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        // zIndex: 2000
-    },
-    itemCountText: {
-        color: 'white',
-        fontWeight: 'bold',
-        paddingBottom: 2
-    },
-    addToCartBotton: {
-        height: 50,
-        // marginRight: 15,
-        paddingHorizontal: 20,
-        borderRadius: 25,
-        alignSelf: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: "center",
-        backgroundColor: 'rgba(34,72,137,0.9)',
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
-
-        elevation: 2,
-    },
-    productDetailQtyContainer: {
-        marginTop: 5,
-        paddingHorizontal: 15,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    productSubDetail: {
-        marginTop: 5,
-        paddingHorizontal: 15,
-        backgroundColor: '#fff',
-    },
-    detailImageContainer: {
-        paddingTop: 10,
-        paddingHorizontal: 10,
-        backgroundColor: '#fff'
-    },
-    MPBotton: {
-        width: 30,
-        height: 30,
-        marginHorizontal: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 0.2
-    },
-    productDetailContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    productDetailName: {
-        fontSize: 12,
-        color: '#FF6666',
-        fontWeight: 'bold'
-    },
-    productDetailPrice: {
-        fontSize: 17,
-        paddingHorizontal: 10,
-        color: PRICE_COLOR,
-        fontWeight: 'bold'
-    },
-
-})
+const styles = StyleSheet.create({})

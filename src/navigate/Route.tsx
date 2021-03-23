@@ -37,6 +37,8 @@ import VerifyScreen from '../components/auth/VerifyScreen';
 import CheakoutScreen from '../containers/order/CheakoutScreen';
 import MapScreen from './../components/MapScreen';
 import OrderSuccessful from './../containers/product/OrderSuccessful';
+import OrderDetail from '../containers/order/OrderDetail';
+import SearchProducts from '../containers/home/SearchProducts';
 
 
 
@@ -64,6 +66,7 @@ const Route = () => {
         <Stack.Screen name="Comfirm" component={VerifyScreen} />
 
         <Stack.Screen name="Order" component={OrderHistory} />
+        <Stack.Screen name="OrderDetail" component={OrderDetail} />
         <Stack.Screen name="Favorite" component={Wishlish} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="ShippingAdress" component={ShippingAddress} />
@@ -74,11 +77,11 @@ const Route = () => {
         <Stack.Screen name="StoreDetail" component={StoreDetail} />
 
         <Stack.Screen name="Successful" component={OrderSuccessful} />
+        <Stack.Screen name="SearchProduct" component={SearchProducts} />
         <Stack.Screen name="AllStore" component={MainStoreScreen} />
         <Stack.Screen name="AllProduct" component={AllProduct} />
         <Stack.Screen name="ProductItem" component={ProductItems} />
         <Stack.Screen name="CartDetail" component={MainCartScreen} />
-        <Stack.Screen name="homeSearch" component={HomeSearch} />
         <Stack.Screen name="productCategory" component={ProductOfCategory} />
 
       </Stack.Navigator>

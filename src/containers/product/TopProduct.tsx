@@ -4,21 +4,21 @@ import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { FlatList } from 'react-native-gesture-handler';
-import { FlatGrid } from 'react-native-super-grid'
+import NumberFormat from 'react-number-format';
 import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction'
-import { PRICE_COLOR } from '../../styles';
 const screen = Dimensions.get('screen')
 
 const TopProduct = () => {
     const top_products = useSelector((state: { top_products: any }) => state.top_products);
+    const style = useSelector((state: { style: any }) => state.style);
 
     const navigate = useNavigation();
 
     const _renderTopProduct = ({ item, index }: any) => {
         const _product = item.items;
         return (
-            <View key={index} style={[styles.TopProductContainer, {
+            <View key={index} style={[style.topProductContainer, {
                 marginLeft: index === 0 ? 10 : 0,
                 marginHorizontal: 10,
                 marginBottom: 10,
@@ -40,10 +40,19 @@ const TopProduct = () => {
                             {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_product.description}
                         </Text> */}
-                            <Text style={styles.topProductPrice}
-                                numberOfLines={1}>
-                                {'$' + _product.product_info.units[0].price}
-                            </Text>
+
+                            <NumberFormat
+                                value={_product.product_info.units[0].price}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                decimalScale={2}
+                                fixedDecimalScale={true}
+                                prefix={''}
+                                renderText={value =>
+                                    <Text style={style.topProductPrice}
+                                        numberOfLines={1}
+                                    >{"$ " + value}
+                                    </Text>} />
                         </Col>
                     </View>
                 </TouchableWithoutFeedback>
@@ -52,12 +61,7 @@ const TopProduct = () => {
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{
-                paddingHorizontal: 12,
-                paddingBottom: 15,
-                flexDirection: 'row',
-                justifyContent: 'space-between'
-            }}>
+            <View style={style.topProductTitle}>
                 <Text>Top Products</Text>
                 {top_products.length > 8 && <TouchableOpacity onPress={() => navigate.navigate('ProductItem', {
                     title: 'Top Products',
@@ -90,25 +94,4 @@ const TopProduct = () => {
 
 export default TopProduct
 
-const styles = StyleSheet.create({
-    topProductPrice: {
-        fontSize: 14,
-        paddingVertical: 3,
-        fontWeight: 'bold',
-        color: PRICE_COLOR
-    },
-    TopProductContainer: {
-        backgroundColor: '#fff',
-        width: screen.width * 3 / 10,
-        borderRadius: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
-
-        elevation: 1,
-    }
-})
+const styles = StyleSheet.create({})

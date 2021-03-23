@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import { MAIN_COLOR } from '../styles/index';
 import { updateCart, deleteCart } from '../actions/Cart';
+import NumberFormat from 'react-number-format';
 
 const MainCartScreen = (props: any) => {
 
@@ -149,9 +150,20 @@ const MainCartScreen = (props: any) => {
                             <Text style={{ color: '#aaa' }} numberOfLines={2}>
                                 code: {_cart.product_code}
                             </Text>
-                            <Text style={{ color: '#444' }} numberOfLines={2}>
-                                price: ${_cart.unit.price}
-                            </Text>
+
+                            <NumberFormat
+                                value={_cart.unit.price}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                decimalScale={2}
+                                fixedDecimalScale={true}
+                                prefix={''}
+                                renderText={value =>
+                                    <Text style={{ color: '#444' }}
+                                        numberOfLines={1}
+                                    >{"price: " + "$ " + value}
+                                    </Text>} />
+
                             <Text style={{ color: '#444' }} numberOfLines={2}>
                                 {_cart.unit.unit_name}
                             </Text>

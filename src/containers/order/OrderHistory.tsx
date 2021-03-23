@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MainHeader from '../../custom_items/MainHeader';
@@ -7,13 +7,11 @@ import { Col, Row } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
+import NumberFormat from 'react-number-format';
 
 
 const OrderHistory = (props: any) => {
     const order_history = useSelector((state: { order_history: any }) => state.order_history);
-    console.log(order_history.items.order_info.products[0].unit.photo_url)
-
-    const data = [0, 1, 2, 3, 4, 5, 6];
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
 
@@ -33,20 +31,23 @@ const OrderHistory = (props: any) => {
                 marginTop: 10,
                 marginBottom: index == order_history.items.order_info.products.length - 1 ? 10 : 0
             }}>
-                <FastImage
-                    source={{ uri: _order.unit.photo_url }}
-                    style={{
+                <TouchableOpacity onPress={() => navigate.navigate('OrderDetail',
+                    { item }
+                )} >
+                    <FastImage style={{
                         height: 120,
                         width: 120,
                         borderRadius: 10,
-                        // borderTopLeftRadius: 5,
-                        // borderBottomLeftRadius: 5,
                         backgroundColor: '#ddd'
-                    }} />
+                    }}
+                        source={{ uri: _order.unit.photo_url }}
+                        resizeMode={FastImage.resizeMode.cover}
+                    />
+                </TouchableOpacity>
                 <Col style={{
                     justifyContent: 'space-between',
                     alignSelf: 'flex-start',
-                    padding: 10
+                    padding: 10,
                 }}>
                     <View style={{
                     }}>
@@ -57,16 +58,27 @@ const OrderHistory = (props: any) => {
                             code: {_order.product_code}
                         </Text>
                         <Text style={{ color: '#aaa' }} numberOfLines={1}>
-                            x{_order.amount} {_order.unit.unit_name}
+                            x{_order.qty} {_order.unit.unit_name}
                         </Text>
                     </View>
                     <Row style={{
                         alignItems: 'center',
                         justifyContent: 'space-between',
                     }}>
-                        <Text style={{ fontSize: 16, color: 'red' }}>
-                            price : {_order.unit.price}
-                        </Text>
+
+                        <NumberFormat
+                            value={_order.amount}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                            prefix={''}
+                            renderText={value =>
+                                <Text style={{ color: 'red' }}
+                                    numberOfLines={1}
+                                >{"price: " + "$ " + value}
+                                </Text>} />
+
                         <TouchableOpacity style={{
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -87,6 +99,22 @@ const OrderHistory = (props: any) => {
         )
     }
 
+    const noItem = () => {
+        return (
+            <View style={style.cartImageContainer}>
+                <Image style={{
+                    height: 200,
+                    width: 200,
+                }}
+                    source={require('../../images/empty-cart-rappi.png')}
+                    resizeMode='cover'
+                    resizeMethod='resize'
+                />
+                <Text style={{ opacity: 0.5 }}>Order Empty</Text>
+            </View>
+        )
+    }
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
@@ -95,7 +123,7 @@ const OrderHistory = (props: any) => {
                 leftIcon={leftIcon()}
             />
             {order_history.length !== 0 ?
-                order_history.items.order_info.products.length == 0 ? null
+                order_history.items.order_info.products.length == 0 ? noItem()
                     : (
                         <FlatList
                             style={{
@@ -106,11 +134,8 @@ const OrderHistory = (props: any) => {
                             keyExtractor={(item, index) => index.toString()}
                             showsVerticalScrollIndicator={false}
                         />
-                    ) : null
+                    ) : noItem()
             }
-
-
-
         </SafeAreaView>
     )
 }
@@ -120,7 +145,6 @@ export default OrderHistory
 const styles = StyleSheet.create({
     textcolor: {
         color: '#000',
-
         fontSize: 16
     },
     textDateSwiftNews: {
@@ -129,7 +153,6 @@ const styles = StyleSheet.create({
         height: 18,
         fontSize: 13,
         paddingTop: 1
-    }
-
+    },
 
 })

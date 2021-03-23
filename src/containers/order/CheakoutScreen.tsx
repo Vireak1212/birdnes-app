@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import NumberFormat from 'react-number-format';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCart } from '../../actions/Cart';
 import MainHeader from '../../custom_items/MainHeader';
@@ -142,9 +143,19 @@ const CheakoutScreen = (props: any) => {
                                         <Text style={{ color: '#aaa' }} numberOfLines={2}>
                                             x{_product.qty} {_product.unit.unit_name}
                                         </Text>
-                                        <Text style={{ color: 'red' }} numberOfLines={2}>
-                                            price: ${_product.amount}
-                                        </Text>
+
+                                        <NumberFormat
+                                            value={_product.amount}
+                                            displayType={'text'}
+                                            thousandSeparator={true}
+                                            decimalScale={2}
+                                            fixedDecimalScale={true}
+                                            prefix={''}
+                                            renderText={value =>
+                                                <Text style={{ color: 'red' }}
+                                                    numberOfLines={1}
+                                                >{"price: " + "$ " + value}
+                                                </Text>} />
                                     </Col>
                                 </View>
                             )

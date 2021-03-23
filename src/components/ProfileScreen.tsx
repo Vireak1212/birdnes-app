@@ -1,6 +1,6 @@
-import { Col, Row } from 'native-base';
+import { Col, Row, Toast } from 'native-base';
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -9,9 +9,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { MAIN_COLOR } from '../styles/index'
 import MainHeader from '../custom_items/MainHeader';
-import { useSelector } from 'react-redux';
-import MultiImage from 'react-native-image-crop-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-picker'
+import { GetImage } from '../functions/PTFunction';
+import { updateClient } from '../actions/Client';
 
 const ProfileScreen = () => {
     const clients = useSelector((state: { clients: any }) => state.clients);
@@ -19,15 +21,17 @@ const ProfileScreen = () => {
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
 
+    const dispatch = useDispatch();
+
     const selectImage = () => {
         const options = {
             title: 'Choose Image',
             cancelButtonTitle: 'Cancel',
             takePhotoButtonTitle: 'Take Photo...',
             chooseFromLibraryButtonTitle: 'Choose From Gallery...',
-            quality: 0.8,
-            maxWidth: 500,
-            maxHeight: 500,
+            quality: 1,
+            maxWidth: 800,
+            maxHeight: 512,
             storageOptions: {
                 skipBackup: true,
             },
@@ -38,15 +42,67 @@ const ProfileScreen = () => {
                 return;
             } else if (response.error) {
                 console.log(response.error)
-
+                Toast.show({
+                    text: `Can't get image!`,
+                    type: 'danger',
+                    duration: 2000,
+                });
             } else {
                 let source = { uri: response.uri };
                 // You can also display the image using data:
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 setPhoto_url(source);
+                onSave(source)
             }
         });
     };
+
+    const onSave = async (source: any) => {
+        if (
+            source.uri !== '' &&
+            source.uri !== undefined &&
+            source.uri !== null
+        ) {
+            const { uri } = source;
+            let file_name = '';
+            let file_image = '';
+            let is_add_image = false;
+
+            clients.items.client_info.photo_url !== uri
+            is_add_image = true;
+
+            if (is_add_image) {
+                file_name = uri.substring(uri.lastIndexOf('/') + 1);
+                const uploadUri =
+                    Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+                const task = storage()
+                    .ref('/profiles/' + file_name)
+                    .putFile(uploadUri);
+                try {
+                    await task;
+                    file_image = await GetImage(file_name, 'profiles');
+                    onUpdateToDB(file_name, file_image,)
+                } catch (e) {
+                    console.log(e);
+                    Toast.show({
+                        text: 'System was problem!',
+                        type: 'danger',
+                        duration: 2000,
+                    });
+                    return;
+                }
+            }
+
+        }
+    }
+
+    const onUpdateToDB = async (file_name: any, file_image: any) => {
+        // (clients.items.client_info.photo_url !== '' && clients.items.client_info.photo_url_file_name)
+        let _cleint: any = clients;
+        _cleint.items.client_info.photo_url = file_image
+        _cleint.items.items.client_info.photo_url_file_name = file_name;
+        dispatch(updateClient(clients.id, _cleint.items));
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#eee' }}>
@@ -59,17 +115,24 @@ const ProfileScreen = () => {
                     marginBottom: 15,
                     flexDirection: 'row'
                 }}>
-                    <View style={style.backgroundImage}>
-                        <Image style={style.Imagestyle}
-                            source={photo_url}
-                            resizeMethod="auto"
-                            resizeMode="cover"
-                        />
+                    {photo_url.uri === '' ? (
+                        <View style={style.backgroundImage}>
+                            <TouchableOpacity style={style.Camera} onPress={() => selectImage()}>
+                                <Entypo name='camera' size={20} color='#000' />
+                            </TouchableOpacity>
+                        </View>
 
-                        <TouchableOpacity style={style.Camera} onPress={selectImage}>
-                            <Entypo name='camera' size={20} color='#000' />
-                        </TouchableOpacity>
-                    </View>
+                    ) : (
+                        <View style={style.backgroundImage}>
+                            <Image style={style.Imagestyle}
+                                source={photo_url}
+                                resizeMethod="auto"
+                                resizeMode="cover"
+                            />
+
+                        </View>
+                    )}
+
 
                     <Col style={{
                         marginRight: 15,

@@ -3,23 +3,26 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Platform, Dimensions, Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
-import Category from '../containers/category/Category';
-import HotCategory from '../containers/category/HotCategory';
 import MainHeader from '../custom_items/MainHeader';
 import { makeid } from '../functions/PTFunction';
 import style, { PRICE_COLOR } from '../styles/index';
 import { FlatGrid } from 'react-native-super-grid';
 import { MAIN_COLOR } from '../styles/index';
+import FastImage from 'react-native-fast-image';
 const screen = Dimensions.get('screen')
 
 const MainCategoryScreen = (props: any) => {
     const navigate = useNavigation();
+    // const products = useSelector((state: { products: any }) =>
+    //     state.products).filter((r: { items: { category_info: { id: any; }; }; }) => r.items.category_info.id);
+
     const [mainCategoryId, setMainCategoryId] = useState("")
     const [categoryId, setCategoryId] = useState("")
     const [backState, setBackState] = useState<any>([])
     const categories = useSelector((state: { categories: any }) => state.categories);
     const [mainCategories, setMainCategories] = useState<any>([])
     const [subCategories, setSubCategories] = useState<any>([])
+    const [products, setProducts] = useState<any>([])
 
     useEffect(() => {
         if (categories.length > 0) {
@@ -63,6 +66,12 @@ const MainCategoryScreen = (props: any) => {
         }
     }, [mainCategoryId])
 
+    useEffect(() => {
+        if (products.length > 0) {
+            setProducts(products.filter((r: any) => r.items.category_info.id === mainCategoryId))
+        }
+    }, [categoryId])
+
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
@@ -94,6 +103,7 @@ const MainCategoryScreen = (props: any) => {
         _backState.push(item.id);
         setBackState(_backState)
         setCategoryId(item.id)
+        // setProducts(item.id)
     }
 
     const onBackCategory = () => {
@@ -102,6 +112,7 @@ const MainCategoryScreen = (props: any) => {
             _backState.length = backState.length - 1;
             setBackState(_backState)
             setCategoryId(_backState[backState.length - 1])
+            // setProducts(_backState[backState.length - 1])
         }
     }
 
@@ -150,6 +161,28 @@ const MainCategoryScreen = (props: any) => {
             </TouchableOpacity>
         )
     }
+
+    const _renderProduct = ({ item, index }: any) => {
+        return (
+            <TouchableOpacity onPress={() => navigate.navigate('ProductDetail',
+                { item })}>
+                <View style={{
+                    height: 100,
+                    borderRadius: 5,
+                    width: screen.width * 3 / 10,
+                    backgroundColor: '#fff',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <FastImage source={{ uri: item.items.product_info.photos[0].photo_url }}
+                        style={{ height: '100%', width: '100%' }}
+                        resizeMode={FastImage.resizeMode.cover}
+                    />
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <MainHeader
@@ -184,6 +217,19 @@ const MainCategoryScreen = (props: any) => {
                 ListEmptyComponent={null}
                 keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
                 renderItem={_renderCategory}
+
+            />
+
+            <FlatGrid
+                removeClippedSubviews={Platform.OS == 'ios' ? false : true}
+                showsVerticalScrollIndicator={false}
+                itemDimension={95}
+                data={products.filter((r: { items: { category_info: { id: any; }; }; }) => r.items.category_info.id)}
+                listKey={makeid()}
+                ListEmptyComponent={null}
+                keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
+                renderItem={_renderProduct}
+                style={{}}
 
             />
 
