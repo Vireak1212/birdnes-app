@@ -1,39 +1,134 @@
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ScrollView, Image } from 'react-native';
+// import React from 'react'
+// import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ScrollView, Image } from 'react-native';
+// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+// import Feather from 'react-native-vector-icons/Feather';
+// import Entypo from 'react-native-vector-icons/Entypo';
+// import AntDesign from 'react-native-vector-icons/AntDesign';
+// import { useNavigation } from '@react-navigation/native';
+// import style, { ICON_COLOR, MAIN_COLOR } from '../../styles/index'
+// import MainHeader from '../../custom_items/MainHeader';
+// import { ScrollableTab, Tab, Tabs } from 'native-base';
+// import StoreIteam from './StoreIteam';
+
+// const product = [
+//     {
+//         product_type: 'Product',
+//         price: '3.5'
+//     },
+//     {
+//         product_type: 'Spacial',
+//         price: '2.5'
+//     },
+//     {
+//         product_type: 'Collection',
+//         price: '1.5'
+//     },
+//     {
+//         product_type: 'Info',
+//         price: '1.5'
+//     },
+
+// ]
+
+// const StoreDetail = (props: any) => {
+//     const { item } = props.route.params;
+//     const store_name = item.items.store_name;
+//     const navigate = useNavigation();
+
+//     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
+//         onPress={() => navigate.goBack()}>
+//         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
+//     </TouchableOpacity>
+
+//     return (
+//         <SafeAreaView style={{ flex: 1, backgroundColor: '#f6f6f6' }}>
+//             <MainHeader
+//                 title={store_name}
+//                 leftIcon={leftIcon()}
+//             // rightIcon={rightIcon()}
+//             />
+//             <ScrollView showsVerticalScrollIndicator={false}>
+//                 <View>
+//                     <Image style={{
+//                         height: 250,
+//                         width: '100%'
+//                     }}
+//                         source={{ uri: item.items.store_cover }}
+//                         resizeMode='cover'
+//                         resizeMethod='resize'
+//                     />
+//                 </View>
+
+//                 <Tabs renderTabBar={(props: any) => (
+//                     <ScrollableTab
+//                         underlineStyle={{ height: 0, }}
+//                         style={{ alignItems: 'center', height: 60 }}
+//                         backgroundColor="#fff"
+//                     />
+//                 )}>
+//                     {product.map((item: any, index: any) => {
+//                         const data = item.items;
+//                         return (
+//                             <Tab
+//                                 key={index}
+//                                 activeTabStyle={styles.activeTabUPS}
+//                                 tabStyle={styles.tabUPS}
+//                                 textStyle={styles.textUPS}
+//                                 activeTextStyle={styles.activeTextUPS}
+//                                 heading={item.product_type}>
+//                                 <StoreIteam {...props} />
+//                             </Tab>
+//                         )
+//                     })}
+//                 </Tabs>
+//             </ScrollView>
+//         </SafeAreaView>
+//     )
+// }
+
+// export default StoreDetail
+
+// const styles = StyleSheet.create({
+//     activeTabUPS: {
+//         backgroundColor: '#fff',
+//         borderRadius: 20,
+//     },
+//     tabUPS: {
+//         backgroundColor: '#fff',
+//         borderRadius: 20
+//     },
+//     activeTextUPS: {
+//         color: MAIN_COLOR,
+//         fontWeight: 'bold',
+//     },
+//     textUPS: {
+//         color: '#bbb',
+//         fontWeight: 'bold',
+//     },
+// })
+
+
+
+import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ScrollView, Image, Linking, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import style, { ICON_COLOR, MAIN_COLOR } from '../../styles/index'
 import MainHeader from '../../custom_items/MainHeader';
-import { ScrollableTab, Tab, Tabs } from 'native-base';
-import StoreIteam from './StoreIteam';
-
-const product = [
-    {
-        product_type: 'Product',
-        price: '3.5'
-    },
-    {
-        product_type: 'Spacial',
-        price: '2.5'
-    },
-    {
-        product_type: 'Collection',
-        price: '1.5'
-    },
-    {
-        product_type: 'Info',
-        price: '1.5'
-    },
-
-]
-
+import { Col, Row } from 'native-base';
+import StarRating from 'react-native-star-rating';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import FastImage from 'react-native-fast-image';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const StoreDetail = (props: any) => {
     const { item } = props.route.params;
     const store_name = item.items.store_name;
     const navigate = useNavigation();
+    const addToFavorite = () => {
+        setIsFavorite(value => !value)
+    }
+    const [isFavorite, setIsFavorite] = useState(false)
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
@@ -45,42 +140,98 @@ const StoreDetail = (props: any) => {
             <MainHeader
                 title={store_name}
                 leftIcon={leftIcon()}
-            // rightIcon={rightIcon()}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View>
-                    <Image style={{
-                        height: 250,
+                <View style={{}}>
+                    <FastImage style={{
+                        height: 220,
                         width: '100%'
                     }}
                         source={{ uri: item.items.store_cover }}
-                        resizeMode='cover'
-                        resizeMethod='resize'
+                        resizeMode={FastImage.resizeMode.cover}
+
                     />
                 </View>
+                <View style={{
+                    paddingHorizontal: 15,
+                    padding: 15,
+                    backgroundColor: '#eee'
+                }}>
 
-                <Tabs renderTabBar={(props: any) => (
-                    <ScrollableTab
-                        underlineStyle={{ height: 0, }}
-                        style={{ alignItems: 'center', height: 60 }}
-                        backgroundColor="#fff"
-                    />
-                )}>
-                    {product.map((item: any, index: any) => {
-                        const data = item.items;
-                        return (
-                            <Tab
-                                key={index}
-                                activeTabStyle={styles.activeTabUPS}
-                                tabStyle={styles.tabUPS}
-                                textStyle={styles.textUPS}
-                                activeTextStyle={styles.activeTextUPS}
-                                heading={item.product_type}>
-                                <StoreIteam {...props} />
-                            </Tab>
-                        )
-                    })}
-                </Tabs>
+                    <Col>
+                        <Text style={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            color: '#000'
+                        }}>{store_name}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, marginVertical: 5, color: '#000' }}>
+                            ESSENTIALS | GLOCERY STORE</Text>
+                        <View style={{ alignSelf: 'flex-start', flexDirection: 'row' }}>
+
+                            <StarRating
+                                disabled={false}
+                                maxStars={5}
+                                rating={3}
+                                fullStarColor="gold"
+                                starSize={20}
+                                containerStyle={{ width: 80 }}
+                            />
+
+                            <Text style={{ marginLeft: 30, color: '#000' }}>32 Reviews</Text>
+                        </View>
+                    </Col>
+
+                </View>
+
+                <Row style={styles.borderstyle}>
+                    <TouchableOpacity onPress={() => navigate.navigate('Map')}>
+                        <Entypo name="location-pin" size={25} style={{
+                            color: '#c96116', marginLeft: 10
+                        }} />
+                    </TouchableOpacity>
+
+                    <Text style={styles.styletext}>5d St 149, Phnom Penh, Cambodia</Text>
+                </Row>
+                <Row style={styles.borderstyle}>
+                    <TouchableOpacity onPress={() => { Linking.openURL(`tel:010522777`) }}>
+                        <Feather name="phone-call" size={25} style={{
+                            color: '#c96116', marginLeft: 10
+                        }} />
+                    </TouchableOpacity>
+
+                    <Text style={styles.styletext}>010 522 777</Text>
+                </Row>
+                <Row style={styles.borderstyle}>
+                    <TouchableOpacity onPress={() => Linking.openURL('mailto:support@example.com')}>
+                        <Entypo name="mail" size={25} style={{
+                            color: '#c96116', marginLeft: 10
+                        }} />
+                    </TouchableOpacity>
+
+                    <Text style={styles.styletext}>siengtanglim@gmail.com</Text>
+                </Row>
+                <Row style={styles.borderstyle}>
+                    <TouchableOpacity onPress={() => {
+                        Alert.alert('Coming Soon')
+                    }}>
+                        <AntDesign name="clockcircle" size={25} style={{
+                            color: '#c96116', marginLeft: 10
+                        }} />
+                    </TouchableOpacity>
+
+                    <Text style={styles.styletext}>02:20 PM - 09:20PM</Text>
+                </Row>
+                <Row style={styles.borderstyle}>
+                    <TouchableOpacity onPress={() => {
+                        Alert.alert('Coming Soon')
+                    }}>
+                        <AntDesign name="carryout" size={25} style={{
+                            color: '#c96116', marginLeft: 10
+                        }} />
+                    </TouchableOpacity>
+
+                    <Text style={styles.styletext}>Service ATM</Text>
+                </Row>
             </ScrollView>
         </SafeAreaView>
     )
@@ -89,20 +240,22 @@ const StoreDetail = (props: any) => {
 export default StoreDetail
 
 const styles = StyleSheet.create({
-    activeTabUPS: {
-        backgroundColor: '#fff',
-        borderRadius: 20,
+    borderstyle: {
+        height: 60,
+        alignItems: 'center',
+        borderBottomColor: 'rgba(0,0,0,0.3)',
+        borderBottomWidth: 0.3,
+        width: '100%'
     },
-    tabUPS: {
-        backgroundColor: '#fff',
-        borderRadius: 20
+    styletext: {
+        marginLeft: 15,
+        fontSize: 18,
+        fontFamily: 'Battambang-Regular'
     },
-    activeTextUPS: {
-        color: MAIN_COLOR,
-        fontWeight: 'bold',
-    },
-    textUPS: {
-        color: '#bbb',
-        fontWeight: 'bold',
+    Imagestyle: {
+        height: 40,
+        width: 40,
+        borderRadius: 40,
+        marginLeft: 10
     },
 })
