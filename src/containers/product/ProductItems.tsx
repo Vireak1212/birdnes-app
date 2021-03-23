@@ -9,6 +9,7 @@ import { makeid } from '../../functions/PTFunction';
 import { PRICE_COLOR } from '../../styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MainHeader from '../../custom_items/MainHeader';
+import NumberFormat from 'react-number-format';
 
 
 const screen = Dimensions.get('screen')
@@ -35,7 +36,7 @@ const ProductItems = (props: any) => {
     const _spacialProduct = ({ item, index }: any) => {
         const _product = item.items;
         return (
-            <View key={index} style={styles.allProductContainer}>
+            <View key={index} style={style.productItemContainer}>
                 <TouchableWithoutFeedback onPress={() => navigate.navigate('ProductDetail',
                     { item }
                 )}>
@@ -55,10 +56,19 @@ const ProductItems = (props: any) => {
                             <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                                 {_product.product_info.product_description}
                             </Text>
-                            <Text style={styles.allProductPrice}
-                                numberOfLines={1}>
-                                {'$' + _product.product_info.units[0].price}
-                            </Text>
+
+                            <NumberFormat
+                                value={_product.product_info.units[0].price}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                decimalScale={2}
+                                fixedDecimalScale={true}
+                                prefix={''}
+                                renderText={value =>
+                                    <Text style={style.productItemPrice}
+                                        numberOfLines={1}
+                                    >{"$ " + value}
+                                    </Text>} />
                         </Col>
                     </View>
                 </TouchableWithoutFeedback>
@@ -96,25 +106,4 @@ const ProductItems = (props: any) => {
 
 export default ProductItems
 
-const styles = StyleSheet.create({
-    allProductPrice: {
-        fontSize: 15,
-        paddingVertical: 5,
-        fontWeight: 'bold',
-        color: PRICE_COLOR
-    },
-    allProductContainer: {
-        backgroundColor: '#fff',
-        width: screen.width * 8 / 17.5,
-        borderRadius: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
-
-        elevation: 1,
-    }
-})
+const styles = StyleSheet.create({})

@@ -1,23 +1,29 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { FlatList, Platform, StyleSheet, SafeAreaView, TouchableOpacity, Image, View, Dimensions, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
-import HomeMenu from '../containers/home/HomeMenu';
+import {
+    FlatList,
+    Platform,
+    StyleSheet,
+    SafeAreaView,
+    TouchableOpacity,
+    Image,
+    View,
+    Dimensions,
+    ActivityIndicator,
+    TouchableWithoutFeedback
+} from 'react-native';
 import ProductSlide from '../containers/home/ProductSlide'
 import NewProduct from '../containers/product/NewProduct';
 import TopProduct from '../containers/product/TopProduct';
 import FeatureStores from '../containers/store/FeatureStores';
 import HomeHeader from '../custom_items/HomeHeader'
-import { makeid } from '../functions/PTFunction'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createKeyWords, makeid } from '../functions/PTFunction'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useSelector, useDispatch } from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
 import { createProduct } from '../actions/Product';
 import AllProduct from '../containers/product/AllProduct';
-import FastImage from 'react-native-fast-image';
-import { Col, Text } from 'native-base';
+
 import { MAIN_COLOR, PRICE_COLOR } from '../styles';
-import { FlatGrid } from 'react-native-super-grid';
 
 
 const screen = Dimensions.get('screen')
@@ -38,7 +44,23 @@ const HomeScreen = () => {
         }
     }, [slide_shows.length])
 
-    const rightIcon = () => <TouchableOpacity onPress={() => navigate.navigate('homeSearch')}
+    const rightIcon = () => <TouchableOpacity onPress={() => {
+        // firestore().collection('products')
+        //     .get()
+        //     .then((snapshot) => {
+        //         snapshot.docs.forEach(async (doc) => {
+        //             const client = await firestore().collection('products').doc(doc.id);
+        //             let product_info = doc.data().product_info
+        //             product_info.product_tags = createKeyWords(product_info.product_name.toLocaleLowerCase())
+        //             client.update(
+        //                 {
+        //                     product_info
+        //                 }
+        //             )
+        //         })
+        //     })
+        navigate.navigate('SearchProduct')
+    }}
         style={{
             alignSelf: 'flex-end',
             paddingHorizontal: 15,

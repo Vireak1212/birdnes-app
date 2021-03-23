@@ -42,7 +42,7 @@ const ImageView = (props: any) => {
             flex: 1,
             backgroundColor: '#000'
         }}>
-            <View style={styles.imageHeader}>
+            <View style={styles.imageViewHeader}>
                 <Col style={{ width: '15%', alignItems: 'center' }}>
                     {leftIcon()}
                 </Col>
@@ -91,7 +91,7 @@ const ImageView = (props: any) => {
 export default ImageView
 
 const styles = StyleSheet.create({
-    imageHeader: {
+    imageViewHeader: {
         backgroundColor: 'transparent',
         position: 'absolute',
         zIndex: 1, flexDirection: 'row',

@@ -4,11 +4,9 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, Dimensions, RefreshControl, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { makeid } from '../../functions/PTFunction';
-import style, { PRICE_COLOR } from '../../styles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MainHeader from '../../custom_items/MainHeader';
 import { useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
+import NumberFormat from 'react-number-format';
 
 
 const screen = Dimensions.get('screen')
@@ -91,7 +89,7 @@ const AllProduct = () => {
     const _renderAllProduct = ({ item, index }: any) => {
         const _AllProduct = item.items;
         return (
-            <View key={index} style={styles.allProductContainer}>
+            <View key={index} style={style.allProductContainer}>
                 <TouchableWithoutFeedback
                     onPress={() => navigate.navigate('ProductDetail',
                         { item }
@@ -112,10 +110,19 @@ const AllProduct = () => {
                             <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                                 {_AllProduct.product_info.product_description}
                             </Text>
-                            <Text style={styles.allProductPrice}
-                                numberOfLines={1}>
-                                {'$' + _AllProduct.product_info.units[0].price}
-                            </Text>
+
+                            <NumberFormat
+                                value={_AllProduct.product_info.units[0].price}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                decimalScale={2}
+                                fixedDecimalScale={true}
+                                prefix={''}
+                                renderText={value =>
+                                    <Text style={style.allProductPrice}
+                                        numberOfLines={1}
+                                    >{"$ " + value}
+                                    </Text>} />
                         </Col>
                     </View>
                 </TouchableWithoutFeedback>
@@ -125,13 +132,7 @@ const AllProduct = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{
-                paddingTop: 5,
-                paddingHorizontal: 12,
-                paddingBottom: 15,
-                flexDirection: 'row',
-                justifyContent: 'space-between'
-            }}>
+            <View style={style.allProductTitle}>
                 <Text>All Product</Text>
             </View>
 
@@ -184,24 +185,5 @@ const AllProduct = () => {
 export default AllProduct
 
 const styles = StyleSheet.create({
-    allProductPrice: {
-        fontSize: 15,
-        paddingVertical: 5,
-        fontWeight: 'bold',
-        color: PRICE_COLOR
-    },
-    allProductContainer: {
-        backgroundColor: '#fff',
-        width: screen.width * 8 / 17.5,
-        borderRadius: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
 
-        elevation: 1,
-    }
 })

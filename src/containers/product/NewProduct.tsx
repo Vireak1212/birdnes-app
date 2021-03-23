@@ -8,12 +8,14 @@ import { makeid } from '../../functions/PTFunction';
 import { PRICE_COLOR } from '../../styles/index';
 import firestore from '@react-native-firebase/firestore';
 import FastImage from 'react-native-fast-image';
+import NumberFormat from 'react-number-format';
 
 const screen = Dimensions.get('screen')
 
 const NewProduct = () => {
     const new_products = useSelector((state: { new_products: any }) => state.new_products);
     const navigate = useNavigation();
+    const style = useSelector((state: { style: any }) => state.style)
 
     // useEffect(() => {
     //     firestore().collection('clients').get().then(data => {
@@ -25,7 +27,7 @@ const NewProduct = () => {
     const _renderNewProduct = ({ item, index }: any) => {
         const _NewProduct = item.items;
         return (
-            <View key={index} style={[styles.newProductContainer, {
+            <View key={index} style={[style.newProductContainer, {
                 marginLeft: index === 0 ? 10 : 0,
                 marginHorizontal: 10,
                 marginBottom: 10,
@@ -54,10 +56,19 @@ const NewProduct = () => {
                             {/* <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
                             {_NewProduct.product_info.product_description}
                         </Text> */}
-                            <Text style={styles.newProductPrice}
-                                numberOfLines={1}>
-                                {'$' + _NewProduct.product_info.units[0].price}
-                            </Text>
+
+                            <NumberFormat
+                                value={_NewProduct.product_info.units[0].price}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                decimalScale={2}
+                                fixedDecimalScale={true}
+                                prefix={''}
+                                renderText={value =>
+                                    <Text style={style.newProductPrice}
+                                        numberOfLines={1}
+                                    >{"$ " + value}
+                                    </Text>} />
                         </Col>
                     </View>
                 </TouchableWithoutFeedback>
@@ -67,7 +78,7 @@ const NewProduct = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
 
-            <View style={styles.newProductGrid}>
+            <View style={style.newProductGrid}>
                 <Text>New Products</Text>
                 {new_products.length > 8 && <TouchableOpacity onPress={() => navigate.navigate('ProductItem',
                     {
@@ -102,32 +113,6 @@ const NewProduct = () => {
 export default NewProduct
 
 const styles = StyleSheet.create({
-    newProductGrid: {
-        paddingTop: 5,
-        paddingBottom: 15,
-        paddingHorizontal: 12,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    newProductPrice: {
-        fontSize: 14,
-        paddingVertical: 3,
-        fontWeight: 'bold',
-        color: PRICE_COLOR
-    },
-    newProductContainer: {
-        backgroundColor: '#fff',
-        width: screen.width * 3 / 10,
-        borderRadius: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
 
-        elevation: 1,
-    },
 })
 
