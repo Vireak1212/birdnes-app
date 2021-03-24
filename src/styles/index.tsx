@@ -283,13 +283,82 @@ export default StyleSheet.create({
     },
 
     ////Login
-    container: {
-        marginHorizontal: 10,
-        marginTop: 20,
+    singupNextButton: {
+        marginTop: 30,
+        backgroundColor: '#4C60EE',
+        borderRadius: 25,
+        marginBottom: 15,
+    },
+    singupText: {
+        color: '#000',
+        fontSize: 14
+    },
+    singupTextContainer: {
+        width: '100%',
+        fontSize: 16,
+        marginTop: 30,
+    },
+    sentCodeText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    sentCodeButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#224889',
+        width: '35.5%',
+        height: '100%',
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+    },
+    textInput: {
+        marginLeft: 5,
+        fontSize: 14,
+        color: '#000',
+        width: '100%',
+    },
+    sintUpPhoneNumber: {
 
+        fontSize: 14,
+        color: '#000',
+        borderRightWidth: 0.5,
+        borderRightColor: '#efaf26',
+        padding: 0,
+        paddingHorizontal: 5,
+        height: 30,
+    },
+    singUpTextInputCoutainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 50,
+        width: '100%',
+        backgroundColor: '#f6f6f6',
+        height: 50,
+        borderRadius: 15,
+        borderWidth: 0.3,
+        borderColor: '#efaf26'
+    },
+    signUpContainer: {
+        marginTop: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 20
+    },
+    forgotTextInput: {
+        marginLeft: 5,
+        fontSize: 14,
+        color: '#000',
+        width: '100%'
+    },
+    container: {
+        alignItems: 'center',
+        marginTop: 20
     },
     labelTitle: {
-        fontSize: 20,
+        fontWeight: 'bold',
+        fontSize: 25,
         color: '#000',
         opacity: 0.7
     },
@@ -298,69 +367,6 @@ export default StyleSheet.create({
         color: '#000',
         opacity: 0.4
     },
-    iconBack: {
-        color: '#fff',
-        fontSize: 16
-    },
-    Img: {
-        width: 40,
-        height: 30
-    },
-    phoneInputContainer: {
-        backgroundColor: '#eee',
-        height: 70,
-        width: '100%',
-        padding: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 35,
-        borderRadius: 5
-    },
-    flagContainer: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    countryCode: {
-        fontSize: 16,
-        marginLeft: 5,
-        color: '#000',
-        opacity: 0.6
-    },
-    iconDropDown: {
-        marginLeft: 10,
-        color: '#000',
-        opacity: 0.6
-    },
-    input: {
-        fontSize: 16,
-        marginLeft: 15,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        bottom: 50,
-        position: 'absolute',
-        paddingHorizontal: 35
-    },
-    arrowContinue: {
-        backgroundColor: '#224889',
-        width: 60,
-        height: 60,
-        borderRadius: 40,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    ArrowContinue: {
-        color: '#fff',
-        fontSize: 26
-    },
-    textInstruction: {
-        color: '#000',
-        paddingRight: 5
-    },
-    ///EditProfile
     styleform: {
         backgroundColor: '#e6e7e8',
         height: 50,
@@ -388,7 +394,7 @@ export default StyleSheet.create({
         width: '100%',
         marginTop: 20,
         borderRadius: 10,
-        justifyContent: 'center'
+        alignItems: 'center'
     },
     bottonUpdate: {
         marginTop: 25,
@@ -419,5 +425,19 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-    }
+    },
+    ////storedetail
+    borderstyle: {
+        height: 60,
+        alignItems: 'center',
+        borderBottomColor: 'rgba(0,0,0,0.3)',
+        borderBottomWidth: 0.3,
+        width: '100%'
+    },
+    styletext: {
+        marginLeft: 15,
+        fontSize: 18,
+        fontFamily: 'Battambang-Regular'
+    },
+    /////PrroductSlide
 })

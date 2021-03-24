@@ -18,7 +18,6 @@ import MainStoreScreen from '../components/MainStoreScreen';
 import HomeScreen from '../components/HomeScreen';
 import MainCategoryScreen from '../components/MainCategoryScreen';
 import MainCartScreen from '../components/MainCartScreen';
-import HomeSearch from '../containers/home/HomeSearch';
 
 import ProductDetail from '../containers/product/ProductDetail';
 import StoreDetail from '../containers/store/StoreDetail';

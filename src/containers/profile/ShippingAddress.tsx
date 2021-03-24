@@ -3,6 +3,7 @@ import { Button, Row } from 'native-base';
 import React from 'react';
 import { View, Text, Image, TextInput, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import MainHeader from '../../custom_items/MainHeader';
@@ -28,10 +29,13 @@ const ShippingAddress = () => {
                     <Text style={{ fontSize: 30 }}>ShippingAddress</Text>
                     <Text style={{ color: '#224889' }}>Make change to your Shipping information</Text>
                     <Text style={{ marginTop: 50, opacity: 0.5 }}>Shipping Address</Text>
-                    <View style={style.styleforms}>
-                        <TextInput style={{ fontSize: 15, marginHorizontal: 10 }}
-                            placeholder="Shipping Address"
-                        />
+                    <View style={[style.styleforms, { flexDirection: 'row' }]}>
+                        <TouchableOpacity onPress={() => navigate.navigate('Map')}>
+                            <Entypo name="location-pin" size={25} style={{
+                                color: '#c96116', marginLeft: 10
+                            }} />
+                        </TouchableOpacity>
+                        <Text style={{ marginLeft: 15 }}>Shipping Address</Text>
                     </View>
 
 

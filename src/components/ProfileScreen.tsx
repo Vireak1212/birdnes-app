@@ -20,7 +20,7 @@ const ProfileScreen = () => {
     const [photo_url, setPhoto_url] = useState({ uri: '' });
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
-
+    const [isSignIn, setSignIn] = useState(false);
     const dispatch = useDispatch();
 
     const selectImage = () => {
@@ -226,7 +226,7 @@ const ProfileScreen = () => {
 
             <TouchableOpacity style={style.signOut}
                 onPress={() => navigate.navigate('Login')}>
-                <Text style={{ color: '#fff' }}>Sign Out</Text>
+                <Text style={{ color: '#fff' }}> {isSignIn ? 'Sign In' : 'Sign Out'}</Text>
             </TouchableOpacity>
 
         </SafeAreaView>
