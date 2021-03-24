@@ -32,7 +32,9 @@ const HomeScreen = () => {
     const products = useSelector((state: { products: any }) => state.products);
     const slide_shows = useSelector((state: { slide_shows: any }) => state.slide_shows);
     const style = useSelector((state: { style: any }) => state.style)
+
     const [isLoadCompleted, setIsLoadCompleted] = useState(false)
+
     const dispatch = useDispatch()
     const navigate = useNavigation();
 
@@ -165,6 +167,9 @@ const HomeScreen = () => {
                     data={[1]}
                     listKey={makeid()}
                     ListEmptyComponent={null}
+                    initialNumToRender={4}
+                    maxToRenderPerBatch={8}
+                    windowSize={8}
                     keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
                     renderItem={({ item, index }: any) => {
                         return (

@@ -36,6 +36,24 @@ export const loadNewProduct = () => {
     }
 }
 
+export const loadProductByCategory = (category_id: any) => {
+    return async (dispatch: (arg0: { type: string; product_category: any }) => void) => {
+        firestore().collection("products")
+            .where('status', '==', true)
+            .where("category_info.id", "==", category_id)
+            .onSnapshot(function (snapshot) {
+                let product_category: any = []
+                snapshot.docs.forEach(function (data) {
+                    product_category.push({
+                        id: data.id,
+                        items: data.data()
+                    })
+                })
+                dispatch({ type: 'LOAD_PRODUCT_CATEGORY', product_category });
+            });
+    }
+}
+
 export const loadTopProduct = () => {
     return async (dispatch: (arg0: { type: string; top_products: any }) => void) => {
         firestore().collection("products")

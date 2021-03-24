@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import Store from "./Store";
 import ProductSlider from "./ProductSlider";
 import Category from "./Category";
-import { NewProduct, Product, TopProduct } from "./Product";
+import { NewProduct, Product, ProductCategory, TopProduct } from "./Product";
 import Client from './Client';
 import { Cart, OrderHistory } from './Cart';
 
@@ -40,8 +40,7 @@ const rootReducers = combineReducers({
     store: Store,
     carts: Cart,
     order_history: OrderHistory,
-
-
+    product_category: ProductCategory
 });
 
 export default rootReducers;

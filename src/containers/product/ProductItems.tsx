@@ -1,15 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import { Col } from 'native-base';
 import React, { useState } from 'react'
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, TouchableWithoutFeedback, ActivityIndicator, RefreshControl } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { FlatGrid } from 'react-native-super-grid';
 import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
-import { PRICE_COLOR } from '../../styles';
+import { MAIN_COLOR, PRICE_COLOR } from '../../styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MainHeader from '../../custom_items/MainHeader';
 import NumberFormat from 'react-number-format';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 const screen = Dimensions.get('screen')
@@ -18,14 +19,92 @@ const ProductItems = (props: any) => {
     const { products, title } = props.route.params;
     const style = useSelector((state: { style: any }) => state.style)
     const navigate = useNavigation();
+    const scrollRef = React.createRef<any>();
 
-    const [isLoading, setIsLoading] = useState(true)
+    const [isScroll, setIsScroll] = useState(false)
+    const [lastDoc, setLastDoc] = useState<any>(0);
+
+    const [onScroll, setOnScroll] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [isMoreLoading, setIsMoreLoading] = useState(false);
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
+    const [hasScrolled, setHasScrolled] = useState(false)
 
     React.useEffect(() => {
+        getProduct();
         setTimeout(() => {
-            setIsLoading(false)
+            setIsInitialLoad(false)
         }, 200);
-    }, [])
+    }, [products.length])
+
+    const getProduct = async () => {
+        setIsLoading(true);
+        setLastDoc(8)
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 200);
+    }
+
+    const getMore = async () => {
+        if (!hasScrolled) return null;
+        if (lastDoc) {
+            setIsMoreLoading(true);
+            setTimeout(async () => {
+                setLastDoc((last: number) => last + 10);
+                if (products.length < lastDoc) {
+                    setLastDoc(null);
+                }
+                setTimeout(() => {
+                    setIsMoreLoading(false);
+                }, products.length < lastDoc ? 0 : 300);
+            }, 200);
+        }
+    }
+
+    const onRefresh = () => {
+        setTimeout(() => {
+            getProduct();
+        }, 200);
+    }
+
+    const renderFooter: any = () => {
+        return (
+            <ActivityIndicator
+                size={25}
+                color={'#7a1a22'}
+                style={{ marginBottom: 10 }}
+            />
+        )
+    }
+
+    const _onScroll = () => {
+        if (!hasScrolled)
+            setHasScrolled(true)
+    }
+
+    const onScrollToTop = () => {
+        if (scrollRef.current !== null) {
+            scrollRef.current.scrollToOffset({
+                animated: true,
+                offset: 0
+            })
+            setIsScroll(false)
+            setOnScroll(true)
+            setTimeout(() => {
+                setOnScroll(false)
+            }, 500);
+        }
+    }
+
+    const onScrollItem = (value: any) => {
+        if (!onScroll)
+            if (value > 250) {
+                setIsScroll(true)
+            }
+            else {
+                setIsScroll(false)
+            }
+    }
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
@@ -83,23 +162,81 @@ const ProductItems = (props: any) => {
                 leftIcon={leftIcon()}
             // rightIcon={rightIcon()}
             />
-            <FlatGrid
-                scrollEnabled={true}
-                showsVerticalScrollIndicator={false}
-                listKey={makeid()}
-                itemDimension={130}
-                initialNumToRender={4}
-                maxToRenderPerBatch={8}
-                windowSize={8}
-                style={{
-                    height: 'auto',
-                    width: '100%',
-                    borderRadius: 10,
-                }}
-                renderItem={_spacialProduct}
-                data={products}
-            // data={color.slice(0, (Math.floor((width / 80)) * 2))}
-            />
+
+            {isScroll ?
+                <TouchableOpacity
+                    onPress={() => {
+                        onScrollToTop()
+                    }}
+                    style={{
+                        width: 35,
+                        height: 35,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 20,
+                        zIndex: 10,
+                        position: 'absolute',
+                        bottom: 50,
+                        right: 95,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                            width: 0,
+                            height: 3,
+                        },
+                        shadowOpacity: 0.27,
+                        shadowRadius: 4.65,
+                        elevation: 6,
+                        backgroundColor: '#fff'
+                    }}
+                >
+                    <FontAwesome name='angle-up' size={20}></FontAwesome>
+                </TouchableOpacity>
+                : null}
+
+            {isInitialLoad ?
+                <ActivityIndicator style={{
+                    marginTop: 20
+                }} size={35} color={MAIN_COLOR} />
+                : (
+                    <FlatGrid
+                        ref={scrollRef}
+                        scrollEnabled={true}
+                        showsVerticalScrollIndicator={false}
+                        listKey={makeid()}
+                        itemDimension={130}
+                        initialNumToRender={4}
+                        maxToRenderPerBatch={8}
+                        windowSize={8}
+                        style={{
+                            height: 'auto',
+                            width: '100%',
+                            borderRadius: 10,
+                        }}
+                        renderItem={_spacialProduct}
+                        data={products}
+                        ListFooterComponent={
+                            <>{isMoreLoading && lastDoc !== null &&
+                                renderFooter()}
+                            </>
+                        }
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={isLoading}
+                                onRefresh={onRefresh}
+                            />
+                        }
+                        scrollEventThrottle={250}
+                        onTouchMove={_onScroll}
+                        onEndReached={() => {
+                            if (!isMoreLoading) {
+                                getMore()
+                            }
+                        }}
+                        onEndReachedThreshold={0.01}
+                    // data={color.slice(0, (Math.floor((width / 80)) * 2))}
+                    />
+                )}
+
         </SafeAreaView>
     )
 }

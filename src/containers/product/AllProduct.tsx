@@ -19,6 +19,7 @@ const AllProduct = () => {
     const scrollRef = React.createRef<any>();
 
     const [isMoreLoading, setIsMoreLoading] = useState(false);
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [hasScrolled, setHasScrolled] = useState(false)
     const [isScroll, setIsScroll] = useState(false)
     const [onScroll, setOnScroll] = useState(false)
@@ -28,8 +29,9 @@ const AllProduct = () => {
     React.useEffect(() => {
         setTimeout(() => {
             setIsLoading(false)
+            setIsInitialLoad(false)
         }, 200);
-    }, [])
+    }, [products.length])
 
     const getProduct = async () => {
         setIsLoading(true);
@@ -136,48 +138,58 @@ const AllProduct = () => {
                 <Text>All Product</Text>
             </View>
 
-            <FlatGrid
-                ref={scrollRef}
-                scrollEnabled={true}
-                showsVerticalScrollIndicator={false}
-                listKey={makeid()}
-                itemDimension={130}
-                initialNumToRender={4}
-                maxToRenderPerBatch={8}
-                windowSize={8}
-                style={{
-                    height: 'auto',
-                    width: '100%',
-                    borderRadius: 10,
-                    marginBottom: -10,
-                    marginTop: -10
-                }}
-                renderItem={_renderAllProduct}
-                data={products}
+            {isInitialLoad ? (
+                <ActivityIndicator
+                    size={25}
+                    color={'#134287'}
+                    style={{ marginVertical: 10 }}
+                />
+            ) : (
+                <FlatGrid
+                    ref={scrollRef}
+                    scrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                    listKey={makeid()}
+                    itemDimension={130}
+                    initialNumToRender={4}
+                    maxToRenderPerBatch={8}
+                    windowSize={8}
+                    style={{
+                        height: 'auto',
+                        width: '100%',
+                        borderRadius: 10,
+                        marginBottom: -10,
+                        marginTop: -10
+                    }}
+                    renderItem={_renderAllProduct}
+                    data={products}
 
-                ListFooterComponent={
-                    <>{isMoreLoading && lastDoc !== null &&
-                        renderFooter()}
-                    </>
-                }
-
-                refreshControl={
-                    <RefreshControl
-                        refreshing={isLoading}
-                        onRefresh={onRefresh}
-                    />
-                }
-                onScroll={(e) => onScrollItem(e.nativeEvent.contentOffset.y)}
-                scrollEventThrottle={250}
-                onTouchMove={_onScroll}
-                onEndReached={() => {
-                    if (!isMoreLoading) {
-                        getMore()
+                    ListFooterComponent={
+                        <>{isMoreLoading && lastDoc !== null &&
+                            renderFooter()}
+                        </>
                     }
-                }}
-                onEndReachedThreshold={0.01}
-            // data={color.slice(0, (Math.floor((width / 80)) * 2))}
-            />
+
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isLoading}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                    onScroll={(e) => onScrollItem(e.nativeEvent.contentOffset.y)}
+                    scrollEventThrottle={250}
+                    onTouchMove={_onScroll}
+                    onEndReached={() => {
+                        if (!isMoreLoading) {
+                            getMore()
+                        }
+                    }}
+                    onEndReachedThreshold={0.01}
+                // data={color.slice(0, (Math.floor((width / 80)) * 2))}
+                />
+            )}
+
+
         </SafeAreaView>
     )
 }

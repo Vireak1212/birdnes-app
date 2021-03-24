@@ -31,4 +31,16 @@ export const TopProduct = (state = [], action: { type: any; top_products: any[];
     }
 }
 
+export const ProductCategory = (state = [], action: { type: any; product_category: any[]; error: any; }) => {
+    switch (action.type) {
+        case 'LOAD_PRODUCT_CATEGORY':
+            return action.product_category;
+        case 'PRODUCT_ERROR':
+            return action.error;
+        default:
+            return state;
+    }
+}
+
+
 

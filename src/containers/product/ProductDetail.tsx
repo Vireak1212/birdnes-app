@@ -6,10 +6,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
+import { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 import { Col, Row } from 'native-base';
-import { Rating, AirbnbRating } from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
 import { FlatList } from 'react-native-gesture-handler';
 import { makeid } from '../../functions/PTFunction';
@@ -19,6 +17,7 @@ import { MAIN_COLOR } from '../../styles/index';
 import Swiper from 'react-native-swiper'
 import ImageView from './ImageView';
 import NumberFormat from 'react-number-format';
+import StarRating from 'react-native-star-rating';
 
 
 const screen = Dimensions.get('screen')
@@ -274,7 +273,6 @@ const ProductDetail = (props: any) => {
                         renderItem={({ index }: any) => {
                             return (
                                 <>
-
                                     <View style={{ height: screen.width / 1.6, }}>
                                         <Swiper
                                             horizontal
@@ -304,7 +302,6 @@ const ProductDetail = (props: any) => {
                                                 })
                                             }
                                         </Swiper>
-
                                     </View>
 
                                     <View style={{
@@ -324,11 +321,13 @@ const ProductDetail = (props: any) => {
                                                     {item.items.product_info.product_code}
                                                 </Text>
                                                 <View style={{ alignSelf: 'flex-start' }}>
-                                                    <Rating
-                                                        type='star'
-                                                        ratingCount={5}
-                                                        imageSize={16}
-                                                    //   onFinishRating={ratingCompleted}
+                                                    <StarRating
+                                                        disabled={false}
+                                                        maxStars={5}
+                                                        rating={3}
+                                                        fullStarColor="gold"
+                                                        starSize={20}
+                                                        containerStyle={{ width: 80 }}
                                                     />
                                                 </View>
                                             </Col>

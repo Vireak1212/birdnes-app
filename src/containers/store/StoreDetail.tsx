@@ -10,6 +10,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+
+
 const StoreDetail = (props: any) => {
     const { item } = props.route.params;
     const store_name = item.items.store_name;
