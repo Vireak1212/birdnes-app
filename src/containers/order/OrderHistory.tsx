@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MainHeader from '../../custom_items/MainHeader';
@@ -8,6 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import NumberFormat from 'react-number-format';
+import { MAIN_COLOR, PRICE_COLOR } from '../../styles';
 
 
 const OrderHistory = (props: any) => {
@@ -15,22 +16,32 @@ const OrderHistory = (props: any) => {
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
 
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
+
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
     </TouchableOpacity>
 
+    React.useEffect(() => {
+        getOrder();
+        setTimeout(() => {
+            setIsInitialLoad(false)
+        }, 200);
+    }, [order_history.length])
+
+    const getOrder = async () => {
+        setTimeout(() => {
+
+        }, 200);
+    }
+
     const _renderItem = ({ item, index }: any) => {
         const _order = item;
         return (
-            <View key={index} style={{
-                flexDirection: 'row',
-                backgroundColor: '#fff',
-                alignItems: 'center',
-                borderRadius: 10,
-                marginTop: 10,
+            <View key={index} style={[styles.orderHistoryContainer, {
                 marginBottom: index == order_history.items.order_info.products.length - 1 ? 10 : 0
-            }}>
+            }]}>
                 <TouchableOpacity onPress={() => navigate.navigate('OrderDetail',
                     { item }
                 )} >
@@ -51,7 +62,10 @@ const OrderHistory = (props: any) => {
                 }}>
                     <View style={{
                     }}>
-                        <Text style={styles.textcolor} numberOfLines={1}>
+                        <Text style={{
+                            color: '#000',
+                            fontSize: 16
+                        }} numberOfLines={1}>
                             {_order.product_name}
                         </Text>
                         <Text style={{ color: '#aaa' }} numberOfLines={1}>
@@ -74,20 +88,12 @@ const OrderHistory = (props: any) => {
                             fixedDecimalScale={true}
                             prefix={''}
                             renderText={value =>
-                                <Text style={{ color: 'red' }}
+                                <Text style={{ color: PRICE_COLOR }}
                                     numberOfLines={1}
                                 >{"price: " + "$ " + value}
                                 </Text>} />
 
-                        <TouchableOpacity style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            height: 30,
-                            width: 90,
-                            borderWidth: 1,
-                            borderColor: "#aaa",
-                            borderRadius: 20
-                        }}>
+                        <TouchableOpacity style={styles.orderAgainButton}>
                             <Text style={{
                                 color: '#888'
                             }}>Order again</Text>
@@ -122,20 +128,32 @@ const OrderHistory = (props: any) => {
                 title="Order History"
                 leftIcon={leftIcon()}
             />
-            {order_history.length !== 0 ?
-                order_history.items.order_info.products.length == 0 ? noItem()
+            <>
+                {isInitialLoad ?
+                    <ActivityIndicator style={{
+                        marginTop: 20
+                    }} size={35} color={MAIN_COLOR} />
                     : (
-                        <FlatList
-                            style={{
-                                marginHorizontal: 10,
-                            }}
-                            data={order_history.items.order_info.products}
-                            renderItem={_renderItem}
-                            keyExtractor={(item, index) => index.toString()}
-                            showsVerticalScrollIndicator={false}
-                        />
-                    ) : noItem()
-            }
+                        <>
+                            {order_history.length !== 0 ?
+                                order_history.items.order_info.products.length == 0 ? noItem()
+                                    : (
+                                        <FlatList
+                                            style={{
+                                                marginHorizontal: 10,
+                                            }}
+                                            data={order_history.items.order_info.products}
+                                            renderItem={_renderItem}
+                                            keyExtractor={(item, index) => index.toString()}
+                                            showsVerticalScrollIndicator={false}
+                                        />
+                                    ) : noItem()
+                            }
+                        </>
+                    )
+                }
+            </>
+
         </SafeAreaView>
     )
 }
@@ -143,9 +161,21 @@ const OrderHistory = (props: any) => {
 export default OrderHistory
 
 const styles = StyleSheet.create({
-    textcolor: {
-        color: '#000',
-        fontSize: 16
+    orderAgainButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 30,
+        width: 90,
+        borderWidth: 1,
+        borderColor: "#aaa",
+        borderRadius: 20
+    },
+    orderHistoryContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        borderRadius: 10,
+        marginTop: 10,
     },
     textDateSwiftNews: {
         fontWeight: 'bold',

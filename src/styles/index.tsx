@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 export const MAIN_COLOR = '#224889'
 export const MAIN_BACKGROUND = "#fff"
 export const ICON_COLOR = '#606060'
-export const PRICE_COLOR = '#224889'
+export const PRICE_COLOR = '#FF0000'
 export const screen = Dimensions.get('screen')
 
 export default StyleSheet.create({

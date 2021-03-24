@@ -1,6 +1,6 @@
 import { Col, Row } from 'native-base';
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Alert } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Alert, ActivityIndicator } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -20,11 +20,21 @@ const MainCartScreen = (props: any) => {
     const dispatch = useDispatch()
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
-    const [isLoadCompleted, setIsLoadCompleted] = useState(false)
+
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
 
     React.useEffect(() => {
+        getCart();
+        setTimeout(() => {
+            setIsInitialLoad(false)
+        }, 200);
+    }, [carts.length])
 
-    }, [props.route.params])
+    const getCart = async () => {
+        setTimeout(() => {
+
+        }, 200);
+    }
 
     const updateQty = (item: any, is_increase: any) => {
         let _carts: any = [];
@@ -127,17 +137,20 @@ const MainCartScreen = (props: any) => {
                     <FastImage
                         source={{ uri: _cart.unit.photo_url }}
                         style={{
-                            height: 110,
-                            width: 120,
+                            height: 120,
+                            width: 130,
                             borderRadius: 10,
                             margin: 5,
-                        }} />
+                        }}
+                        resizeMode={FastImage.resizeMode.cover}
+                    />
 
                 </TouchableOpacity>
 
                 <Col style={{
                     padding: 5,
                     justifyContent: 'space-between',
+
                 }}>
                     <Row>
                         <Col>
@@ -194,11 +207,22 @@ const MainCartScreen = (props: any) => {
                     </Row>
 
                     <View style={styles.cartActionContainer}>
-                        <Text style={{
-                            fontSize: 16,
-                            color: MAIN_COLOR,
-                            fontWeight: 'bold',
-                        }}>${_cart.amount}</Text>
+
+                        <NumberFormat
+                            value={_cart.amount}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                            prefix={''}
+                            renderText={value =>
+                                <Text style={{
+                                    fontSize: 16,
+                                    color: PRICE_COLOR,
+                                }}
+                                    numberOfLines={1}
+                                >{"$ " + value}
+                                </Text>} />
 
                         <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                             <TouchableOpacity onPress={() => handleDecrement(_cart)}
@@ -271,45 +295,66 @@ const MainCartScreen = (props: any) => {
                     }
                 />}
 
-
-            {carts.length !== 0 ?
-                carts.items.order_info.products.length == 0 ?
-                    noItem()
+            <>
+                {isInitialLoad ?
+                    <ActivityIndicator style={{
+                        marginTop: 20
+                    }} size={35} color={MAIN_COLOR} />
                     : (
-                        <FlatList
-                            style={{
-                                marginHorizontal: 10
-                            }}
-                            data={carts.items.order_info.products}
-                            renderItem={_renderItem}
-                            keyExtractor={(item, index) => index.toString()}
-                            showsVerticalScrollIndicator={false}
-                        />
-                    ) : noItem()}
+                        <>
+                            {carts.length !== 0 ?
+                                carts.items.order_info.products.length == 0 ?
+                                    noItem()
+                                    : (
+                                        <FlatList
+                                            style={{
+                                                marginHorizontal: 10
+                                            }}
+                                            data={carts.items.order_info.products}
+                                            renderItem={_renderItem}
+                                            keyExtractor={(item, index) => index.toString()}
+                                            showsVerticalScrollIndicator={false}
+                                        />
+                                    ) : noItem()}
 
+                            {carts.length !== 0 ?
+                                carts.items.order_info.products.length == 0 ?
+                                    null
+                                    : (<View style={style.checkOutContainer}>
+                                        <Col>
+                                            <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
+                                            <NumberFormat
+                                                value={carts.length === 0 ? 0 : carts.items.order_info.total_amount}
+                                                displayType={'text'}
+                                                thousandSeparator={true}
+                                                decimalScale={2}
+                                                fixedDecimalScale={true}
+                                                prefix={''}
+                                                renderText={value =>
+                                                    <Text style={{
+                                                        fontWeight: 'bold',
+                                                        fontSize: 20
+                                                    }}
+                                                        numberOfLines={1}
+                                                    >{"$ " + value}
+                                                    </Text>} />
+                                        </Col>
 
-            {carts.length !== 0 ?
-                carts.items.order_info.products.length == 0 ?
-                    null
-                    : (<View style={style.checkOutContainer}>
-                        <Col>
-                            <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>${carts.length === 0 ? 0 : carts.items.order_info.total_amount}</Text>
-                        </Col>
-
-                        <TouchableOpacity onPress={() => navigate.navigate('CheckOut',
-                            { carts }
-                        )}
-                            style={style.styleCHACKOUT}>
-                            <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
-                            <AntDesign name='playcircleo' size={20}
-                                style={{ color: '#fff', marginLeft: 10 }} color='#000' />
-                        </TouchableOpacity>
-                    </View>
-                    ) : null
-            }
-
-        </SafeAreaView>
+                                        <TouchableOpacity onPress={() => navigate.navigate('CheckOut',
+                                            { carts }
+                                        )}
+                                            style={style.styleCHACKOUT}>
+                                            <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
+                                            <AntDesign name='playcircleo' size={20}
+                                                style={{ color: '#fff', marginLeft: 10 }} color='#000' />
+                                        </TouchableOpacity>
+                                    </View>
+                                    ) : null
+                            }
+                        </>
+                    )}
+            </>
+        </SafeAreaView >
     )
 }
 

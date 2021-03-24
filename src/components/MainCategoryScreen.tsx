@@ -1,28 +1,36 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Platform, Dimensions, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Platform, Dimensions, Image, ActivityIndicator } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MainHeader from '../custom_items/MainHeader';
 import { makeid } from '../functions/PTFunction';
-import style, { PRICE_COLOR } from '../styles/index';
 import { FlatGrid } from 'react-native-super-grid';
 import { MAIN_COLOR } from '../styles/index';
 import FastImage from 'react-native-fast-image';
+import { loadProductByCategory } from '../actions/Product';
 const screen = Dimensions.get('screen')
 
+
+let tempCategoryId = '';
 const MainCategoryScreen = (props: any) => {
     const navigate = useNavigation();
-    // const products = useSelector((state: { products: any }) =>
-    //     state.products).filter((r: { items: { category_info: { id: any; }; }; }) => r.items.category_info.id);
-
+    const dispatch = useDispatch();
     const [mainCategoryId, setMainCategoryId] = useState("")
     const [categoryId, setCategoryId] = useState("")
     const [backState, setBackState] = useState<any>([])
     const categories = useSelector((state: { categories: any }) => state.categories);
+    const product_category = useSelector((state: { product_category: any }) => state.product_category);
     const [mainCategories, setMainCategories] = useState<any>([])
     const [subCategories, setSubCategories] = useState<any>([])
-    const [products, setProducts] = useState<any>([])
+
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setIsInitialLoad(false)
+        }, 200);
+    }, [categories.length])
 
     useEffect(() => {
         if (categories.length > 0) {
@@ -67,15 +75,24 @@ const MainCategoryScreen = (props: any) => {
     }, [mainCategoryId])
 
     useEffect(() => {
-        if (products.length > 0) {
-            setProducts(products.filter((r: any) => r.items.category_info.id === mainCategoryId))
+        if (tempCategoryId !== '') {
+            if (product_category.length == 0) {
+                let _backState = backState;
+                _backState.push(tempCategoryId);
+                setBackState(_backState)
+                setCategoryId(tempCategoryId)
+            }
+            else {
+                let category = subCategories.filter((r: any) => r.id === tempCategoryId);
+                navigate.navigate('ProductItem',
+                    {
+                        title: category[0].items.category_name,
+                        products: product_category
+                    })
+            }
         }
-    }, [categoryId])
+    }, [product_category])
 
-    const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
-        onPress={() => navigate.goBack()}>
-        <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
-    </TouchableOpacity>
 
     const onCategoryPress = (item: any) => {
         setMainCategoryId(item.id)
@@ -99,11 +116,8 @@ const MainCategoryScreen = (props: any) => {
     }
 
     const onSubCategoryPress = (item: any) => {
-        let _backState = backState;
-        _backState.push(item.id);
-        setBackState(_backState)
-        setCategoryId(item.id)
-        // setProducts(item.id)
+        dispatch(loadProductByCategory(item.id));
+        tempCategoryId = item.id;
     }
 
     const onBackCategory = () => {
@@ -112,7 +126,6 @@ const MainCategoryScreen = (props: any) => {
             _backState.length = backState.length - 1;
             setBackState(_backState)
             setCategoryId(_backState[backState.length - 1])
-            // setProducts(_backState[backState.length - 1])
         }
     }
 
@@ -162,76 +175,46 @@ const MainCategoryScreen = (props: any) => {
         )
     }
 
-    const _renderProduct = ({ item, index }: any) => {
-        return (
-            <TouchableOpacity onPress={() => navigate.navigate('ProductDetail',
-                { item })}>
-                <View style={{
-                    height: 100,
-                    borderRadius: 5,
-                    width: screen.width * 3 / 10,
-                    backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <FastImage source={{ uri: item.items.product_info.photos[0].photo_url }}
-                        style={{ height: '100%', width: '100%' }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <MainHeader
                 title={'Category'}
-            // leftIcon={leftIcon()}
-            // rightIcon={rightIcon()}
             />
-            {mainCategories.length > 0 &&
-                <View style={styles.categoryButtonContainer}>
-                    <FlatList
-                        horizontal
+            {isInitialLoad ?
+                <ActivityIndicator style={{
+                    marginTop: 20
+                }} size={35} color={MAIN_COLOR} />
+                : (<>
+                    {mainCategories.length > 0 &&
+                        <View style={styles.categoryButtonContainer}>
+                            <FlatList
+                                horizontal
+                                removeClippedSubviews={Platform.OS == 'ios' ? false : true}
+                                showsHorizontalScrollIndicator={false}
+                                // disableVirtualization={true}
+                                data={mainCategories}
+                                listKey={makeid()}
+                                ListEmptyComponent={null}
+                                keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
+                                renderItem={_renderItemMainCategory}
+                            />
+                        </View>
+                    }
+
+                    <FlatGrid
                         removeClippedSubviews={Platform.OS == 'ios' ? false : true}
-                        showsHorizontalScrollIndicator={false}
-                        // disableVirtualization={true}
-                        data={mainCategories}
+                        showsVerticalScrollIndicator={false}
+                        itemDimension={95}
+                        data={subCategories.sort(function (a: any, b: any) {
+                            return b.items.length - a.items.length
+                        })}
                         listKey={makeid()}
                         ListEmptyComponent={null}
                         keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
-                        renderItem={_renderItemMainCategory}
+                        renderItem={_renderCategory}
+
                     />
-                </View>
-            }
-
-            <FlatGrid
-                removeClippedSubviews={Platform.OS == 'ios' ? false : true}
-                showsVerticalScrollIndicator={false}
-                itemDimension={95}
-                data={subCategories.sort(function (a: any, b: any) {
-                    return b.items.length - a.items.length
-                })}
-                listKey={makeid()}
-                ListEmptyComponent={null}
-                keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
-                renderItem={_renderCategory}
-
-            />
-
-            <FlatGrid
-                removeClippedSubviews={Platform.OS == 'ios' ? false : true}
-                showsVerticalScrollIndicator={false}
-                itemDimension={95}
-                data={products.filter((r: { items: { category_info: { id: any; }; }; }) => r.items.category_info.id)}
-                listKey={makeid()}
-                ListEmptyComponent={null}
-                keyExtractor={(item: any, index: { toString: () => any; }) => index.toString()}
-                renderItem={_renderProduct}
-                style={{}}
-
-            />
+                </>)}
 
         </SafeAreaView>
     )
