@@ -15,15 +15,16 @@ import {
 import ProductSlide from '../containers/home/ProductSlide'
 import NewProduct from '../containers/product/NewProduct';
 import TopProduct from '../containers/product/TopProduct';
-import FeatureStores from '../containers/store/FeatureStores';
 import HomeHeader from '../custom_items/HomeHeader'
 import { createKeyWords, makeid } from '../functions/PTFunction'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useSelector, useDispatch } from 'react-redux';
 import { createProduct } from '../actions/Product';
 import AllProduct from '../containers/product/AllProduct';
+import Stores from '../containers/store/Stores';
 
 import { MAIN_COLOR, PRICE_COLOR } from '../styles';
+import Store from '../reducers/Store';
 
 
 const screen = Dimensions.get('screen')
@@ -176,7 +177,7 @@ const HomeScreen = () => {
                             <>
                                 <ProductSlide />
                                 <NewProduct />
-                                <FeatureStores />
+                                <Stores />
                                 <TopProduct />
                                 <AllProduct />
 

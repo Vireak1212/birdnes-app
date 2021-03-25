@@ -14,7 +14,6 @@ const EditProfile = () => {
     const clients = useSelector((state: { clients: any }) => state.clients);
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
-    console.log(clients)
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');

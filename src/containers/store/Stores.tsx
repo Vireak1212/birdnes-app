@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { makeid } from '../../functions/PTFunction';
 const size = Dimensions.get('screen');
 
-const FeatureStores = () => {
+const Stores = () => {
     const store = useSelector((state: { store: any }) => state.store);
     const navigate = useNavigation();
 
@@ -49,7 +49,7 @@ const FeatureStores = () => {
                 flexDirection: 'row',
                 justifyContent: 'space-between'
             }}>
-                <Text>Feature Stores</Text>
+                <Text>Stores</Text>
                 <TouchableOpacity onPress={() => navigate.navigate('AllStore')}>
                     <Text style={{ fontSize: 13, color: '#224889' }}>More</Text>
                 </TouchableOpacity>
@@ -67,7 +67,7 @@ const FeatureStores = () => {
     )
 }
 
-export default FeatureStores
+export default Stores
 
 const styles = StyleSheet.create({
     featureStoreName: {
