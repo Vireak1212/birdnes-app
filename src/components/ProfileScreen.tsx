@@ -17,7 +17,7 @@ import { updateClient } from '../actions/Client';
 
 const ProfileScreen = () => {
     const clients = useSelector((state: { clients: any }) => state.clients);
-    const [photo_url, setPhoto_url] = useState({ uri: '' });
+    const [photo_url, setPhoto_url] = useState({ uri: clients.items.client_info.photo_url });
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
     const [isSignIn, setSignIn] = useState(false);
@@ -96,11 +96,13 @@ const ProfileScreen = () => {
         }
     }
 
+
     const onUpdateToDB = async (file_name: any, file_image: any) => {
-        // (clients.items.client_info.photo_url !== '' && clients.items.client_info.photo_url_file_name)
+        console.log(file_image);
+        (clients.items.client_info.photo_url !== '' && clients.items.client_info.photo_url_file_name)
         let _cleint: any = clients;
-        _cleint.items.client_info.photo_url = file_image
-        _cleint.items.items.client_info.photo_url_file_name = file_name;
+        clients.items.client_info.photo_url = file_image
+        clients.items.client_info.photo_url_file_name = file_name;
         dispatch(updateClient(clients.id, _cleint.items));
     }
 
@@ -125,11 +127,13 @@ const ProfileScreen = () => {
                     ) : (
                         <View style={style.backgroundImage}>
                             <Image style={style.Imagestyle}
-                                source={photo_url}
+                                source={{ uri: photo_url.uri }}
                                 resizeMethod="auto"
                                 resizeMode="cover"
                             />
-
+                            <TouchableOpacity style={style.Camera} onPress={() => selectImage()}>
+                                <Entypo name='camera' size={20} color='#000' />
+                            </TouchableOpacity>
                         </View>
                     )}
 

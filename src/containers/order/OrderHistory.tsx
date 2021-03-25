@@ -39,7 +39,7 @@ const OrderHistory = (props: any) => {
     const _renderItem = ({ item, index }: any) => {
         const _order = item;
         return (
-            <View key={index} style={[styles.orderHistoryContainer, {
+            <View key={index} style={[style.orderHistoryContainer, {
                 marginBottom: index == order_history.items.order_info.products.length - 1 ? 10 : 0
             }]}>
                 <TouchableOpacity onPress={() => navigate.navigate('OrderDetail',
@@ -93,7 +93,7 @@ const OrderHistory = (props: any) => {
                                 >{"price: " + "$ " + value}
                                 </Text>} />
 
-                        <TouchableOpacity style={styles.orderAgainButton}>
+                        <TouchableOpacity style={style.orderAgainButton}>
                             <Text style={{
                                 color: '#888'
                             }}>Order again</Text>
@@ -161,28 +161,6 @@ const OrderHistory = (props: any) => {
 export default OrderHistory
 
 const styles = StyleSheet.create({
-    orderAgainButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 30,
-        width: 90,
-        borderWidth: 1,
-        borderColor: "#aaa",
-        borderRadius: 20
-    },
-    orderHistoryContainer: {
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        borderRadius: 10,
-        marginTop: 10,
-    },
-    textDateSwiftNews: {
-        fontWeight: 'bold',
-        borderRightWidth: 1.5,
-        height: 18,
-        fontSize: 13,
-        paddingTop: 1
-    },
+
 
 })

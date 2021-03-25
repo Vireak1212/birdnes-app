@@ -16,6 +16,8 @@ let tempCategoryId = '';
 const MainCategoryScreen = (props: any) => {
     const navigate = useNavigation();
     const dispatch = useDispatch();
+    const style = useSelector((state: { style: any }) => state.style);
+
     const [mainCategoryId, setMainCategoryId] = useState("")
     const [categoryId, setCategoryId] = useState("")
     const [backState, setBackState] = useState<any>([])
@@ -104,7 +106,7 @@ const MainCategoryScreen = (props: any) => {
             <TouchableOpacity onPress={() => {
                 onCategoryPress(item)
             }}
-                style={[styles.categoryButton, {
+                style={[style.categoryButton, {
                     marginLeft: index == 0 ? 10 : 0,
                     marginRight: 10,
                     backgroundColor: mainCategoryId === item.id ? '#ddd' : '#f6f6f6',
@@ -137,14 +139,7 @@ const MainCategoryScreen = (props: any) => {
                 else
                     onBackCategory()
             }}
-                style={{
-                    height: 100,
-                    borderRadius: 5,
-                    width: screen.width * 3 / 10,
-                    backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
+                style={style.categoryItemContainer}>
                 {/* {item.items.icon === "" ? (
                     <View style={{
                         height: 20,
@@ -186,7 +181,7 @@ const MainCategoryScreen = (props: any) => {
                 }} size={35} color={MAIN_COLOR} />
                 : (<>
                     {mainCategories.length > 0 &&
-                        <View style={styles.categoryButtonContainer}>
+                        <View style={style.mainCategoryContainer}>
                             <FlatList
                                 horizontal
                                 removeClippedSubviews={Platform.OS == 'ios' ? false : true}
@@ -222,17 +217,4 @@ const MainCategoryScreen = (props: any) => {
 
 export default MainCategoryScreen
 
-const styles = StyleSheet.create({
-    categoryButton: {
-        height: 50,
-        paddingHorizontal: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    categoryButtonContainer: {
-        flexDirection: 'row',
-        paddingVertical: 10,
-        backgroundColor: '#fff'
-    },
-})
+const styles = StyleSheet.create({})

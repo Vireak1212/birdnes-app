@@ -150,6 +150,4 @@ const StoreDetail = (props: any) => {
 
 export default StoreDetail
 
-const styles = StyleSheet.create({
-
-})
+const styles = StyleSheet.create({})

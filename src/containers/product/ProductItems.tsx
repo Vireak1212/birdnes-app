@@ -168,26 +168,7 @@ const ProductItems = (props: any) => {
                     onPress={() => {
                         onScrollToTop()
                     }}
-                    style={{
-                        width: 35,
-                        height: 35,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 20,
-                        zIndex: 10,
-                        position: 'absolute',
-                        bottom: 50,
-                        right: 95,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 3,
-                        },
-                        shadowOpacity: 0.27,
-                        shadowRadius: 4.65,
-                        elevation: 6,
-                        backgroundColor: '#fff'
-                    }}
+                    style={styles.scrollTotop}
                 >
                     <FontAwesome name='angle-up' size={20}></FontAwesome>
                 </TouchableOpacity>
@@ -243,4 +224,25 @@ const ProductItems = (props: any) => {
 
 export default ProductItems
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    scrollTotop: {
+        width: 35,
+        height: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 20,
+        zIndex: 10,
+        position: 'absolute',
+        bottom: 50,
+        right: 95,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        elevation: 6,
+        backgroundColor: '#fff'
+    }
+})

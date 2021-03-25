@@ -112,7 +112,5 @@ const NewProduct = () => {
 
 export default NewProduct
 
-const styles = StyleSheet.create({
-
-})
+const styles = StyleSheet.create({})
 

@@ -42,16 +42,21 @@ const VerifyScreen = () => {
     value,
     setValue,
   });
-  const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
-    onPress={() => navigate.goBack()}>
-    <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
-  </TouchableOpacity>
+
+
   return (
     <SafeAreaView style={styles.root}>
-      <MainHeader
-        title={'Verification'}
-        leftIcon={leftIcon()}
-      />
+
+      <TouchableOpacity onPress={() => navigate.goBack()}
+        style={{
+          height: 60,
+          width: 70,
+          paddingLeft: 15,
+          justifyContent: 'center',
+        }}>
+        <MaterialIcons name="arrow-back-ios" size={25} />
+      </TouchableOpacity>
+
       <View style={{ alignItems: 'center', marginTop: 20 }}>
         <Image source={require('../../images/icon/security-otp.jpg')}
           style={{
@@ -59,6 +64,7 @@ const VerifyScreen = () => {
             width: 100,
           }}></Image>
       </View>
+
       <View style={{
         justifyContent: 'center',
         alignItems: 'center',
@@ -67,6 +73,7 @@ const VerifyScreen = () => {
         <Text style={{ fontSize: 19 }}>វាយបញ្ចូលលេខកូដដែលយើងបានផ្ញើទៅកាន់</Text>
         <Text style={{ fontSize: 19 }}>លេខទូរស័េព្ទរបស់លោកអ្នក</Text>
       </View>
+
       <View style={{ padding: 20 }}>
         <CodeField
           ref={ref}
@@ -87,6 +94,7 @@ const VerifyScreen = () => {
           )}
         />
       </View>
+
       <View style={{
         flexDirection: 'row',
         justifyContent: 'center',

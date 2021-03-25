@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { View, Text, Image, TextInput, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, Alert, ActivityIndicator, } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,50 +62,30 @@ const CheakoutScreen = (props: any) => {
                         <>
                             <ScrollView style={{ flex: 1 }}>
                                 <View style={{ marginHorizontal: 15, marginTop: 10 }}>
+
                                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Shipping Address</Text>
-                                    <Row style={{
-                                        backgroundColor: '#fff',
-                                        height: 80,
-                                        width: '100%',
-                                        borderWidth: 0.5,
-                                        marginTop: 10,
-                                        borderColor: '#224889',
-                                        borderRadius: 5,
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        padding: 10
-                                    }}>
-                                        <View style={{}}>
+
+                                    <Row style={style.shippingAddress}>
+                                        <Col>
                                             <Text>Name : Tanglim</Text>
-                                            <Text style={{ opacity: 0.5, marginTop: 5 }}>N28 St 149, Phnom Penh, Cambodia</Text>
-                                        </View>
+                                            <Text style={{ opacity: 0.5, marginTop: 5 }}>
+                                                N28 St 149, Phnom Penh, Cambodia
+                                            </Text>
+                                        </Col>
+
                                         <TouchableOpacity onPress={() => navigate.navigate('Map')}>
-                                            <FastImage
-                                                source={{ uri: 'http://cdn.onlinewebfonts.com/svg/img_138923.png' }}
-                                                style={{
-                                                    height: 25,
-                                                    width: 25,
-                                                    borderRadius: 20,
-                                                    backgroundColor: '#eee'
-                                                }} />
+                                            <FastImage style={style.shippingAddressIcon}
+                                                source={require('../../images/icon/img_location.png')}
+                                            />
                                         </TouchableOpacity>
+
                                     </Row>
 
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
 
-                                    <Row style={{
-                                        backgroundColor: '#fff',
-                                        height: 80,
-                                        width: '100%',
-                                        borderWidth: 0.5,
-                                        marginTop: 10,
-                                        borderColor: '#224889',
-                                        borderRadius: 5,
-                                        alignItems: 'center',
-                                        padding: 10
-                                    }}>
+                                    <Row style={style.paymentContainer}>
                                         <FastImage
-                                            source={{ uri: 'https://static.thenounproject.com/png/3306801-200.png' }}
+                                            source={require('../../images/icon/delevery.png')}
                                             style={{
                                                 height: 45,
                                                 width: 50,
@@ -117,33 +96,25 @@ const CheakoutScreen = (props: any) => {
                                             <Text style={{ color: '#224889', marginLeft: 15 }}>Choose on delevery</Text>
                                         </TouchableOpacity>
                                     </Row>
-                                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Items</Text>
 
+                                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Items</Text>
                                 </View>
 
                                 {carts.items.order_info.products.map((_product: any) => {
                                     return (
-                                        <View key={makeid()} style={{
-                                            flexDirection: 'row',
-                                            backgroundColor: '#fff',
-                                            alignItems: 'center',
-                                            borderRadius: 10,
-                                            marginTop: 10,
-                                            marginHorizontal: 15
-                                        }}>
-                                            <TouchableOpacity>
-                                                <FastImage
-                                                    source={{ uri: _product.unit.photo_url }}
-                                                    style={{
-                                                        height: 110,
-                                                        width: 110,
-                                                        borderRadius: 10,
-                                                        margin: 5,
-                                                    }}
-                                                    resizeMode={FastImage.resizeMode.cover}
-                                                />
+                                        <View key={makeid()}
+                                            style={style.checkOutItemCotainer}>
 
-                                            </TouchableOpacity>
+                                            <FastImage
+                                                source={{ uri: _product.unit.photo_url }}
+                                                style={{
+                                                    height: 110,
+                                                    width: 110,
+                                                    borderRadius: 10,
+                                                    margin: 5,
+                                                }}
+                                                resizeMode={FastImage.resizeMode.cover}
+                                            />
 
                                             <Col style={{ padding: 5 }}>
                                                 <Col style={{ marginLeft: 5, justifyContent: 'space-between' }}>
@@ -158,9 +129,6 @@ const CheakoutScreen = (props: any) => {
                                                             code: {_product.product_code}
                                                         </Text>
 
-                                                        {/* <Text style={{ color: '#aaa' }} numberOfLines={2}>
-                                                        {_product.unit.unit_name}
-                                                    </Text> */}
                                                         <Text style={{ color: '#aaa' }} numberOfLines={2}>
                                                             x{_product.qty} {_product.unit.unit_name}
                                                         </Text>
@@ -243,5 +211,7 @@ const CheakoutScreen = (props: any) => {
 }
 
 export default CheakoutScreen;
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+})
 

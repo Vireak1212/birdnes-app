@@ -47,18 +47,13 @@ const OrderDetail = (props: any) => {
             <View style={{
                 paddingHorizontal: 15,
             }}>
-                <Text style={{
-                    color: '#000',
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    paddingVertical: 15
-                }} numberOfLines={1}>
+                <Text style={style.orderDetailDate} numberOfLines={1}>
                     Order Date : 03 22 2021
                 </Text>
 
 
 
-                <View style={styles.orderTotalContainer}>
+                <View style={style.orderTotalContainer}>
                     <Text style={{
                         color: '#000',
                     }}>Subtotal</Text>
@@ -78,7 +73,7 @@ const OrderDetail = (props: any) => {
                     </View>
                 </View>
 
-                <View style={styles.orderTotalContainer}>
+                <View style={style.orderTotalContainer}>
                     <Text style={{
                         color: '#000',
                     }}>Shipping Fee</Text>
@@ -98,7 +93,7 @@ const OrderDetail = (props: any) => {
                     </View>
                 </View>
 
-                <View style={[styles.orderTotalContainer, {
+                <View style={[style.orderTotalContainer, {
                     paddingBottom: 0
                 }]}>
                     <Text style={{
@@ -122,12 +117,8 @@ const OrderDetail = (props: any) => {
                 </View>
 
                 <Divider style={{ height: 0.7, marginTop: 15 }} />
-                <Text style={{
-                    color: '#000',
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    marginVertical: 15,
-                }} numberOfLines={1}>
+
+                <Text style={style.orderShipping} numberOfLines={1}>
                     Shipping Address
                 </Text>
 
@@ -142,10 +133,4 @@ const OrderDetail = (props: any) => {
 
 export default OrderDetail
 
-const styles = StyleSheet.create({
-    orderTotalContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingBottom: 10
-    },
-})
+const styles = StyleSheet.create({})

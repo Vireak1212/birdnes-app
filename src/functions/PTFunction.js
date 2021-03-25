@@ -1,3 +1,4 @@
+import storage from '@react-native-firebase/storage'
 export const makeid = () => {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+<>?:|.,";

@@ -13,6 +13,104 @@ export default StyleSheet.create({
     headerIconColor: {
         color: '#fff'
     },
+    ///Category
+    categoryItemContainer: {
+        height: 100,
+        borderRadius: 5,
+        width: screen.width * 3 / 10,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    categoryButton: {
+        height: 50,
+        paddingHorizontal: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mainCategoryContainer: {
+        flexDirection: 'row',
+        paddingVertical: 10,
+        backgroundColor: '#fff'
+    },
+    ///Order 
+    orderShipping: {
+        color: '#000',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginVertical: 15,
+    },
+    orderDetailDate: {
+        color: '#000',
+        fontSize: 16,
+        fontWeight: 'bold',
+        paddingVertical: 15
+    },
+    orderTotalContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingBottom: 10
+    },
+    orderAgainButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 30,
+        width: 90,
+        borderWidth: 1,
+        borderColor: "#aaa",
+        borderRadius: 20
+    },
+    orderHistoryContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        borderRadius: 10,
+        marginTop: 10,
+    },
+    textDateSwiftNews: {
+        fontWeight: 'bold',
+        borderRightWidth: 1.5,
+        height: 18,
+        fontSize: 13,
+        paddingTop: 1
+    },
+    ///Check Out 
+    checkOutItemCotainer: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        borderRadius: 10,
+        marginTop: 10,
+        marginHorizontal: 15
+    },
+    paymentContainer: {
+        backgroundColor: '#fff',
+        width: '100%',
+        borderWidth: 0.5,
+        marginTop: 10,
+        borderColor: '#224889',
+        borderRadius: 5,
+        alignItems: 'center',
+        padding: 10
+    },
+    shippingAddressIcon: {
+        height: 25,
+        width: 25,
+        borderRadius: 20,
+        backgroundColor: '#eee'
+    },
+    shippingAddress: {
+        backgroundColor: '#fff',
+        width: '100%',
+        borderWidth: 0.5,
+        marginTop: 10,
+        borderColor: '#224889',
+        borderRadius: 5,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10
+    },
     ///Top product
     topProductTitle: {
         paddingHorizontal: 12,
@@ -426,7 +524,33 @@ export default StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
     },
-    ////storedetail
+    ////store
+    storeName: {
+        position: 'absolute',
+        color: '#fff',
+        backgroundColor: 'rgba(60, 60, 60, 0.3)',
+        fontWeight: 'bold',
+        fontSize: 12,
+        bottom: 6,
+        left: 5,
+        borderTopRightRadius: 5,
+        paddingHorizontal: 5,
+        paddingVertical: 2
+    },
+    storeContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        marginBottom: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
+
+        elevation: 1,
+    },
     borderstyle: {
         height: 60,
         alignItems: 'center',
@@ -439,5 +563,5 @@ export default StyleSheet.create({
         fontSize: 18,
         fontFamily: 'Battambang-Regular'
     },
-    /////PrroductSlide
+
 })

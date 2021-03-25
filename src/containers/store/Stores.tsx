@@ -8,13 +8,14 @@ const size = Dimensions.get('screen');
 
 const Stores = () => {
     const store = useSelector((state: { store: any }) => state.store);
+    const style = useSelector((state: { style: any }) => state.style);
     const navigate = useNavigation();
 
     const _renderFeatureStore = ({ item, index }: any) => {
         const _store = item.items;
 
         return (
-            <View key={index} style={[styles.featureStoreContainer, {
+            <View key={index} style={[style.storeContainer, {
                 marginLeft: index === 0 ? 5 : 5,
                 marginRight: item.length - 1 == index ? 10 : 5,
             }]}>
@@ -32,7 +33,7 @@ const Stores = () => {
                             source={{ uri: _store.store_cover }}
                             resizeMode={FastImage.resizeMode.cover}
                         />
-                        <Text style={styles.featureStoreName} numberOfLines={2}>
+                        <Text style={style.storeName} numberOfLines={2}>
                             {_store.store_name}
                         </Text>
                     </View>
@@ -69,31 +70,4 @@ const Stores = () => {
 
 export default Stores
 
-const styles = StyleSheet.create({
-    featureStoreName: {
-        position: 'absolute',
-        color: '#fff',
-        backgroundColor: 'rgba(60, 60, 60, 0.3)',
-        fontWeight: 'bold',
-        fontSize: 12,
-        bottom: 6,
-        left: 5,
-        borderTopRightRadius: 5,
-        paddingHorizontal: 5,
-        paddingVertical: 2
-    },
-    featureStoreContainer: {
-        backgroundColor: '#fff',
-        borderRadius: 5,
-        marginBottom: 15,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
-
-        elevation: 1,
-    }
-})
+const styles = StyleSheet.create({})
