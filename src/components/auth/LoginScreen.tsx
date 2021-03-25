@@ -59,6 +59,8 @@ import { Button } from 'native-base'
 import React, { useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import MainHeader from '../../custom_items/MainHeader'
 import style from '../../styles/index'
 
 const LoginScreen = () => {
@@ -66,11 +68,18 @@ const LoginScreen = () => {
 	const [phoneNumber, setPhoneNumber] = useState('')
 	const [confirmCode, setConfirmCode] = useState('')
 	const [IsResend, setIsResend] = useState(false);
-
+	const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
+		onPress={() => navigate.goBack()}>
+		<MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
+	</TouchableOpacity>
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<ScrollView>
+				<MainHeader
+					leftIcon={leftIcon()}
+				/>
 				<View style={style.signUpContainer}>
+
 					<Image
 						style={{ height: 200, width: 200 }}
 						source={require('../../images/icon/logo2.png')}
