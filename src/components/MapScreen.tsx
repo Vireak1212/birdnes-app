@@ -117,11 +117,11 @@ const MapScreen = () => {
                     position: 'absolute',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    top: 10,
-                    left: 20
+                    top: 20,
+                    left: 10
                 }}>
-                <AntDesign
-                    name="arrowleft"
+                <MaterialIcons
+                    name="arrow-back-ios"
                     size={25}
                     color="#000"
                 />

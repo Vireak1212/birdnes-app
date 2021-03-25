@@ -26,16 +26,33 @@ const ShippingAddress = () => {
             <ScrollView>
 
                 <View style={{ marginHorizontal: 30, marginTop: 30 }}>
-                    <Text style={{ fontSize: 30 }}>ShippingAddress</Text>
-                    <Text style={{ color: '#224889' }}>Make change to your Shipping information</Text>
-                    <Text style={{ marginTop: 50, opacity: 0.5 }}>Shipping Address</Text>
+                    <Text style={{
+                        fontSize: 30
+                    }}>
+                        ShippingAddress
+                    </Text>
+                    <Text style={{
+                        color: '#224889'
+                    }}>
+                        Make change to your Shipping information
+                    </Text>
+                    <Text style={{
+                        marginTop: 50,
+                        opacity: 0.5
+                    }}>
+                        Shipping Address
+                    </Text>
                     <View style={[style.styleforms, { flexDirection: 'row' }]}>
                         <TouchableOpacity onPress={() => navigate.navigate('Map')}>
-                            <Entypo name="location-pin" size={25} style={{
-                                color: '#c96116', marginLeft: 10
-                            }} />
+                            <Entypo name="location-pin" size={30}
+                                style={{
+                                    color: '#c96116',
+                                    marginLeft: 10
+                                }} />
                         </TouchableOpacity>
-                        <Text style={{ marginLeft: 15 }}>Shipping Address</Text>
+                        <Text style={{ marginLeft: 15 }}>
+                            Shipping Address
+                        </Text>
                     </View>
 
 
@@ -44,19 +61,23 @@ const ShippingAddress = () => {
                     <Button
                         // onPress={() => onSave()}
                         full rounded style={style.bottonUpdate}>
-                        <Row style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#fff' }}>Update</Text>
+                        <Row style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                fontWeight: 'bold',
+                                color: '#fff'
+                            }}>Update</Text>
                         </Row>
                     </Button>
                 </View>
             </ScrollView>
         </SafeAreaView>
 
-
     );
 }
 
 
 export default ShippingAddress;
-const styles = StyleSheet.create({
-})
+const styles = StyleSheet.create({})
