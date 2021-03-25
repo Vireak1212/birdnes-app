@@ -226,7 +226,7 @@ const ProfileScreen = () => {
 
             <TouchableOpacity style={style.signOut}
                 onPress={() => navigate.navigate('Login')}>
-                <Text style={{ color: '#fff' }}> {isSignIn ? 'Sign In' : 'Sign Out'}</Text>
+                <Text style={{ color: '#fff' }}> {isSignIn ? 'Sign Out' : 'Sign In'}</Text>
             </TouchableOpacity>
 
         </SafeAreaView>
