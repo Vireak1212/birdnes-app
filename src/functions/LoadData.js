@@ -5,8 +5,11 @@ import { loadNewProduct, loadProduct, loadTopProduct } from "../actions/Product"
 import { loadSlider } from "../actions/ProductSlider";
 import { loadStore } from "../actions/Store";
 
-export function loadData(dispatch) {
-    dispatch(loadClient());
+
+export function loadData(dispatch, is_logout) {
+    dispatch(loadClient(is_logout));
+    dispatch(loadCart(is_logout));
+    dispatch(loadOrder(is_logout));
     dispatch(loadProduct());
     dispatch(loadNewProduct());
     dispatch(loadTopProduct())
@@ -14,6 +17,4 @@ export function loadData(dispatch) {
     dispatch(loadProduct());
     dispatch(loadCategory());
     dispatch(loadStore());
-    dispatch(loadCart());
-    dispatch(loadOrder());
 }

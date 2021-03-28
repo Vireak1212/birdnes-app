@@ -2,32 +2,32 @@ import Geolocation from '@react-native-community/geolocation'
 import { useNavigation } from '@react-navigation/core'
 import { Toast } from 'native-base'
 import React, { MutableRefObject, useEffect, useState } from 'react'
-import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Geocoder from 'react-native-geocoding'
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import Ripple from 'react-native-material-ripple'
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux'
+import { updateClient } from '../actions/Client'
 import { MAIN_COLOR } from '../styles'
+import { markers } from '../temp_data/mapData';
 
 
 const MapScreen = () => {
     let geocoder: any = Geocoder;
+    const client = useSelector((state: { client: any }) => state.client);
+    const navigate = useNavigation();
     const _map = React.useRef<MapView>(null) as MutableRefObject<MapView>;
-
-    const user = useSelector((state: any) => state.user)
+    const dispatch = useDispatch()
 
     const [lat, setLat] = useState(0)
     const [lng, setLng] = useState(0)
     const [location, setLocation] = useState('')
-    // const [location, setLocation] = useState(user.items.client_info.shipping_address)
+    const [isLoadDirection, setIsLoadDirection] = useState(false)
 
-    const navigate = useNavigation()
-    const dispatch = useDispatch()
+    // const [location, setLocation] = useState(user.items.client_info.shipping_address)
 
     useEffect(() => {
         checkPermission()
@@ -35,6 +35,7 @@ const MapScreen = () => {
     }, [])
 
     const initialMapState = {
+        markers,
         region: {
             latitude: 11.5775383,
             longitude: 104.9049579,
@@ -42,6 +43,7 @@ const MapScreen = () => {
             longitudeDelta: 0.050142817690068,
         },
     };
+    const [state, setState] = React.useState(initialMapState);
 
     const checkPermission = () => {
         request(
@@ -117,8 +119,8 @@ const MapScreen = () => {
                     position: 'absolute',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    top: 20,
-                    left: 10
+                    top: 10,
+                    left: 15,
                 }}>
                 <MaterialIcons
                     name="arrow-back-ios"
@@ -129,27 +131,33 @@ const MapScreen = () => {
         )
     }
 
-    // const onSave = () => {
-    //     if (user.length !== 0) {
-    //         user.items.client_info.shipping_address = location
-    //         dispatch(updateUser(user.id, user.items))
-    //         Toast.show({
-    //             text: "Your information has been updated",
-    //             type: 'success',
-    //             duration: 2000
-    //         })
-    //         navigate.goBack()
-    //     } else {
-    //         Alert.alert('Please login your account!')
-    //     }
-    // }
+    const onSave = () => {
+        if (client.length !== 0) {
+            let shipping_address = client.items.shipping_address;
+            shipping_address.push(location)
+            client.items.shipping_address = shipping_address;
+            dispatch(updateClient(client.id, client.items))
+            Toast.show({
+                text: "Your information has been updated",
+                type: 'success',
+                duration: 2000
+            })
+            navigate.goBack()
+        } else {
+            Alert.alert('Please login your account!')
+        }
+    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <MapView
                 ref={_map}
                 showsCompass={false}
-                showsUserLocation
+                showsMyLocationButton={false}
+                initialRegion={state.region}
+                showsUserLocation={true}
+                followsUserLocation={true}
+                provider={PROVIDER_GOOGLE}
                 style={{ flex: 1 }}>
                 <Marker
                     draggable
@@ -160,25 +168,20 @@ const MapScreen = () => {
                     }}
                     coordinate={{
                         latitude: lat,
-                        longitude: lng
+                        longitude: lng,
                     }}
                 >
 
                 </Marker>
             </MapView>
-            <View style={{
-                height: 100,
-                width: '100%',
-                backgroundColor: 'rgba(255, 255, 255,0.8)',
-                position: 'absolute',
-                top: 0,
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
+
+            <View style={styles.locationHeader}>
                 <Text>My Location</Text>
-                <Text>{location}</Text>
+                <Text style={{ padding: 10 }}>{location}</Text>
             </View>
+
             {backIcon()}
+
             <TouchableOpacity
                 onPress={() => getCurrentLocation()}
                 style={styles.locationButton}>
@@ -188,8 +191,8 @@ const MapScreen = () => {
                 />
             </TouchableOpacity>
             <TouchableOpacity
-                // onPress={() => onSave()}
-                style={styles.button}>
+                onPress={() => onSave()}
+                style={styles.saveLocationButton}>
                 <Text style={{ color: '#fff' }}>Save</Text>
             </TouchableOpacity>
         </SafeAreaView>
@@ -199,6 +202,15 @@ const MapScreen = () => {
 export default MapScreen;
 
 const styles = StyleSheet.create({
+    locationHeader: {
+        height: 100,
+        width: '100%',
+        backgroundColor: 'rgba(255, 255, 255,0.8)',
+        position: 'absolute',
+        top: 0,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     locationButton: {
         height: 40,
         width: 40,
@@ -210,7 +222,7 @@ const styles = StyleSheet.create({
         bottom: 100,
         right: 25
     },
-    button: {
+    saveLocationButton: {
         height: 50,
         width: '100%',
         position: 'absolute',

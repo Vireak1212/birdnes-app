@@ -16,6 +16,18 @@ const isLoadingHome = (state = true, action: { type: any; }) => {
     return state;
 }
 
+const noConnection = (state = false, action: { type: any; value: any; error: any; }) => {
+    switch (action.type) {
+        case 'LOAD_NO_CONNECTION':
+            return action.value
+        case 'LOAD__NO_CONNECTION_ERROR':
+            return action.error;
+        default:
+            break;
+    }
+    return state;
+}
+
 const LoadingStyles = (state = [], action: { type: any; style: any; error: any; }) => {
     switch (action.type) {
         case 'LOAD_STYLES':
@@ -31,14 +43,15 @@ const LoadingStyles = (state = [], action: { type: any; style: any; error: any; 
 const rootReducers = combineReducers({
     isLoadingHome,
     style: LoadingStyles,
+    no_connection: noConnection,
     slide_shows: ProductSlider,
-    clients: Client,
+    client: Client,
     products: Product,
     new_products: NewProduct,
     top_products: TopProduct,
     categories: Category,
     store: Store,
-    carts: Cart,
+    cart: Cart,
     order_history: OrderHistory,
     product_category: ProductCategory
 });

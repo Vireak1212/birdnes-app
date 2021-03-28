@@ -1,7 +1,7 @@
-const Client = (state = [], action: { type: any; clients: any[]; error: any; }) => {
+const Client = (state = [], action: { type: any; client: any[]; error: any; }) => {
     switch (action.type) {
         case 'LOAD_CLIENT':
-            return action.clients.length > 0 ? action.clients[0] : action.clients;
+            return action.client.length > 0 ? action.client[0] : action.client;
         case 'CLIENT_ERROR':
             return action.error;
         default:

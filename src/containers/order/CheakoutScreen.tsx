@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Col, Row, Toast } from 'native-base';
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, Alert, ActivityIndicator, } from 'react-native';
+import { View, Text, Image, TextInput, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, Alert, ActivityIndicator, FlatList, } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCart } from '../../actions/Cart';
+import { loadCart, updateCart } from '../../actions/Cart';
+import { updateClient } from '../../actions/Client';
 import MainHeader from '../../custom_items/MainHeader';
 import { makeid } from '../../functions/PTFunction';
 import { MAIN_COLOR, PRICE_COLOR } from '../../styles/index';
@@ -15,7 +16,8 @@ import { MAIN_COLOR, PRICE_COLOR } from '../../styles/index';
 const CheakoutScreen = (props: any) => {
     const { data } = props.route.params;
     const navigate = useNavigation();
-    const carts = useSelector((state: { carts: any }) => state.carts);
+    const cart = useSelector((state: { cart: any }) => state.cart);
+    const client = useSelector((state: { client: any }) => state.client);
     const style = useSelector((state: { style: any }) => state.style)
 
     const dispatch = useDispatch()
@@ -26,19 +28,25 @@ const CheakoutScreen = (props: any) => {
         setTimeout(() => {
             setIsInitialLoad(false)
         }, 200);
-    }, [carts.length])
+    }, [cart.length])
 
 
     const onCheckOut = () => {
-        dispatch(updateCart(carts.id, {
+        dispatch(updateCart(cart.id, {
             is_confirm: true
         }))
         Toast.show({
             text: 'your product is successful order',
             type: 'warning',
-            duration: 3000
+            duration: 2000
         })
-        navigate.navigate('Home');
+        dispatch(loadCart(false))
+        navigate.navigate('MainHome');
+    }
+
+    const _deleteAddress = (address: any) => {
+        client.items.shipping_address = client.items.shipping_address.filter((r: any) => r != address)
+        dispatch(updateClient(client.id, client.items))
     }
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -58,28 +66,62 @@ const CheakoutScreen = (props: any) => {
                 }} size={35} color={MAIN_COLOR} />
                 :
                 <>
-                    {carts.length !== 0 &&
+                    {cart.length !== 0 &&
                         <>
                             <ScrollView style={{ flex: 1 }}>
                                 <View style={{ marginHorizontal: 15, marginTop: 10 }}>
 
-                                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Shipping Address</Text>
+                                    <Row style={{ justifyContent: 'space-between' }}>
+                                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Shipping Address</Text>
 
-                                    <Row style={style.shippingAddress}>
-                                        <Col>
-                                            <Text>Name : Tanglim</Text>
-                                            <Text style={{ opacity: 0.5, marginTop: 5 }}>
-                                                N28 St 149, Phnom Penh, Cambodia
-                                            </Text>
-                                        </Col>
-
-                                        <TouchableOpacity onPress={() => navigate.navigate('Map')}>
-                                            <FastImage style={style.shippingAddressIcon}
-                                                source={require('../../images/icon/img_location.png')}
-                                            />
+                                        <TouchableOpacity onPress={() => navigate.navigate('Map')}
+                                            style={{
+                                                alignSelf: 'flex-end',
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                height: 30,
+                                                marginRight: 5
+                                            }}>
+                                            <Text style={{ paddingRight: 10, textDecorationLine: 'underline' }}>New Address</Text>
+                                            <AntDesign name='pluscircleo' size={25} />
                                         </TouchableOpacity>
-
                                     </Row>
+
+
+                                    {client.items.shipping_address.map((_address: any) => {
+                                        return (
+                                            <Row key={makeid()} style={[style.shippingAddress, { flexDirection: 'row' }]}>
+                                                <Col>
+                                                    <Text style={{ opacity: 0.5, paddingLeft: 10 }}>
+                                                        {_address}
+                                                    </Text>
+                                                </Col>
+
+                                                <TouchableOpacity onPress={() => {
+                                                    Alert.alert(
+                                                        "Delete Cart",
+                                                        "Are you sure to delete this Cart?",
+                                                        [
+                                                            {
+                                                                text: "No",
+                                                                onPress: () => console.log("No Pressed"),
+                                                                style: "cancel"
+                                                            },
+                                                            {
+                                                                text: "Yes",
+                                                                onPress: () => _deleteAddress(_address),
+                                                            }
+                                                        ],
+                                                        { cancelable: false }
+                                                    );
+                                                }}>
+                                                    <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />
+                                                </TouchableOpacity>
+
+                                            </Row>
+                                        )
+                                    })}
+
 
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
 
@@ -100,7 +142,7 @@ const CheakoutScreen = (props: any) => {
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Items</Text>
                                 </View>
 
-                                {carts.items.order_info.products.map((_product: any) => {
+                                {cart.items.order_info.products.map((_product: any) => {
                                     return (
                                         <View key={makeid()}
                                             style={style.checkOutItemCotainer}>
@@ -161,7 +203,7 @@ const CheakoutScreen = (props: any) => {
                                 <Col>
                                     <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
                                     <NumberFormat
-                                        value={carts.items.order_info.total_amount}
+                                        value={cart.items.order_info.total_amount}
                                         displayType={'text'}
                                         thousandSeparator={true}
                                         decimalScale={2}
@@ -211,7 +253,5 @@ const CheakoutScreen = (props: any) => {
 }
 
 export default CheakoutScreen;
-const styles = StyleSheet.create({
-
-})
+const styles = StyleSheet.create({})
 

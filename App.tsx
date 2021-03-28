@@ -9,24 +9,20 @@
  */
 
 import React, { useEffect } from 'react';
-import {
-  StatusBar,
-  Platform,
-} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen'
+import { ProvideAuth } from './src/functions/UserAuth';
 import Route from './src/navigate/Route';
-
-declare const global: { HermesInternal: null | {} };
 
 const App = () => {
   useEffect(() => {
     SplashScreen.hide()
   });
   return (
-    <>
-      {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
+    <ProvideAuth>
+      <SafeAreaView style={{ flex: 0, backgroundColor: '#fff' }} />
       <Route />
-    </>
+    </ProvideAuth>
   );
 
 }

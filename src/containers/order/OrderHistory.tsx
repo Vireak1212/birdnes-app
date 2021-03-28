@@ -16,6 +16,7 @@ const OrderHistory = (props: any) => {
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
 
+
     const [isInitialLoad, setIsInitialLoad] = useState(true)
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -37,10 +38,10 @@ const OrderHistory = (props: any) => {
     }
 
     const _renderItem = ({ item, index }: any) => {
-        const _order = item;
+        const _order = item.items;
         return (
             <View key={index} style={[style.orderHistoryContainer, {
-                marginBottom: index == order_history.items.order_info.products.length - 1 ? 10 : 0
+                marginBottom: index == order_history.length - 1 ? 10 : 0
             }]}>
                 <TouchableOpacity onPress={() => navigate.navigate('OrderDetail',
                     { item }
@@ -49,9 +50,10 @@ const OrderHistory = (props: any) => {
                         height: 120,
                         width: 120,
                         borderRadius: 10,
+                        margin: 5,
                         backgroundColor: '#ddd'
                     }}
-                        source={{ uri: _order.unit.photo_url }}
+                        source={require('../../images/icon/logo.png')}
                         resizeMode={FastImage.resizeMode.cover}
                     />
                 </TouchableOpacity>
@@ -66,13 +68,13 @@ const OrderHistory = (props: any) => {
                             color: '#000',
                             fontSize: 16
                         }} numberOfLines={1}>
-                            {_order.product_name}
+                            #999432
                         </Text>
                         <Text style={{ color: '#aaa' }} numberOfLines={1}>
-                            code: {_order.product_code}
+
                         </Text>
                         <Text style={{ color: '#aaa' }} numberOfLines={1}>
-                            x{_order.qty} {_order.unit.unit_name}
+
                         </Text>
                     </View>
                     <Row style={{
@@ -81,7 +83,7 @@ const OrderHistory = (props: any) => {
                     }}>
 
                         <NumberFormat
-                            value={_order.amount}
+                            value={_order.order_info.total_amount}
                             displayType={'text'}
                             thousandSeparator={true}
                             decimalScale={2}
@@ -135,19 +137,18 @@ const OrderHistory = (props: any) => {
                     }} size={35} color={MAIN_COLOR} />
                     : (
                         <>
-                            {order_history.length !== 0 ?
-                                order_history.items.order_info.products.length == 0 ? noItem()
-                                    : (
-                                        <FlatList
-                                            style={{
-                                                marginHorizontal: 10,
-                                            }}
-                                            data={order_history.items.order_info.products}
-                                            renderItem={_renderItem}
-                                            keyExtractor={(item, index) => index.toString()}
-                                            showsVerticalScrollIndicator={false}
-                                        />
-                                    ) : noItem()
+                            {order_history.length === 0 ? noItem()
+                                : (
+                                    <FlatList
+                                        style={{
+                                            marginHorizontal: 10,
+                                        }}
+                                        data={order_history}
+                                        renderItem={_renderItem}
+                                        keyExtractor={(item, index) => index.toString()}
+                                        showsVerticalScrollIndicator={false}
+                                    />
+                                )
                             }
                         </>
                     )

@@ -3,20 +3,20 @@ import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, FlatList, Alert, ActivityIndicator } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import style, { ICON_COLOR, PRICE_COLOR } from '../styles/index'
+import style, { PRICE_COLOR } from '../styles/index'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import MainHeader from '../custom_items/MainHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import { MAIN_COLOR } from '../styles/index';
-import { updateCart, deleteCart } from '../actions/Cart';
+import { updateCart, deleteCart, loadCart } from '../actions/Cart';
 import NumberFormat from 'react-number-format';
+import { makeid } from '../functions/PTFunction';
 
 const MainCartScreen = (props: any) => {
 
-    const carts = useSelector((state: { carts: any }) => state.carts);
+    const cart = useSelector((state: { cart: any }) => state.cart);
     const dispatch = useDispatch()
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
@@ -28,7 +28,7 @@ const MainCartScreen = (props: any) => {
         setTimeout(() => {
             setIsInitialLoad(false)
         }, 200);
-    }, [carts.length])
+    }, [cart.length])
 
     const getCart = async () => {
         setTimeout(() => {
@@ -37,11 +37,11 @@ const MainCartScreen = (props: any) => {
     }
 
     const updateQty = (item: any, is_increase: any) => {
-        let _carts: any = [];
-        _carts.push(carts);
-        _carts = _carts[0]
+        let _cart: any = [];
+        _cart.push(cart);
+        _cart = _cart[0]
 
-        const check = _carts.items.order_info.products.filter((r: any) => r.product_id == item.product_id && r.unit.unit_id == item.unit.unit_id);
+        const check = _cart.items.order_info.products.filter((r: any) => r.product_id == item.product_id && r.unit.unit_id == item.unit.unit_id);
         if (check.length > 0) {
             let product = check[0];
             let amount = 0;
@@ -61,11 +61,11 @@ const MainCartScreen = (props: any) => {
                 check[0].qty -= 1;
             check[0].amount = amount * product.qty
             let total_amount = 0;
-            _carts.items.order_info.products.map((product: any) => {
+            _cart.items.order_info.products.map((product: any) => {
                 total_amount += product.amount;
             })
-            _carts.items.order_info.total_amount = total_amount
-            dispatch(updateCart(_carts.id, _carts.items))
+            _cart.items.order_info.total_amount = total_amount
+            dispatch(updateCart(_cart.id, _cart.items))
         }
     }
 
@@ -81,16 +81,16 @@ const MainCartScreen = (props: any) => {
     };
 
     const onRemoveItem = (item: any) => {
-        let _carts: any = [];
-        _carts.push(carts);
-        _carts = _carts[0]
-        _carts.items.order_info.products = _carts.items.order_info.products.filter((r: any) => (r.product_id + r.unit.unit_id) != (item.product_id + item.unit.unit_id))
+        let _cart: any = [];
+        _cart.push(cart);
+        _cart = _cart[0]
+        _cart.items.order_info.products = _cart.items.order_info.products.filter((r: any) => (r.product_id + r.unit.unit_id) != (item.product_id + item.unit.unit_id))
         let total_amount = 0;
-        _carts.items.order_info.products.map((product: any) => {
+        _cart.items.order_info.products.map((product: any) => {
             total_amount += product.amount;
         })
-        _carts.items.order_info.total_amount = total_amount
-        dispatch(updateCart(_carts.id, _carts.items))
+        _cart.items.order_info.total_amount = total_amount
+        dispatch(updateCart(_cart.id, _cart.items))
     }
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -99,10 +99,11 @@ const MainCartScreen = (props: any) => {
     </TouchableOpacity>
 
     const _deleteCart = () => {
-        dispatch(deleteCart(carts.id))
+        dispatch(deleteCart(cart.id))
+        dispatch(loadCart(false))
     }
 
-    const rightIcon = () => <TouchableOpacity style={style.leftRightHeader}
+    const rightIcon = () => cart.length == 0 ? null : <TouchableOpacity style={style.leftRightHeader}
         onPress={() => {
             Alert.alert(
                 "Delete Cart",
@@ -121,8 +122,7 @@ const MainCartScreen = (props: any) => {
                 { cancelable: false }
             );
         }}>
-        {carts.items.order_info.products.length == 0 ? null :
-            <AntDesign name="delete" size={28} color='#fff' />}
+        <AntDesign name="delete" size={28} color='#fff' />
     </TouchableOpacity>
 
 
@@ -131,7 +131,7 @@ const MainCartScreen = (props: any) => {
         return (
 
             <View key={index} style={[styles.cartContainer, {
-                marginBottom: index == carts.items.order_info.products.length - 1 ? 10 : 0,
+                marginBottom: index == cart.items.order_info.products.length - 1 ? 10 : 0,
             }]}>
                 <TouchableOpacity>
                     <FastImage
@@ -250,16 +250,16 @@ const MainCartScreen = (props: any) => {
         )
     }
 
-    const onCheckOut = () => {
-        if (carts.length != 0) {
-            if (carts.items.order_info.products.length > 0) {
-                dispatch(updateCart(carts.id, {
-                    is_confirm: true
-                }))
-                navigate.navigate('CheckOut')
-            }
-        }
-    }
+    // const onCheckOut = () => {
+    //     if (cart.length != 0) {
+    //         if (cart.items.order_info.products.length > 0) {
+    //             dispatch(updateCart(cart.id, {
+    //                 is_confirm: true
+    //             }))
+    //             navigate.navigate('CheckOut')
+    //         }
+    //     }
+    // }
 
     const noItem = () => {
         return (
@@ -284,13 +284,13 @@ const MainCartScreen = (props: any) => {
                 <MainHeader
                     title={'Cart'}
                     leftIcon={leftIcon()}
-                    rightIcon={carts.length == 0 ? null :
+                    rightIcon={cart.length == 0 ? null :
                         rightIcon()
                     }
                 /> :
                 <MainHeader
                     title={'Cart'}
-                    rightIcon={carts.length == 0 ? null :
+                    rightIcon={cart.length == 0 ? null :
                         rightIcon()
                     }
                 />}
@@ -302,29 +302,30 @@ const MainCartScreen = (props: any) => {
                     }} size={35} color={MAIN_COLOR} />
                     : (
                         <>
-                            {carts.length !== 0 ?
-                                carts.items.order_info.products.length == 0 ?
+                            {cart.length !== 0 ?
+                                cart.items.order_info.products.length == 0 ?
                                     noItem()
                                     : (
                                         <FlatList
                                             style={{
                                                 marginHorizontal: 10
                                             }}
-                                            data={carts.items.order_info.products}
+                                            listKey={makeid()}
+                                            data={cart.items.order_info.products}
                                             renderItem={_renderItem}
                                             keyExtractor={(item, index) => index.toString()}
                                             showsVerticalScrollIndicator={false}
                                         />
                                     ) : noItem()}
 
-                            {carts.length !== 0 ?
-                                carts.items.order_info.products.length == 0 ?
+                            {cart.length !== 0 ?
+                                cart.items.order_info.products.length == 0 ?
                                     null
                                     : (<View style={style.checkOutContainer}>
                                         <Col>
                                             <Text style={{ fontSize: 16, opacity: 0.5 }}>Total</Text>
                                             <NumberFormat
-                                                value={carts.length === 0 ? 0 : carts.items.order_info.total_amount}
+                                                value={cart.length === 0 ? 0 : cart.items.order_info.total_amount}
                                                 displayType={'text'}
                                                 thousandSeparator={true}
                                                 decimalScale={2}
@@ -341,7 +342,7 @@ const MainCartScreen = (props: any) => {
                                         </Col>
 
                                         <TouchableOpacity onPress={() => navigate.navigate('CheckOut',
-                                            { carts }
+                                            { cart }
                                         )}
                                             style={style.styleCHACKOUT}>
                                             <Text style={{ color: '#fff' }}>CHEACKOUT</Text>

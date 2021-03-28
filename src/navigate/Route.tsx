@@ -1,17 +1,14 @@
 import React, { Dispatch } from 'react'
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { Root } from 'native-base';
+import { Root, Toast } from 'native-base';
 import style, { MAIN_COLOR } from '../styles/index'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loadData } from '../functions/LoadData';
 import MainStoreScreen from '../components/MainStoreScreen';
 
@@ -22,7 +19,6 @@ import MainCartScreen from '../components/MainCartScreen';
 import ProductDetail from '../containers/product/ProductDetail';
 import StoreDetail from '../containers/store/StoreDetail';
 import AllProduct from '../containers/product/AllProduct';
-import ProductOfCategory from '../containers/category/ProductOfCategory';
 
 import EditProfile from './../containers/profile/EditProfile';
 import ProfileScreen from '../components/ProfileScreen';
@@ -38,31 +34,121 @@ import MapScreen from './../components/MapScreen';
 import OrderSuccessful from './../containers/product/OrderSuccessful';
 import OrderDetail from '../containers/order/OrderDetail';
 import SearchProducts from '../containers/home/SearchProducts';
+import UpdateScreen from '../components/UpdateScreen';
+import NoInternetScreen from '../components/NoInternetScreen';
+import LoadingScreen from '../components/LoadingScreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { enableScreens } from 'react-native-screens';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import NetInfo from "@react-native-community/netinfo";
+import auth from "@react-native-firebase/auth";
+import messaging from "@react-native-firebase/messaging";
+import firestore from "@react-native-firebase/firestore";
+import { Platform } from 'react-native';
 
-
-
-
-const Stack = createStackNavigator();
+enableScreens();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
+let inter: any;
 const Route = () => {
+  const no_connection = useSelector(
+    (state: { no_connection: any }) => state.no_connection,
+  );
+
   async function loadStyle(dispatch: Dispatch<any>) {
     dispatch({ type: 'LOAD_STYLES', style });
   }
   const dispatch = useDispatch()
+
   React.useEffect(() => {
     loadStyle(dispatch)
     loadData(dispatch)
-  }, []);
+
+    //check internet
+    clearInterval(inter)
+    inter = setInterval(() => {
+      const unsubscribe = NetInfo.addEventListener((state: { isConnected: any; }) => {
+        if (!state.isConnected) {
+          dispatch({ type: 'LOAD_NO_CONNECTION', value: true });
+        }
+      });
+      unsubscribe();
+    }, 1000);
+    if (no_connection) {
+      clearInterval(inter);
+    }
+  }, [auth().currentUser, no_connection]);
+
+
+  React.useEffect(() => {
+    if (auth().currentUser) {
+      _updateClient();
+    }
+    else {
+      signInWithEmailAndPassword()
+    }
+  }, [])
+
+  async function signInWithEmailAndPassword() {
+    await auth()
+      .signInWithEmailAndPassword('hel.sreyet2014b@gmail.com', 'Ph$arTech#2020')
+      .then(async () => {
+        loadData(dispatch, false)
+      })
+      .catch(async (error: any) => {
+        console.log(error);
+        Toast.show({
+          text: "System has problem!",
+          type: 'danger',
+          duration: 2000,
+        });
+      });
+  }
+  const registerForNotification = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+  };
+  const requestForNotificationPermission = async () => {
+    const granted = await messaging().requestPermission();
+    if (granted) {
+      console.log('User granted messaging permissions!');
+    } else {
+      console.log('User declined messaging permissions :(');
+    }
+  };
+  const _updateClient = async () => {
+    let record = await firestore()
+      .collection('clients')
+      .where('uid', '==', auth().currentUser?.uid)
+      .get();
+    if (record.docs.length === 0) {
+      signInWithEmailAndPassword()
+    } else {
+      refreshToken(record.docs[0])
+    }
+  };
+  const refreshToken = async (item: any) => {
+    const check = await messaging().isDeviceRegisteredForRemoteMessages;
+    if (Platform.OS === 'ios' || !check) {
+      await registerForNotification();
+    }
+    await requestForNotificationPermission();
+    loadData(dispatch, false)
+  };
 
   function MainStack() {
     return (
-      <Stack.Navigator screenOptions={{
-        headerShown: false,
-      }}>
-        <Stack.Screen name="Home" component={MainTab} />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          stackAnimation: 'fade'
+        }}>
+        <Stack.Screen name="Home" component={LoadingScreen} />
+        <Stack.Screen name="MainHome" component={MainTab} />
+        <Stack.Screen name="Update" component={UpdateScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Comfirm" component={VerifyScreen} />
+        <Stack.Screen name="Verify" component={VerifyScreen} />
 
         <Stack.Screen name="Order" component={OrderHistory} />
         <Stack.Screen name="OrderDetail" component={OrderDetail} />
@@ -74,14 +160,12 @@ const Route = () => {
         <Stack.Screen name="CheckOut" component={CheakoutScreen} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="StoreDetail" component={StoreDetail} />
-
         <Stack.Screen name="Successful" component={OrderSuccessful} />
         <Stack.Screen name="SearchProduct" component={SearchProducts} />
         <Stack.Screen name="AllStore" component={MainStoreScreen} />
         <Stack.Screen name="AllProduct" component={AllProduct} />
         <Stack.Screen name="ProductItem" component={ProductItems} />
         <Stack.Screen name="CartDetail" component={MainCartScreen} />
-        <Stack.Screen name="productCategory" component={ProductOfCategory} />
 
       </Stack.Navigator>
     );
@@ -156,10 +240,13 @@ const Route = () => {
 
   return (
     <Root>
-      <NavigationContainer>
-        <StatusBar barStyle="light-content" />
-        <MainStack />
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          {no_connection ? <NoInternetScreen /> : (
+            <MainStack />
+          )}
+        </NavigationContainer>
+      </SafeAreaProvider>
     </Root>
   );
 }

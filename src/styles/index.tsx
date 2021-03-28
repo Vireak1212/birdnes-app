@@ -13,6 +13,30 @@ export default StyleSheet.create({
     headerIconColor: {
         color: '#fff'
     },
+
+    codeFieldRoot: {
+        marginTop: 10,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    cellRoot: {
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomColor: '#7a1a22',
+        borderBottomWidth: 1,
+        marginHorizontal: 5
+    },
+    cellText: {
+        color: '#7a1a22',
+        fontSize: 25,
+        textAlign: 'center',
+    },
+    focusCell: {
+        borderBottomColor: '#7a1a22',
+        borderBottomWidth: 1
+    },
     ///Category
     categoryItemContainer: {
         height: 100,
@@ -87,7 +111,7 @@ export default StyleSheet.create({
     paymentContainer: {
         backgroundColor: '#fff',
         width: '100%',
-        borderWidth: 0.5,
+        borderWidth: 0.3,
         marginTop: 10,
         borderColor: '#224889',
         borderRadius: 5,
@@ -103,7 +127,7 @@ export default StyleSheet.create({
     shippingAddress: {
         backgroundColor: '#fff',
         width: '100%',
-        borderWidth: 0.5,
+        borderWidth: 0.3,
         marginTop: 10,
         borderColor: '#224889',
         borderRadius: 5,
@@ -251,8 +275,8 @@ export default StyleSheet.create({
     unitButton: {
         marginLeft: 15,
         borderWidth: 0.2,
-        borderRadius: 5,
-        height: 23,
+        borderRadius: 2,
+        height: 30,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -371,7 +395,7 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
     },
     signOut: {
-        backgroundColor: '#224889',
+        backgroundColor: '#fff',
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
@@ -422,7 +446,7 @@ export default StyleSheet.create({
         fontSize: 14,
         color: '#000',
         borderRightWidth: 0.5,
-        borderRightColor: '#efaf26',
+        borderColor: MAIN_COLOR,
         padding: 0,
         paddingHorizontal: 5,
         height: 30,
@@ -436,7 +460,7 @@ export default StyleSheet.create({
         height: 50,
         borderRadius: 15,
         borderWidth: 0.3,
-        borderColor: '#efaf26'
+        borderColor: MAIN_COLOR
     },
     signUpContainer: {
         marginTop: 40,

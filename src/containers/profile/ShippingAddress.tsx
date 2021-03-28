@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { Button, Row } from 'native-base';
+import { Button, Col, Row } from 'native-base';
 import React from 'react';
 import { View, Text, Image, TextInput, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -12,11 +13,14 @@ import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 const ShippingAddress = () => {
 
     const navigate = useNavigation();
+    const client = useSelector((state: { client: any }) => state.client);
     const style = useSelector((state: { style: any }) => state.style)
+
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
         <MaterialIcons name="arrow-back-ios" size={25} style={style.headerIconColor} />
     </TouchableOpacity>
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <MainHeader
@@ -36,13 +40,9 @@ const ShippingAddress = () => {
                     }}>
                         Make change to your Shipping information
                     </Text>
-                    <Text style={{
-                        marginTop: 50,
-                        opacity: 0.5
-                    }}>
-                        Shipping Address
-                    </Text>
-                    <View style={[style.styleforms, { flexDirection: 'row' }]}>
+
+
+                    {/* <View style={[style.styleforms, { flexDirection: 'row' }]}>
                         <TouchableOpacity onPress={() => navigate.navigate('Map')}>
                             <Entypo name="location-pin" size={30}
                                 style={{
@@ -53,10 +53,27 @@ const ShippingAddress = () => {
                         <Text style={{ marginLeft: 15 }}>
                             Shipping Address
                         </Text>
-                    </View>
+                    </View> */}
+
+                    <Row style={style.shippingAddress}>
+                        <Col>
+                            <Text style={{ opacity: 0.5, }}>
+                                {client.items.shipping_address}
+                            </Text>
+                        </Col>
+
+
+                        <TouchableOpacity onPress={() => navigate.navigate('Map')}>
+                            <FastImage style={style.shippingAddressIcon}
+                                source={require('../../images/icon/img_location.png')}
+                            />
+                        </TouchableOpacity>
+
+                    </Row>
 
 
                 </View>
+
                 <View style={{ marginHorizontal: 30 }}>
                     <Button
                         // onPress={() => onSave()}
@@ -73,7 +90,7 @@ const ShippingAddress = () => {
                     </Button>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
 
     );
 }

@@ -11,14 +11,16 @@ import { createKeyWords, isEmail } from '../../functions/PTFunction';
 import style, { ICON_COLOR, PRICE_COLOR } from '../../styles/index'
 
 const EditProfile = () => {
-    const clients = useSelector((state: { clients: any }) => state.clients);
+    const client = useSelector((state: { client: any }) => state.client);
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState(clients.items.client_info.email);
+    const [fullName, setFullName] = useState('')
+    const [email, setEmail] = useState(client.items.client_info.email);
 
+    const fullNameRef = React.createRef<TextInput>()
     const firstNameRef = React.createRef<TextInput>()
     const lastNameRef = React.createRef<TextInput>()
     const emailRef = React.createRef<TextInput>()
@@ -26,30 +28,17 @@ const EditProfile = () => {
     const dispatch = useDispatch()
 
     React.useEffect(() => {
-        if (clients.length !== 0) {
-            setFirstName(clients.items.client_info.first_name)
-            setLastName(clients.items.client_info.last_name)
+        if (client.length !== 0) {
+            setFullName(client.items.client_info.full_name)
         }
-    }, [clients.length])
+    }, [client.length])
 
     const _onSave = () => {
-        if (firstName.trim().length === 0) {
-            if (firstNameRef.current !== undefined && firstNameRef.current !== null) {
-                firstNameRef.current.focus()
+        if (fullName.trim().length === 0) {
+            if (fullNameRef.current !== undefined && fullNameRef.current !== null) {
+                fullNameRef.current.focus()
                 Toast.show({
-                    text: 'Please enter your first name!',
-                    type: 'warning',
-                    duration: 2000
-                })
-                return;
-            }
-        }
-
-        if (lastName.trim().length === 0) {
-            if (lastNameRef.current !== undefined && lastNameRef.current !== null) {
-                lastNameRef.current.focus()
-                Toast.show({
-                    text: 'Please enter your last name!',
+                    text: 'Please enter your full name!',
                     type: 'warning',
                     duration: 2000
                 })
@@ -79,12 +68,11 @@ const EditProfile = () => {
         //         return;
         //     }
         // }
-        clients.items.client_info.email = email;
-        clients.items.client_info.first_name = firstName;
-        clients.items.client_info.last_name = lastName;
-        clients.items.keywords = createKeyWords(firstName.toLocaleLowerCase())
-        clients.items.keywords = createKeyWords(lastName.toLocaleLowerCase())
-        dispatch(updateClient(clients.id, clients.items))
+        client.items.client_info.email = email;
+        client.items.client_info.full_name = fullName;
+        client.items.keywords = createKeyWords(firstName.toLocaleLowerCase())
+        client.items.keywords = createKeyWords(lastName.toLocaleLowerCase())
+        dispatch(updateClient(client.id, client.items))
         Toast.show({
             text: 'Updated',
             type: 'success',
@@ -114,15 +102,15 @@ const EditProfile = () => {
                     <View style={style.styleform}>
                         <TextInput style={{ fontSize: 15, marginHorizontal: 10 }}
                             ref={firstNameRef}
-                            placeholder="First name"
+                            placeholder="Full name"
                             onChangeText={(text) => {
-                                setFirstName(text)
+                                setFullName(text)
                             }}
-                            value={firstName}
+                            value={fullName}
                         />
                     </View>
 
-                    <View style={style.styleform}>
+                    {/* <View style={style.styleform}>
                         <TextInput style={{ fontSize: 15, marginHorizontal: 10 }}
                             ref={lastNameRef}
                             placeholder="Last name"
@@ -131,7 +119,7 @@ const EditProfile = () => {
                             }}
                             value={lastName}
                         />
-                    </View>
+                    </View> */}
                     <View style={style.styleform}>
                         <TextInput style={{ fontSize: 15, marginHorizontal: 10 }}
                             ref={emailRef}

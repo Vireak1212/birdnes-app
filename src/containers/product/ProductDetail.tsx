@@ -25,7 +25,8 @@ const screen = Dimensions.get('screen')
 const ProductDetail = (props: any) => {
     const { item } = props.route.params;
     const style = useSelector((state: { style: any }) => state.style);
-    const carts = useSelector((state: { carts: any }) => state.carts);
+    const cart = useSelector((state: { cart: any }) => state.cart);
+    const client = useSelector((state: { client: any }) => state.client);
     const navigate = useNavigation();
     const dispatch = useDispatch()
     const product_neme = item.items.product_info.product_name;
@@ -95,12 +96,12 @@ const ProductDetail = (props: any) => {
             console.log('Please select unit');
             return;
         }
-        if (carts.length !== 0) {
-            let _carts: any = [];
-            _carts.push(carts);
-            _carts = _carts[0]
+        if (cart.length !== 0) {
+            let _cart: any = [];
+            _cart.push(cart);
+            _cart = _cart[0]
 
-            const check = _carts.items.order_info.products.filter((r: any) => r.product_id == item.id && r.unit.unit_id == unit.unit_id);
+            const check = _cart.items.order_info.products.filter((r: any) => r.product_id == item.id && r.unit.unit_id == unit.unit_id);
             if (check.length > 0) {
                 let product = check[0];
                 let amount = 0;
@@ -130,7 +131,7 @@ const ProductDetail = (props: any) => {
                     else
                         amount = unit.price;
                 }
-                _carts.items.order_info.products.push({
+                _cart.items.order_info.products.push({
                     allow_discount: item.items.allow_discount,
                     photo_url: item.items.product_info.units.photo_url,
                     photo_url_file_name: item.items.product_info.units.photo_url_file_name,
@@ -144,23 +145,23 @@ const ProductDetail = (props: any) => {
                 })
             }
             let total_amount = 0;
-            _carts.items.order_info.products.map((product: any) => {
+            _cart.items.order_info.products.map((product: any) => {
                 total_amount += product.amount;
             })
-            _carts.items.order_info.total_amount = total_amount
-            dispatch(updateCart(_carts.id, _carts.items))
+            _cart.items.order_info.total_amount = total_amount
+            dispatch(updateCart(_cart.id, _cart.items))
         }
         else {
             let amount = 0;
             let discount = item.items.discount_info;
             if (discount.discount_percent > 0) {
-                amount = unit.price - ((unit.price * discount.discount_percent) / 100)
+                amount = (unit.price * qty) - (((unit.price * qty) * discount.discount_percent) / 100)
             }
             else {
                 if (discount.discount_value > 0)
-                    amount = unit.price - discount.discount_value;
+                    amount = (unit.price * qty) - discount.discount_value;
                 else
-                    amount = unit.price;
+                    amount = (unit.price * qty);
             }
             const _cart = {
                 client_info: {
@@ -187,7 +188,7 @@ const ProductDetail = (props: any) => {
                             amount
                         }
                     ],
-                    amount: qty * amount
+                    total_amount: amount
                 },
                 shop_info: {
                     phone_number: "",
@@ -197,7 +198,7 @@ const ProductDetail = (props: any) => {
                     shop_name: ""
                 },
                 shop_uid: "",
-                uid: ""
+                uid: client.items.uid,
             }
             dispatch(addToCart(_cart));
         }
@@ -231,9 +232,9 @@ const ProductDetail = (props: any) => {
         onPress={() => navigate.navigate('CartDetail',
             { isBack: true }
         )}>
-        {carts.length == 0 ? null :
+        {cart.length == 0 ? null :
             <View style={style.itemCountContainer}>
-                <Text style={style.itemCountText}>{carts.length === 0 ? '' : carts.items.order_info.products.length}</Text>
+                <Text style={style.itemCountText}>{cart.length === 0 ? '' : cart.items.order_info.products.length}</Text>
             </View>
         }
         <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
@@ -376,7 +377,8 @@ const ProductDetail = (props: any) => {
                                                         return (
                                                             <TouchableOpacity key={_unit.unit_id} onPress={() => onUnitPress(_unit)}
                                                                 style={[style.unitButton, {
-                                                                    borderColor: _unit.unit_id === unit.unit_id ? '#224889' : '#000',
+                                                                    borderColor: _unit.unit_id === unit.unit_id ? '#aaa' : '#aaa',
+                                                                    backgroundColor: _unit.unit_id === unit.unit_id ? '#eee' : '#fff'
                                                                 }]}>
                                                                 <Text style={{
                                                                     paddingHorizontal: 15,
@@ -442,7 +444,14 @@ const ProductDetail = (props: any) => {
                     />
                 }
                 <View style={style.addToCartContaier}>
-                    <TouchableOpacity onPress={() => onAddToCart()}
+
+                    <TouchableOpacity onPress={() => {
+                        {
+                            client.length !== 0 ?
+                                onAddToCart() :
+                                navigate.navigate('Login')
+                        }
+                    }}
                         style={style.addToCartBotton}>
                         <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
                         <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
