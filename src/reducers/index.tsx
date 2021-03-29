@@ -5,6 +5,7 @@ import Category from "./Category";
 import { NewProduct, Product, ProductCategory, TopProduct } from "./Product";
 import Client from './Client';
 import { Cart, OrderHistory } from './Cart';
+import { Setting } from './Setting';
 
 const isLoadingHome = (state = true, action: { type: any; }) => {
     switch (action.type) {
@@ -53,7 +54,8 @@ const rootReducers = combineReducers({
     store: Store,
     cart: Cart,
     order_history: OrderHistory,
-    product_category: ProductCategory
+    product_category: ProductCategory,
+    settings: Setting,
 });
 
 export default rootReducers;

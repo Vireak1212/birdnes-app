@@ -133,19 +133,16 @@ const MainCartScreen = (props: any) => {
             <View key={index} style={[styles.cartContainer, {
                 marginBottom: index == cart.items.order_info.products.length - 1 ? 10 : 0,
             }]}>
-                <TouchableOpacity>
-                    <FastImage
-                        source={{ uri: _cart.unit.photo_url }}
-                        style={{
-                            height: 120,
-                            width: 130,
-                            borderRadius: 10,
-                            margin: 5,
-                        }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-
-                </TouchableOpacity>
+                <FastImage
+                    source={{ uri: _cart.unit.photo_url }}
+                    style={{
+                        height: 120,
+                        width: 130,
+                        borderRadius: 10,
+                        margin: 5,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
 
                 <Col style={{
                     padding: 5,
@@ -155,16 +152,17 @@ const MainCartScreen = (props: any) => {
                     <Row>
                         <Col>
                             <Text style={{
+                                fontWeight: 'bold',
                                 color: '#000',
-                                fontSize: 16
+                                fontSize: 15
                             }} numberOfLines={1}>
                                 {_cart.product_name}
                             </Text>
-                            <Text style={{ color: '#aaa' }} numberOfLines={2}>
-                                code: {_cart.product_code}
+                            <Text style={{ color: '#aaa', fontSize: 13 }} numberOfLines={2}>
+                                Code: {_cart.product_code}
                             </Text>
 
-                            <NumberFormat
+                            {/* <NumberFormat
                                 value={_cart.unit.price}
                                 displayType={'text'}
                                 thousandSeparator={true}
@@ -172,13 +170,13 @@ const MainCartScreen = (props: any) => {
                                 fixedDecimalScale={true}
                                 prefix={''}
                                 renderText={value =>
-                                    <Text style={{ color: '#444' }}
+                                    <Text style={{ color: '#aaa', fontSize: 13 }}
                                         numberOfLines={1}
-                                    >{"price: " + "$ " + value}
-                                    </Text>} />
+                                    >{"Price: " + "$ " + value}
+                                    </Text>} /> */}
 
-                            <Text style={{ color: '#444' }} numberOfLines={2}>
-                                {_cart.unit.unit_name}
+                            <Text style={{ color: '#aaa', fontSize: 13 }} numberOfLines={2}>
+                                x{item.qty} {_cart.unit.unit_name}
                             </Text>
                         </Col>
 
@@ -202,7 +200,7 @@ const MainCartScreen = (props: any) => {
                                 );
                             }}
                         >
-                            <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />
+                            <MaterialIcons name="delete-forever" size={25} color={'#FF4500'} />
                         </TouchableOpacity>
                     </Row>
 
@@ -217,7 +215,7 @@ const MainCartScreen = (props: any) => {
                             prefix={''}
                             renderText={value =>
                                 <Text style={{
-                                    fontSize: 16,
+                                    fontSize: 15,
                                     color: PRICE_COLOR,
                                 }}
                                     numberOfLines={1}
@@ -345,7 +343,7 @@ const MainCartScreen = (props: any) => {
                                             { cart }
                                         )}
                                             style={style.styleCHACKOUT}>
-                                            <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
+                                            <Text style={{ color: '#fff' }}>CHECKOUT</Text>
                                             <AntDesign name='playcircleo' size={20}
                                                 style={{ color: '#fff', marginLeft: 10 }} color='#000' />
                                         </TouchableOpacity>

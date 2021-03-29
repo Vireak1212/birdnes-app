@@ -18,6 +18,7 @@ import Swiper from 'react-native-swiper'
 import ImageView from './ImageView';
 import NumberFormat from 'react-number-format';
 import StarRating from 'react-native-star-rating';
+import { updateClient } from '../../actions/Client';
 
 
 const screen = Dimensions.get('screen')
@@ -32,7 +33,6 @@ const ProductDetail = (props: any) => {
     const product_neme = item.items.product_info.product_name;
 
     const [isLoadCompleted, setIsLoadCompleted] = useState(false)
-    const [isFavorite, setIsFavorite] = useState(false)
     const [qty, setQty] = useState(1);
     const [isLoading, setIsLoading] = useState(true)
     const [unit, setUnit] = useState<any>([])
@@ -138,6 +138,7 @@ const ProductDetail = (props: any) => {
                     product_id: item.id,
                     product_name: item.items.product_info.product_name,
                     product_code: item.items.product_info.product_code,
+                    product_description: item.items.product_info.product_description,
                     unit,
                     discount: item.items.discount_info,
                     qty,
@@ -182,6 +183,7 @@ const ProductDetail = (props: any) => {
                             product_id: item.id,
                             product_name: item.items.product_info.product_name,
                             product_code: item.items.product_info.product_code,
+                            product_description: item.items.product_info.product_description,
                             unit,
                             discount: item.items.discount_info,
                             qty,
@@ -219,9 +221,21 @@ const ProductDetail = (props: any) => {
         setUnit(item)
     }
 
-    const addToFavorite = () => {
-        setIsFavorite(value => !value)
+    const addServiceToFavorite = (id: any, is_fav: any) => {
+        let check: any = client.items.favorite_product;
+        if (is_fav) {
+            check = check.filter((r: { id: any; }) => r.id !== id);
+        }
+        else {
+            check.push({
+                id
+            })
+        }
+        client.items.favorite_product = check;
+        dispatch(updateClient(client.id, client.items))
     }
+    let check = client.items.favorite_product.filter((r: { id: any; }) => r.id === item.id);
+
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
@@ -323,24 +337,30 @@ const ProductDetail = (props: any) => {
                                                 </Text>
                                                 <View style={{ alignSelf: 'flex-start' }}>
                                                     <StarRating
-                                                        disabled={false}
+                                                        disabled={true}
+                                                        emptyStar={'star-o'}
+                                                        fullStar={'star'}
+                                                        halfStar={'star-half-o'}
+                                                        iconSet={'FontAwesome'}
                                                         maxStars={5}
-                                                        rating={3}
-                                                        fullStarColor="gold"
                                                         starSize={20}
+                                                        rating={item.items.rating_value}
+                                                        emptyStarColor={'#FFD700'}
+                                                        fullStarColor={'#FFD700'}
+                                                        // starStyle={{ marginTop: Platform.OS === "ios" ? 4 : 3 }}
                                                         containerStyle={{ width: 80 }}
                                                     />
                                                 </View>
                                             </Col>
 
                                             <View style={{ alignItems: 'center' }}>
-                                                <TouchableOpacity onPress={() => {
-                                                    addToFavorite()
-                                                }}
-                                                    style={{ paddingBottom: 5 }}>
-                                                    {/* <Feather name='star' size={30} /> */}
-                                                    <FontAwesome name={!isFavorite ? "star-o" : "star"} size={30}
-                                                        color={!isFavorite ? '#aaa' : '#FFD700'} />
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        addServiceToFavorite(item.id, check.length > 0)
+                                                    }} style={{ paddingBottom: 5 }}>
+
+                                                    <FontAwesome name={check.length === 0 ? "star-o" : "star"} size={30}
+                                                        color={check.length === 0 ? '#aaa' : '#FFD700'} />
                                                 </TouchableOpacity>
 
                                                 <NumberFormat

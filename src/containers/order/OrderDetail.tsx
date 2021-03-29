@@ -5,17 +5,20 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import MainHeader from '../../custom_items/MainHeader';
 import { useNavigation } from '@react-navigation/native';
-import { Row } from 'native-base';
+import { Col, Row } from 'native-base';
 import NumberFormat from 'react-number-format';
 import { Divider } from 'react-native-elements';
+import { makeid } from '../../functions/PTFunction';
+import { PRICE_COLOR } from '../../styles';
+import { ScrollView } from 'react-native-gesture-handler';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const screen = Dimensions.get('screen')
 const OrderDetail = (props: any) => {
     const { item } = props.route.params;
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
-
-    const product_name = item.product_name;
+    const order_history = useSelector((state: { order_history: any }) => state.order_history);
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
@@ -26,32 +29,100 @@ const OrderDetail = (props: any) => {
     </TouchableOpacity>
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
-            <MainHeader
-                title={product_name}
-                leftIcon={leftIcon()}
-            />
-            <View style={{
-                marginHorizontal: 10,
-                marginVertical: 10,
-            }}>
-                <FastImage
-                    source={{ uri: item.unit.photo_url }}
-                    style={{
-                        width: '100%',
-                        borderRadius: 10,
-                        height: screen.width / 1.8,
-                    }}
+            <ScrollView>
+                <MainHeader
+                    title={'Order Detail'}
+                    leftIcon={leftIcon()}
                 />
-            </View>
 
+
+                <View style={{
+                    backgroundColor: '#fff',
+                    padding: 10,
+                    borderRadius: 10,
+                    margin: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text style={[style.orderDetailDate, { fontSize: 16 }]} numberOfLines={1}>
+                        {'Order ID: ' + item.items.document_number}
+                    </Text>
+
+                    <Text style={{ color: '#aaa' }} numberOfLines={1}>
+                        12/Dec/1998
+                        </Text>
+                    <Row style={{ alignItems: 'center' }}>
+                        <Entypo name='location-pin' size={25} />
+                        <Text>location</Text>
+                    </Row>
+                </View>
+
+
+
+                <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10 }}>
+                    {item.items.order_info.products.map((_product: any) => {
+                        return (
+                            <View key={makeid()}
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}>
+
+                                <FastImage
+                                    source={{ uri: _product.unit.photo_url }}
+                                    style={{
+                                        height: 90,
+                                        width: 100,
+                                        borderRadius: 10,
+                                        margin: 5
+                                    }}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                />
+
+                                <Col style={{ padding: 5 }}>
+                                    <Col style={{ marginLeft: 5, justifyContent: 'space-between' }}>
+                                        <View>
+                                            <Text style={{
+                                                color: '#000',
+                                                fontSize: 16
+                                            }} numberOfLines={1}>
+                                                {_product.product_name}
+                                            </Text>
+                                            {/* <Text style={{ color: '#aaa' }} numberOfLines={2}>
+                                                code: {_product.product_code}
+                                            </Text> */}
+
+                                            <Text style={{ color: '#aaa' }} numberOfLines={2}>
+                                                x{_product.qty} {_product.unit.unit_name}
+                                            </Text>
+                                        </View>
+                                    </Col>
+
+                                    <View>
+                                        <NumberFormat
+                                            value={_product.amount}
+                                            displayType={'text'}
+                                            thousandSeparator={true}
+                                            decimalScale={2}
+                                            fixedDecimalScale={true}
+                                            prefix={''}
+                                            renderText={value =>
+                                                <Text style={{ color: PRICE_COLOR }}
+                                                    numberOfLines={1}
+                                                >{"$ " + value}
+                                                </Text>} />
+                                    </View>
+                                </Col>
+                            </View>
+                        )
+                    })}
+                </View>
+
+            </ScrollView>
             <View style={{
                 paddingHorizontal: 15,
+                paddingBottom: 15
             }}>
-                <Text style={style.orderDetailDate} numberOfLines={1}>
-                    Order Date : 03 22 2021
-                </Text>
-
-
 
                 <View style={style.orderTotalContainer}>
                     <Text style={{
@@ -59,7 +130,7 @@ const OrderDetail = (props: any) => {
                     }}>Subtotal</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <NumberFormat
-                            value={item.amount}
+                            value={item.items.order_info.total_amount}
                             displayType={'text'}
                             thousandSeparator={true}
                             decimalScale={2}
@@ -79,7 +150,7 @@ const OrderDetail = (props: any) => {
                     }}>Shipping Fee</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <NumberFormat
-                            value={item.unit.amount}
+                            // value={ }
                             displayType={'text'}
                             thousandSeparator={true}
                             decimalScale={2}
@@ -102,7 +173,7 @@ const OrderDetail = (props: any) => {
                     }}>Total</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <NumberFormat
-                            value={item.amount}
+                            value={item.items.order_info.total_amount}
                             displayType={'text'}
                             thousandSeparator={true}
                             decimalScale={2}
@@ -116,17 +187,7 @@ const OrderDetail = (props: any) => {
                     </View>
                 </View>
 
-                <Divider style={{ height: 0.7, marginTop: 15 }} />
-
-                <Text style={style.orderShipping} numberOfLines={1}>
-                    Shipping Address
-                </Text>
-
-                <Text>
-                    22 Baker Street London MG91 9AF
-                </Text>
             </View>
-
         </SafeAreaView>
     )
 }

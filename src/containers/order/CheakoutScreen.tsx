@@ -10,19 +10,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadCart, updateCart } from '../../actions/Cart';
 import { updateClient } from '../../actions/Client';
 import MainHeader from '../../custom_items/MainHeader';
-import { makeid } from '../../functions/PTFunction';
+import { makeid, pad } from '../../functions/PTFunction';
 import { MAIN_COLOR, PRICE_COLOR } from '../../styles/index';
-
+import firestore from '@react-native-firebase/firestore';
 const CheakoutScreen = (props: any) => {
     const { data } = props.route.params;
     const navigate = useNavigation();
+    const dispatch = useDispatch<any>()
+
     const cart = useSelector((state: { cart: any }) => state.cart);
     const client = useSelector((state: { client: any }) => state.client);
     const style = useSelector((state: { style: any }) => state.style)
-
-    const dispatch = useDispatch()
+    const settings = useSelector((state: { settings: any }) => state.settings)
 
     const [isInitialLoad, setIsInitialLoad] = useState(true)
+
+    const [address, setAddress] = useState<any>([])
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -31,9 +34,15 @@ const CheakoutScreen = (props: any) => {
     }, [cart.length])
 
 
-    const onCheckOut = () => {
+    const onCheckOut = async () => {
+
+        const total_carts = await firestore().collection('carts').where('is_confirm', '==', true).get();
+        const start_number = settings.filter((r: any) => r.id === '2')[0];
+        const document = pad(parseInt(start_number.items.setting_value) + total_carts.docs.length + 1,
+            parseInt(start_number.items.setting_digit))
         dispatch(updateCart(cart.id, {
-            is_confirm: true
+            is_confirm: true,
+            document_number: start_number.items.setting_prefix + document
         }))
         Toast.show({
             text: 'your product is successful order',
@@ -47,6 +56,10 @@ const CheakoutScreen = (props: any) => {
     const _deleteAddress = (address: any) => {
         client.items.shipping_address = client.items.shipping_address.filter((r: any) => r != address)
         dispatch(updateClient(client.id, client.items))
+    }
+
+    const onAddressPress = (item: any) => {
+        setAddress(item)
     }
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -90,9 +103,21 @@ const CheakoutScreen = (props: any) => {
 
                                     {client.items.shipping_address.map((_address: any) => {
                                         return (
-                                            <Row key={makeid()} style={[style.shippingAddress, { flexDirection: 'row' }]}>
+                                            <TouchableOpacity key={_address} onPress={() => {
+                                                onAddressPress(_address)
+                                            }}
+                                                style={[style.shippingAddress,
+                                                {
+                                                    flexDirection: 'row',
+                                                    backgroundColor: _address === address ? '#eee' : '#fff'
+                                                }]}>
+
                                                 <Col>
-                                                    <Text style={{ opacity: 0.5, paddingLeft: 10 }}>
+                                                    <Text style={{
+                                                        opacity: 0.5,
+                                                        paddingLeft: 10,
+                                                        textDecorationLine: _address === address ? 'underline' : 'none'
+                                                    }}>
                                                         {_address}
                                                     </Text>
                                                 </Col>
@@ -118,7 +143,7 @@ const CheakoutScreen = (props: any) => {
                                                     <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />
                                                 </TouchableOpacity>
 
-                                            </Row>
+                                            </TouchableOpacity>
                                         )
                                     })}
 
@@ -238,7 +263,7 @@ const CheakoutScreen = (props: any) => {
                                     );
                                 }}
                                     style={style.styleCHACKOUT} >
-                                    <Text style={{ color: '#fff' }}>CHEACKOUT</Text>
+                                    <Text style={{ color: '#fff' }}>CHECKOUT</Text>
                                     <AntDesign name='playcircleo' size={20}
                                         style={{ color: '#fff', marginLeft: 10 }} color='#000' />
                                 </TouchableOpacity>

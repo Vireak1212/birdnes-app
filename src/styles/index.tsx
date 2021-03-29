@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 export const MAIN_COLOR = '#224889'
 export const MAIN_BACKGROUND = "#fff"
 export const ICON_COLOR = '#606060'
-export const PRICE_COLOR = '#FF0000'
+export const PRICE_COLOR = '#FF8C00'
 export const screen = Dimensions.get('screen')
 
 export default StyleSheet.create({
@@ -67,9 +67,7 @@ export default StyleSheet.create({
     },
     orderDetailDate: {
         color: '#000',
-        fontSize: 16,
         fontWeight: 'bold',
-        paddingVertical: 15
     },
     orderTotalContainer: {
         flexDirection: 'row',

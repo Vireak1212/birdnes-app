@@ -69,6 +69,7 @@ export const loadOrder = (is_logout: any) => {
         }
     }
 }
+
 export const addToCart = (cart: any) => {
     return async (dispatch: (arg0: (dispatch: any) => void) => void) => {
         const data = await firestore().collection('carts');

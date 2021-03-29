@@ -2,7 +2,7 @@ import Geolocation from '@react-native-community/geolocation'
 import { useNavigation } from '@react-navigation/core'
 import { Toast } from 'native-base'
 import React, { MutableRefObject, useEffect, useState } from 'react'
-import { Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Geocoder from 'react-native-geocoding'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import Ripple from 'react-native-material-ripple'
@@ -25,7 +25,7 @@ const MapScreen = () => {
     const [lat, setLat] = useState(0)
     const [lng, setLng] = useState(0)
     const [location, setLocation] = useState('')
-    const [isLoadDirection, setIsLoadDirection] = useState(false)
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
 
     // const [location, setLocation] = useState(user.items.client_info.shipping_address)
 
@@ -33,6 +33,12 @@ const MapScreen = () => {
         checkPermission()
         geocoder.init('AIzaSyAvS2iFRe5sQdvJBZL4hKzZ54NI5RsdyTk')
     }, [])
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setIsInitialLoad(false)
+        }, 200);
+    }, [client.length])
 
     const initialMapState = {
         markers,
@@ -150,51 +156,59 @@ const MapScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <MapView
-                ref={_map}
-                showsCompass={false}
-                showsMyLocationButton={false}
-                initialRegion={state.region}
-                showsUserLocation={true}
-                followsUserLocation={true}
-                provider={PROVIDER_GOOGLE}
-                style={{ flex: 1 }}>
-                <Marker
-                    draggable
-                    onDragEnd={(value) => {
-                        setLat(value.nativeEvent.coordinate.latitude)
-                        setLng(value.nativeEvent.coordinate.longitude)
-                        getLocationGeocoding(lat, lng)
-                    }}
-                    coordinate={{
-                        latitude: lat,
-                        longitude: lng,
-                    }}
-                >
+            {isInitialLoad ?
+                <ActivityIndicator style={{
+                    marginTop: 20
+                }} size={35} color={MAIN_COLOR} />
+                : (<>
+                    <MapView
+                        ref={_map}
+                        showsCompass={false}
+                        showsMyLocationButton={false}
+                        initialRegion={state.region}
+                        showsUserLocation={true}
+                        followsUserLocation={true}
+                        provider={PROVIDER_GOOGLE}
+                        style={{ flex: 1 }}>
+                        <Marker
+                            draggable
+                            onDragEnd={(value) => {
+                                setLat(value.nativeEvent.coordinate.latitude)
+                                setLng(value.nativeEvent.coordinate.longitude)
+                                getLocationGeocoding(lat, lng)
+                            }}
+                            coordinate={{
+                                latitude: lat,
+                                longitude: lng,
+                            }}
+                        >
 
-                </Marker>
-            </MapView>
+                        </Marker>
+                    </MapView>
 
-            <View style={styles.locationHeader}>
-                <Text>My Location</Text>
-                <Text style={{ padding: 10 }}>{location}</Text>
-            </View>
+                    <View style={styles.locationHeader}>
+                        <Text>My Location</Text>
+                        <Text style={{ padding: 10 }}>{location}</Text>
+                    </View>
 
-            {backIcon()}
+                    {backIcon()}
 
-            <TouchableOpacity
-                onPress={() => getCurrentLocation()}
-                style={styles.locationButton}>
-                <MaterialIcons
-                    size={20}
-                    name="my-location"
-                />
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => onSave()}
-                style={styles.saveLocationButton}>
-                <Text style={{ color: '#fff' }}>Save</Text>
-            </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => getCurrentLocation()}
+                        style={styles.locationButton}>
+                        <MaterialIcons
+                            size={20}
+                            name="my-location"
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => onSave()}
+                        style={styles.saveLocationButton}>
+                        <Text style={{ color: '#fff' }}>Save</Text>
+                    </TouchableOpacity>
+                </>
+                )}
+
         </SafeAreaView>
     )
 }

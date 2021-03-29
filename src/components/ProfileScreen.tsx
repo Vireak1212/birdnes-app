@@ -185,7 +185,7 @@ const ProfileScreen = () => {
                         </Text>
 
                             <TouchableOpacity style={styles.accountInfoContainer}
-                            // onPress={() => navigate.navigate('Order')}
+                                onPress={() => navigate.navigate('Order')}
                             >
 
                                 <Fontisto name='play-list' size={24} style={{ opacity: 0.6 }} color='#000' />

@@ -16,7 +16,6 @@ const OrderHistory = (props: any) => {
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
 
-
     const [isInitialLoad, setIsInitialLoad] = useState(true)
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -40,23 +39,13 @@ const OrderHistory = (props: any) => {
     const _renderItem = ({ item, index }: any) => {
         const _order = item.items;
         return (
-            <View key={index} style={[style.orderHistoryContainer, {
-                marginBottom: index == order_history.length - 1 ? 10 : 0
-            }]}>
-                <TouchableOpacity onPress={() => navigate.navigate('OrderDetail',
-                    { item }
-                )} >
-                    <FastImage style={{
-                        height: 120,
-                        width: 120,
-                        borderRadius: 10,
-                        margin: 5,
-                        backgroundColor: '#ddd'
-                    }}
-                        source={require('../../images/icon/logo.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                </TouchableOpacity>
+            <TouchableOpacity key={index} onPress={() => navigate.navigate('OrderDetail',
+                { item }
+            )}
+                style={[style.orderHistoryContainer, {
+                    marginBottom: index == order_history.length - 1 ? 10 : 0
+                }]}>
+
                 <Col style={{
                     justifyContent: 'space-between',
                     alignSelf: 'flex-start',
@@ -64,23 +53,20 @@ const OrderHistory = (props: any) => {
                 }}>
                     <View style={{
                     }}>
-                        <Text style={{
-                            color: '#000',
-                            fontSize: 16
-                        }} numberOfLines={1}>
-                            #999432
-                        </Text>
-                        <Text style={{ color: '#aaa' }} numberOfLines={1}>
+                        <Row style={{ justifyContent: 'space-between' }}>
+                            <Text style={{
+                                color: '#000',
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            }} numberOfLines={1}>
+                                {'#' + _order.document_number}
+                            </Text>
+                            <Text style={{ color: '#aaa' }}>12/Des/2021</Text>
+                        </Row>
 
-                        </Text>
-                        <Text style={{ color: '#aaa' }} numberOfLines={1}>
-
-                        </Text>
-                    </View>
-                    <Row style={{
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                    }}>
+                        {/* <Text style={{ color: '#aaa', fontSize: 13, paddingTop: 5 }} numberOfLines={2}>
+                            {_order.order_info.products[0].product_description}
+                        </Text> */}
 
                         <NumberFormat
                             value={_order.order_info.total_amount}
@@ -90,19 +76,29 @@ const OrderHistory = (props: any) => {
                             fixedDecimalScale={true}
                             prefix={''}
                             renderText={value =>
-                                <Text style={{ color: PRICE_COLOR }}
+                                <Text style={{
+                                    color: PRICE_COLOR,
+                                    fontSize: 16,
+                                    fontWeight: 'bold',
+                                    paddingTop: 5
+                                }}
                                     numberOfLines={1}
-                                >{"price: " + "$ " + value}
+                                >{"$" + value}
                                 </Text>} />
-
+                    </View>
+                    <Row style={{
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}>
+                        <Text style={{ color: '#aaa' }}>Delivered</Text>
                         <TouchableOpacity style={style.orderAgainButton}>
                             <Text style={{
-                                color: '#888'
+                                color: '#aaa'
                             }}>Order again</Text>
                         </TouchableOpacity>
                     </Row>
                 </Col>
-            </View>
+            </TouchableOpacity>
 
         )
     }
