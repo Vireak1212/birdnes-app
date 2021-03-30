@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Col, Row } from 'native-base';
 import NumberFormat from 'react-number-format';
 import { Divider } from 'react-native-elements';
-import { makeid } from '../../functions/PTFunction';
+import { dateDiffInNotification, makeid } from '../../functions/PTFunction';
 import { PRICE_COLOR } from '../../styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -49,11 +49,11 @@ const OrderDetail = (props: any) => {
                     </Text>
 
                     <Text style={{ color: '#aaa' }} numberOfLines={1}>
-                        12/Dec/1998
-                        </Text>
-                    <Row style={{ alignItems: 'center' }}>
-                        <Entypo name='location-pin' size={25} />
-                        <Text>location</Text>
+                        {dateDiffInNotification(item.items.order_info.order_date.toDate())}
+                    </Text>
+                    <Row style={{ alignItems: 'center', paddingHorizontal: 10 }}>
+                        <Entypo name='location-pin' size={30} color='#aaa' style={{ paddingRight: 5 }} />
+                        <Text style={{ color: '#aaa' }}>{item.items.client_info.address}</Text>
                     </Row>
                 </View>
 
@@ -84,13 +84,17 @@ const OrderDetail = (props: any) => {
                                         <View>
                                             <Text style={{
                                                 color: '#000',
-                                                fontSize: 16
+                                                fontSize: 16,
+                                                fontWeight: 'bold'
                                             }} numberOfLines={1}>
                                                 {_product.product_name}
                                             </Text>
-                                            {/* <Text style={{ color: '#aaa' }} numberOfLines={2}>
-                                                code: {_product.product_code}
-                                            </Text> */}
+
+                                            {_product.product_code === 0 ? (
+                                                <Text style={{ color: '#aaa' }} numberOfLines={2}>
+                                                    {'#' + _product.product_code}
+                                                </Text>
+                                            ) : null}
 
                                             <Text style={{ color: '#aaa' }} numberOfLines={2}>
                                                 x{_product.qty} {_product.unit.unit_name}
@@ -107,7 +111,7 @@ const OrderDetail = (props: any) => {
                                             fixedDecimalScale={true}
                                             prefix={''}
                                             renderText={value =>
-                                                <Text style={{ color: PRICE_COLOR }}
+                                                <Text style={{ color: PRICE_COLOR, fontWeight: 'bold' }}
                                                     numberOfLines={1}
                                                 >{"$ " + value}
                                                 </Text>} />

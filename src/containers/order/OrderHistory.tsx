@@ -86,11 +86,13 @@ const OrderHistory = (props: any) => {
                                 >{"$" + value}
                                 </Text>} />
                     </View>
+
                     <Row style={{
                         alignItems: 'center',
                         justifyContent: 'space-between',
                     }}>
-                        <Text style={{ color: '#aaa' }}>Delivered</Text>
+                        <Text style={{ color: MAIN_COLOR }}>Delivered</Text>
+
                         <TouchableOpacity style={style.orderAgainButton}>
                             <Text style={{
                                 color: '#aaa'

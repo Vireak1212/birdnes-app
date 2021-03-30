@@ -113,3 +113,36 @@ export const pad = (num, size) => {
     while (s.length < size) s = "0" + s;
     return s;
 }
+
+export const dateDiffInNotification = (publish_date) => {
+    var dt1 = new Date(publish_date);
+    var dt2 = new Date();
+    const cal = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
+    let duration = ''
+    if (cal == 0) {
+        if (dt2.getHours() - dt1.getHours() == 0) {
+            if (dt2.getMinutes() - dt1.getMinutes() <= 0) {
+                duration = 'Just Now'
+            }
+            else {
+                duration = dt2.getMinutes() - dt1.getMinutes() + ' minute' + (dt2.getMinutes() - dt1.getMinutes() === 1 ? '' : 's') + ' ago'
+            }
+        }
+        else {
+            duration = dt2.getHours() - dt1.getHours() + ' hour' + (dt2.getHours() - dt1.getHours() === 1 ? '' : 's') + ' ago'
+        }
+    }
+    else if (cal === 1) {
+        duration = 'Yesterday at ' + ConvertDateToTime(dt1)
+    }
+    else if (cal < 7) {
+        duration = ConvertToEnglishDayDate(dt1) + ' at ' + ConvertDateToTime(dt1)
+    }
+    else if (cal > 6) {
+        duration = ConvertToEnglishDateNoDay(dt1, true) + ' at ' + ConvertDateToTime(dt1)
+    }
+    else {
+        duration = ''
+    }
+    return duration;
+}

@@ -23,11 +23,12 @@ const MapScreen = () => {
     const dispatch = useDispatch()
 
     const [lat, setLat] = useState(0)
-    const [lng, setLng] = useState(0)
+    const [long, setLong] = useState(0)
     const [location, setLocation] = useState('')
     const [isInitialLoad, setIsInitialLoad] = useState(true)
 
-    // const [location, setLocation] = useState(user.items.client_info.shipping_address)
+    let latitudeDelta = 0.05864195044303443
+    let longitudeDelta = 0.050142817690068
 
     useEffect(() => {
         checkPermission()
@@ -40,16 +41,13 @@ const MapScreen = () => {
         }, 200);
     }, [client.length])
 
-    const initialMapState = {
-        markers,
-        region: {
-            latitude: 11.5775383,
-            longitude: 104.9049579,
-            latitudeDelta: 0.05864195044303443,
-            longitudeDelta: 0.050142817690068,
-        },
-    };
-    const [state, setState] = React.useState(initialMapState);
+    React.useEffect(() => {
+        if (lat !== 0) {
+            getCurrentMap();
+        }
+    }, [lat])
+
+
 
     const checkPermission = () => {
         request(
@@ -83,27 +81,31 @@ const MapScreen = () => {
             });
     }
     const getCurrentLocation = () => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                setLat(latitude)
+                setLong(longitude)
+                getLocationGeocoding(latitude, longitude)
+                //getLocationGeocoding(position.coords.latitude, position.coords.longitude)
+            }, (error) => console.log(error),
+            // { timeout: 300, enableHighAccuracy: true, maximumAge: 100, distanceFilter: 2000, useSignificantChanges: true }
+            Platform.OS == "android" ? {} : { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000 }
+        )
+    }
+
+    const getCurrentMap = () => {
         if (_map.current !== undefined && _map.current !== null) {
-            Geolocation.getCurrentPosition(
-                (position) => {
-
-                    setLat(position.coords.latitude)
-                    setLng(position.coords.longitude)
-
-                    _map.current.animateToRegion(
-                        {
-                            ...position.coords,
-                            latitudeDelta: initialMapState.region.latitudeDelta,
-                            longitudeDelta: initialMapState.region.longitudeDelta,
-                        },
-                        350,
-                    );
-                    //getLocationGeocoding(position.coords.latitude, position.coords.longitude)
-                }, (error) => console.log(error),
-                // { timeout: 300, enableHighAccuracy: true, maximumAge: 100, distanceFilter: 2000, useSignificantChanges: true }
-                Platform.OS == "android" ? {} : { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000 }
-            )
-
+            _map.current.animateToRegion(
+                {
+                    latitude: lat,
+                    longitude: long,
+                    latitudeDelta: latitudeDelta,
+                    longitudeDelta: longitudeDelta,
+                },
+                350,
+            );
+            getLocationGeocoding(lat, long)
         }
     }
     const getLocationGeocoding = (lat: any, long: any) => {
@@ -148,7 +150,10 @@ const MapScreen = () => {
                 type: 'success',
                 duration: 2000
             })
-            navigate.goBack()
+            navigate.navigate('CheckOut',
+                {
+                    current_address: location
+                })
         } else {
             Alert.alert('Please login your account!')
         }
@@ -156,7 +161,7 @@ const MapScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {isInitialLoad ?
+            {isInitialLoad || lat == 0 ?
                 <ActivityIndicator style={{
                     marginTop: 20
                 }} size={35} color={MAIN_COLOR} />
@@ -165,7 +170,12 @@ const MapScreen = () => {
                         ref={_map}
                         showsCompass={false}
                         showsMyLocationButton={false}
-                        initialRegion={state.region}
+                        initialRegion={{
+                            latitude: lat,
+                            longitude: long,
+                            latitudeDelta,
+                            longitudeDelta
+                        }}
                         showsUserLocation={true}
                         followsUserLocation={true}
                         provider={PROVIDER_GOOGLE}
@@ -174,12 +184,11 @@ const MapScreen = () => {
                             draggable
                             onDragEnd={(value) => {
                                 setLat(value.nativeEvent.coordinate.latitude)
-                                setLng(value.nativeEvent.coordinate.longitude)
-                                getLocationGeocoding(lat, lng)
+                                setLong(value.nativeEvent.coordinate.longitude)
                             }}
                             coordinate={{
                                 latitude: lat,
-                                longitude: lng,
+                                longitude: long,
                             }}
                         >
 

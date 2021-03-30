@@ -205,14 +205,15 @@ const VerifyScreen = (_props: any) => {
             client_info: {
                 full_name: '',
                 phone_number,
-                photo_url: '',
-                photo_url_file_name: ''
+                photo_url: item.items.client_info.photo_url,
+                photo_url_file_name: item.items.client_info.photo_url.photo_url_file_name
             },
             created_date: new Date(),
             is_disabled: false,
             keywords: [],
             uid: item.uid,
-            shipping_address: []
+            shipping_address: [],
+            favorite_product: []
         }
         dispatch(createClient(client))
         await AsyncStorage.setItem("uid", item.uid)

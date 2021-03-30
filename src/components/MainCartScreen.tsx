@@ -162,19 +162,6 @@ const MainCartScreen = (props: any) => {
                                 Code: {_cart.product_code}
                             </Text>
 
-                            {/* <NumberFormat
-                                value={_cart.unit.price}
-                                displayType={'text'}
-                                thousandSeparator={true}
-                                decimalScale={2}
-                                fixedDecimalScale={true}
-                                prefix={''}
-                                renderText={value =>
-                                    <Text style={{ color: '#aaa', fontSize: 13 }}
-                                        numberOfLines={1}
-                                    >{"Price: " + "$ " + value}
-                                    </Text>} /> */}
-
                             <Text style={{ color: '#aaa', fontSize: 13 }} numberOfLines={2}>
                                 x{item.qty} {_cart.unit.unit_name}
                             </Text>
@@ -247,17 +234,6 @@ const MainCartScreen = (props: any) => {
 
         )
     }
-
-    // const onCheckOut = () => {
-    //     if (cart.length != 0) {
-    //         if (cart.items.order_info.products.length > 0) {
-    //             dispatch(updateCart(cart.id, {
-    //                 is_confirm: true
-    //             }))
-    //             navigate.navigate('CheckOut')
-    //         }
-    //     }
-    // }
 
     const noItem = () => {
         return (
@@ -340,7 +316,9 @@ const MainCartScreen = (props: any) => {
                                         </Col>
 
                                         <TouchableOpacity onPress={() => navigate.navigate('CheckOut',
-                                            { cart }
+                                            {
+                                                current_address: ''
+                                            }
                                         )}
                                             style={style.styleCHACKOUT}>
                                             <Text style={{ color: '#fff' }}>CHECKOUT</Text>

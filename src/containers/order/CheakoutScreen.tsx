@@ -13,8 +13,9 @@ import MainHeader from '../../custom_items/MainHeader';
 import { makeid, pad } from '../../functions/PTFunction';
 import { MAIN_COLOR, PRICE_COLOR } from '../../styles/index';
 import firestore from '@react-native-firebase/firestore';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const CheakoutScreen = (props: any) => {
-    const { data } = props.route.params;
+    const { current_address } = props.route.params;
     const navigate = useNavigation();
     const dispatch = useDispatch<any>()
 
@@ -23,9 +24,11 @@ const CheakoutScreen = (props: any) => {
     const style = useSelector((state: { style: any }) => state.style)
     const settings = useSelector((state: { settings: any }) => state.settings)
 
+    const [newPhone, setNewPhone] = useState(client.items.client_info.phone_number)
     const [isInitialLoad, setIsInitialLoad] = useState(true)
-
     const [address, setAddress] = useState<any>([])
+
+    const phoneRef = React.createRef<TextInput>()
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -33,20 +36,41 @@ const CheakoutScreen = (props: any) => {
         }, 200);
     }, [cart.length])
 
+    React.useEffect(() => {
+        setAddress(current_address)
+    }, [current_address])
+
+    function checkPhoneNumber() {
+        if (newPhone === '') {
+            if (phoneRef.current !== null && !phoneRef.current.isFocused())
+                phoneRef.current.focus();
+            return '';
+        }
+        let phone_number = newPhone;
+        if (phone_number.charAt(0) === '0') {
+            phone_number = phone_number.substring(1, phone_number.length);
+        }
+        return phone_number;
+    }
+
 
     const onCheckOut = async () => {
 
         const total_carts = await firestore().collection('carts').where('is_confirm', '==', true).get();
         const start_number = settings.filter((r: any) => r.id === '2')[0];
-        const document = pad(parseInt(start_number.items.setting_value) + total_carts.docs.length + 1,
-            parseInt(start_number.items.setting_digit))
+        const document = pad(parseInt(start_number.items.setting_value) + total_carts.docs.length + 1, parseInt(start_number.items.setting_digit));
+        cart.items.client_info.address = address;
+        (cart.items.client_info.phone_number) = newPhone;
+
         dispatch(updateCart(cart.id, {
             is_confirm: true,
-            document_number: start_number.items.setting_prefix + document
+            document_number: start_number.items.setting_prefix + document,
+            client_info: cart.items.client_info
         }))
+
         Toast.show({
             text: 'your product is successful order',
-            type: 'warning',
+            type: 'success',
             duration: 2000
         })
         dispatch(loadCart(false))
@@ -83,7 +107,6 @@ const CheakoutScreen = (props: any) => {
                         <>
                             <ScrollView style={{ flex: 1 }}>
                                 <View style={{ marginHorizontal: 15, marginTop: 10 }}>
-
                                     <Row style={{ justifyContent: 'space-between' }}>
                                         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Shipping Address</Text>
 
@@ -103,9 +126,11 @@ const CheakoutScreen = (props: any) => {
 
                                     {client.items.shipping_address.map((_address: any) => {
                                         return (
-                                            <TouchableOpacity key={_address} onPress={() => {
-                                                onAddressPress(_address)
-                                            }}
+                                            <TouchableOpacity
+                                                key={makeid()}
+                                                onPress={() => {
+                                                    onAddressPress(_address)
+                                                }}
                                                 style={[style.shippingAddress,
                                                 {
                                                     flexDirection: 'row',
@@ -140,12 +165,41 @@ const CheakoutScreen = (props: any) => {
                                                         { cancelable: false }
                                                     );
                                                 }}>
-                                                    <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />
+                                                    {_address === address ?
+                                                        <Ionicons name='checkmark-circle' size={25} color={MAIN_COLOR} />
+                                                        :
+                                                        <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />}
                                                 </TouchableOpacity>
 
                                             </TouchableOpacity>
                                         )
                                     })}
+
+                                    <View style={{ justifyContent: 'space-between', paddingTop: 10 }}>
+                                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Contact Number</Text>
+
+                                        <View style={{
+                                            backgroundColor: '#fff',
+                                            height: 50,
+                                            width: '100%',
+                                            marginTop: 10,
+                                            borderRadius: 5,
+                                            justifyContent: 'center',
+                                            borderWidth: 0.3,
+                                            borderColor: '#224889',
+                                        }}>
+                                            <TextInput style={{ fontSize: 15, marginHorizontal: 10 }}
+                                                ref={phoneRef}
+                                                placeholder="Add contact number "
+                                                onChangeText={(text) => {
+                                                    setNewPhone(text)
+                                                }}
+                                                value={newPhone}
+                                                keyboardType="phone-pad"
+                                            />
+                                        </View>
+
+                                    </View>
 
 
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
@@ -245,22 +299,36 @@ const CheakoutScreen = (props: any) => {
                                 </Col>
 
                                 <TouchableOpacity onPress={() => {
-                                    Alert.alert(
-                                        "Check Out",
-                                        "Are you sure to Check Out?",
-                                        [
-                                            {
-                                                text: "No",
-                                                onPress: () => console.log("No Pressed"),
-                                                style: "cancel"
-                                            },
-                                            {
-                                                text: "Yes",
-                                                onPress: () => onCheckOut(),
-                                            }
-                                        ],
-                                        { cancelable: false }
-                                    );
+                                    address.length !== 0 ? (
+
+                                        Alert.alert(
+                                            "Check Out",
+                                            "Are you sure to Check Out?",
+                                            [
+                                                {
+                                                    text: "No",
+                                                    onPress: () => console.log("No Pressed"),
+                                                    style: "cancel"
+                                                },
+                                                {
+                                                    text: "Yes",
+                                                    onPress: () => onCheckOut(),
+                                                }
+                                            ],
+                                            { cancelable: false }
+                                        )
+                                    ) : (
+                                        Alert.alert(
+                                            'Address',
+                                            'Please add your address?',
+                                            [
+                                                {
+                                                    text: 'Add address',
+                                                    onPress: () => navigate.navigate('Map')
+                                                }
+                                            ]
+                                        )
+                                    )
                                 }}
                                     style={style.styleCHACKOUT} >
                                     <Text style={{ color: '#fff' }}>CHECKOUT</Text>

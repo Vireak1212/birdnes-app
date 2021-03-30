@@ -167,10 +167,10 @@ const ProductDetail = (props: any) => {
             const _cart = {
                 client_info: {
                     address: "",
-                    client_id: "",
-                    client_name: "",
-                    phone_number: "",
-                    photo_url: ""
+                    client_id: client.items.uid,
+                    client_name: client.items.client_info.full_name,
+                    phone_number: client.items.client_info.phone_number,
+                    photo_url: client.items.client_info.photo_url
                 },
                 document_number: "",
                 is_confirm: false,
@@ -190,7 +190,8 @@ const ProductDetail = (props: any) => {
                             amount
                         }
                     ],
-                    total_amount: amount
+                    total_amount: amount,
+                    order_date: new Date()
                 },
                 shop_info: {
                     phone_number: "",
@@ -435,7 +436,7 @@ const ProductDetail = (props: any) => {
                                         </View>
                                     </View>
 
-                                    <Row style={style.productDetailQtyContainer}>
+                                    {/* <Row style={style.productDetailQtyContainer}>
                                         <View style={{ paddingVertical: 10 }}>
                                             <Text>Free Shipping</Text>
                                             {item.items.freeShipping == null ? (
@@ -449,7 +450,7 @@ const ProductDetail = (props: any) => {
                                         <TouchableOpacity>
                                             <MaterialIcons name='navigate-next' size={23} color={ICON_COLOR} />
                                         </TouchableOpacity>
-                                    </Row>
+                                    </Row> */}
 
                                     <View style={style.productSubDetail}>
                                         <Text style={{ paddingVertical: 10 }}>Product Description</Text>

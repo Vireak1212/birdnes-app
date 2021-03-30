@@ -22,7 +22,6 @@ const EditProfile = () => {
 
     const fullNameRef = React.createRef<TextInput>()
     const firstNameRef = React.createRef<TextInput>()
-    const lastNameRef = React.createRef<TextInput>()
     const emailRef = React.createRef<TextInput>()
 
     const dispatch = useDispatch()
