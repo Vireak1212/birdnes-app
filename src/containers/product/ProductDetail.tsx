@@ -39,7 +39,9 @@ const ProductDetail = (props: any) => {
     const [galleries, setGalleries] = useState([])
     const [currentIndex, setCurrentIndex] = useState(0)
     const [isViewImage, setIsViewImage] = useState(false)
-    let controller;
+    let is_fav = [];
+    if (client.length != 0)
+        is_fav = client.items.favorite_product.filter((r: { id: any; }) => r.id === item.id);
 
     useEffect(() => {
         if (item.items.product_info.units) {
@@ -133,8 +135,8 @@ const ProductDetail = (props: any) => {
                 }
                 _cart.items.order_info.products.push({
                     allow_discount: item.items.allow_discount,
-                    photo_url: item.items.product_info.units.photo_url,
-                    photo_url_file_name: item.items.product_info.units.photo_url_file_name,
+                    photo_url: unit.photo_url,
+                    photo_url_file_name: unit.photo_url_file_name,
                     product_id: item.id,
                     product_name: item.items.product_info.product_name,
                     product_code: item.items.product_info.product_code,
@@ -170,7 +172,7 @@ const ProductDetail = (props: any) => {
                     client_id: client.items.uid,
                     client_name: client.items.client_info.full_name,
                     phone_number: client.items.client_info.phone_number,
-                    photo_url: client.items.client_info.photo_url
+                    photo_url: client.items.client_info.photo_url,
                 },
                 document_number: "",
                 is_confirm: false,
@@ -178,8 +180,8 @@ const ProductDetail = (props: any) => {
                     products: [
                         {
                             allow_discount: item.items.allow_discount,
-                            photo_url: item.items.product_info.units.photo_url,
-                            photo_url_file_name: item.items.product_info.units.photo_url_file_name,
+                            photo_url: unit.photo_url,
+                            photo_url_file_name: unit.photo_url_file_name,
                             product_id: item.id,
                             product_name: item.items.product_info.product_name,
                             product_code: item.items.product_info.product_code,
@@ -235,7 +237,7 @@ const ProductDetail = (props: any) => {
         client.items.favorite_product = check;
         dispatch(updateClient(client.id, client.items))
     }
-    let check = client.items.favorite_product.filter((r: { id: any; }) => r.id === item.id);
+
 
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -357,11 +359,16 @@ const ProductDetail = (props: any) => {
                                             <View style={{ alignItems: 'center' }}>
                                                 <TouchableOpacity
                                                     onPress={() => {
-                                                        addServiceToFavorite(item.id, check.length > 0)
-                                                    }} style={{ paddingBottom: 5 }}>
+                                                        client.length !== 0 ?
+                                                            addServiceToFavorite(item.id, is_fav.length > 0) :
+                                                            navigate.navigate('Login',
+                                                                { isBack: true }
+                                                            )
+                                                    }}
+                                                    style={{ paddingBottom: 5 }}>
 
-                                                    <FontAwesome name={check.length === 0 ? "star-o" : "star"} size={30}
-                                                        color={check.length === 0 ? '#aaa' : '#FFD700'} />
+                                                    <FontAwesome name={is_fav.length === 0 ? "star-o" : "star"} size={30}
+                                                        color={is_fav.length === 0 ? '#aaa' : '#FFD700'} />
                                                 </TouchableOpacity>
 
                                                 <NumberFormat
@@ -436,22 +443,6 @@ const ProductDetail = (props: any) => {
                                         </View>
                                     </View>
 
-                                    {/* <Row style={style.productDetailQtyContainer}>
-                                        <View style={{ paddingVertical: 10 }}>
-                                            <Text>Free Shipping</Text>
-                                            {item.items.freeShipping == null ? (
-                                                <Text style={{ color: '#aaa' }}>
-                                                    free shipping in phnom penh
-                                                </Text>
-                                            ) : (
-                                                null
-                                            )}
-                                        </View>
-                                        <TouchableOpacity>
-                                            <MaterialIcons name='navigate-next' size={23} color={ICON_COLOR} />
-                                        </TouchableOpacity>
-                                    </Row> */}
-
                                     <View style={style.productSubDetail}>
                                         <Text style={{ paddingVertical: 10 }}>Product Description</Text>
                                         <Text style={style.productDetailDescriptions}>
@@ -470,7 +461,9 @@ const ProductDetail = (props: any) => {
                         {
                             client.length !== 0 ?
                                 onAddToCart() :
-                                navigate.navigate('Login')
+                                navigate.navigate('Login',
+                                    { isBack: true }
+                                )
                         }
                     }}
                         style={style.addToCartBotton}>

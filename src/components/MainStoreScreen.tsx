@@ -1,14 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
-import { Col } from 'native-base';
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Dimensions, Image, ActivityIndicator } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { makeid } from '../functions/PTFunction';
-const screen = Dimensions.get('screen')
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import style, { ICON_COLOR, MAIN_COLOR } from '../styles/index'
 import MainHeader from '../custom_items/MainHeader';
 import { useSelector } from 'react-redux';
+
+const screen = Dimensions.get('screen')
 
 const MainStoreScreen = () => {
     const store = useSelector((state: { store: any }) => state.store);

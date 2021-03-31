@@ -35,15 +35,7 @@ const OrderDetail = (props: any) => {
                     leftIcon={leftIcon()}
                 />
 
-
-                <View style={{
-                    backgroundColor: '#fff',
-                    padding: 10,
-                    borderRadius: 10,
-                    margin: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
+                <View style={style.orderInfoContainer}>
                     <Text style={[style.orderDetailDate, { fontSize: 16 }]} numberOfLines={1}>
                         {'Order ID: ' + item.items.document_number}
                     </Text>
@@ -56,8 +48,6 @@ const OrderDetail = (props: any) => {
                         <Text style={{ color: '#aaa' }}>{item.items.client_info.address}</Text>
                     </Row>
                 </View>
-
-
 
                 <View style={{ backgroundColor: '#fff', marginHorizontal: 10, borderRadius: 10 }}>
                     {item.items.order_info.products.map((_product: any) => {

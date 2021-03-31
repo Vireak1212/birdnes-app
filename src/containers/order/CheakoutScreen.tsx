@@ -14,6 +14,7 @@ import { makeid, pad } from '../../functions/PTFunction';
 import { MAIN_COLOR, PRICE_COLOR } from '../../styles/index';
 import firestore from '@react-native-firebase/firestore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 const CheakoutScreen = (props: any) => {
     const { current_address } = props.route.params;
     const navigate = useNavigation();
@@ -26,9 +27,13 @@ const CheakoutScreen = (props: any) => {
 
     const [newPhone, setNewPhone] = useState(client.items.client_info.phone_number)
     const [isInitialLoad, setIsInitialLoad] = useState(true)
+    const [manualAddress, setManualAddress] = useState('')
     const [address, setAddress] = useState<any>([])
+    const [isManualAddress, setIsManualAddress] = useState(false)
 
     const phoneRef = React.createRef<TextInput>()
+    const addressRef = React.createRef<TextInput>()
+    const manualAddressRef = React.createRef<TextInput>()
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -40,19 +45,6 @@ const CheakoutScreen = (props: any) => {
         setAddress(current_address)
     }, [current_address])
 
-    function checkPhoneNumber() {
-        if (newPhone === '') {
-            if (phoneRef.current !== null && !phoneRef.current.isFocused())
-                phoneRef.current.focus();
-            return '';
-        }
-        let phone_number = newPhone;
-        if (phone_number.charAt(0) === '0') {
-            phone_number = phone_number.substring(1, phone_number.length);
-        }
-        return phone_number;
-    }
-
 
     const onCheckOut = async () => {
 
@@ -60,7 +52,7 @@ const CheakoutScreen = (props: any) => {
         const start_number = settings.filter((r: any) => r.id === '2')[0];
         const document = pad(parseInt(start_number.items.setting_value) + total_carts.docs.length + 1, parseInt(start_number.items.setting_digit));
         cart.items.client_info.address = address;
-        (cart.items.client_info.phone_number) = newPhone;
+        cart.items.client_info.phone_number = newPhone;
 
         dispatch(updateCart(cart.id, {
             is_confirm: true,
@@ -84,6 +76,102 @@ const CheakoutScreen = (props: any) => {
 
     const onAddressPress = (item: any) => {
         setAddress(item)
+        setManualAddress('')
+        setIsManualAddress(false)
+    }
+
+    const onSave = () => {
+        let shipping_address = client.items.shipping_address;
+        shipping_address.push(manualAddress)
+        client.items.shipping_address = shipping_address;
+        dispatch(updateClient(client.id, client.items))
+        setManualAddress('')
+        setIsManualAddress(false)
+        setAddress(manualAddress)
+    }
+
+    const onConfirm = () => {
+        if (address.trim().length === 0) {
+            Toast.show({
+                text: 'please add your address',
+                type: 'danger',
+                duration: 2000,
+            });
+            return;
+        }
+        if (newPhone.trim().length === 0) {
+            Alert.alert(
+                'Contact Number',
+                'Please enter your contact number!',
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("No Pressed"),
+                        style: "cancel"
+                    },
+                    {
+                        text: 'Add contact number',
+                        onPress: () => {
+                            if (phoneRef.current !== undefined && phoneRef.current !== null)
+                                phoneRef.current.focus()
+                        },
+                    }
+                ]
+            )
+            return;
+        }
+
+        Alert.alert(
+            "Check Out",
+            "Are you sure to Check Out?",
+            [
+                {
+                    text: "No",
+                    onPress: () => console.log("No Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Yes",
+                    onPress: () => onCheckOut(),
+                }
+            ],
+            { cancelable: false }
+        )
+
+    }
+
+    const onManualAddress = () => {
+        return (
+            <View style={style.manualLoccationContainer}>
+                <Col>
+                    <TextInput
+                        style={{ fontSize: 15, marginLeft: 10, }}
+                        multiline
+                        ref={addressRef}
+                        placeholder="Enter your address!"
+                        onChangeText={(text: any) => {
+                            setManualAddress(text)
+                            setAddress('')
+                        }}
+                        value={(manualAddress)}
+                    />
+                </Col>
+                <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={() => {
+                        setManualAddress('')
+                        setIsManualAddress(false)
+                    }}>
+                        <AntDesign name="close" size={23} color={'#FF0000'} style={{ paddingHorizontal: manualAddress.trim().length === 0 ? 10 : 0 }} />
+                    </TouchableOpacity>
+
+                    {manualAddress.trim().length !== 0 &&
+                        <TouchableOpacity onPress={() => onSave()}>
+                            <AntDesign name='check' size={23} color={MAIN_COLOR} style={{ paddingHorizontal: 10 }} />
+                        </TouchableOpacity>}
+
+                </View>
+            </View>
+        )
     }
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
@@ -107,22 +195,47 @@ const CheakoutScreen = (props: any) => {
                         <>
                             <ScrollView style={{ flex: 1 }}>
                                 <View style={{ marginHorizontal: 15, marginTop: 10 }}>
+
                                     <Row style={{ justifyContent: 'space-between' }}>
                                         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Shipping Address</Text>
 
-                                        <TouchableOpacity onPress={() => navigate.navigate('Map')}
-                                            style={{
-                                                alignSelf: 'flex-end',
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                height: 30,
-                                                marginRight: 5
-                                            }}>
-                                            <Text style={{ paddingRight: 10, textDecorationLine: 'underline' }}>New Address</Text>
+                                        <TouchableOpacity onPress={() => {
+                                            setIsManualAddress(false)
+                                            Alert.alert(
+                                                'Address',
+                                                'Please set your address?',
+                                                [
+                                                    {
+                                                        text: "Cancel",
+                                                        onPress: () => console.log("No Pressed"),
+                                                        style: "cancel"
+                                                    },
+                                                    {
+                                                        text: 'Add frome google map',
+                                                        onPress: () => navigate.navigate('Map', {
+                                                            isCheckOut: true
+                                                        })
+
+                                                    },
+                                                    {
+                                                        text: 'Add manual address',
+                                                        onPress: () => {
+                                                            if (manualAddressRef.current !== undefined && manualAddressRef.current !== null)
+                                                                manualAddressRef.current.focus();
+                                                            setIsManualAddress(true)
+
+                                                        },
+                                                    },
+
+                                                ]
+                                            )
+                                        }} style={style.addAddressContainer}>
+                                            <Text style={{ paddingRight: 10, textDecorationLine: 'underline' }}>Add Address</Text>
                                             <AntDesign name='pluscircleo' size={25} />
                                         </TouchableOpacity>
                                     </Row>
 
+                                    {isManualAddress && onManualAddress()}
 
                                     {client.items.shipping_address.map((_address: any) => {
                                         return (
@@ -147,7 +260,7 @@ const CheakoutScreen = (props: any) => {
                                                     </Text>
                                                 </Col>
 
-                                                <TouchableOpacity onPress={() => {
+                                                {_address !== address ? <TouchableOpacity onPress={() => {
                                                     Alert.alert(
                                                         "Delete Cart",
                                                         "Are you sure to delete this Cart?",
@@ -165,11 +278,10 @@ const CheakoutScreen = (props: any) => {
                                                         { cancelable: false }
                                                     );
                                                 }}>
-                                                    {_address === address ?
-                                                        <Ionicons name='checkmark-circle' size={25} color={MAIN_COLOR} />
-                                                        :
-                                                        <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />}
-                                                </TouchableOpacity>
+                                                    <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />
+                                                </TouchableOpacity> :
+                                                    <Ionicons name='checkmark-circle' size={25} color={MAIN_COLOR} />
+                                                }
 
                                             </TouchableOpacity>
                                         )
@@ -178,16 +290,7 @@ const CheakoutScreen = (props: any) => {
                                     <View style={{ justifyContent: 'space-between', paddingTop: 10 }}>
                                         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Contact Number</Text>
 
-                                        <View style={{
-                                            backgroundColor: '#fff',
-                                            height: 50,
-                                            width: '100%',
-                                            marginTop: 10,
-                                            borderRadius: 5,
-                                            justifyContent: 'center',
-                                            borderWidth: 0.3,
-                                            borderColor: '#224889',
-                                        }}>
+                                        <View style={style.addNewPhoneContainer}>
                                             <TextInput style={{ fontSize: 15, marginHorizontal: 10 }}
                                                 ref={phoneRef}
                                                 placeholder="Add contact number "
@@ -202,8 +305,7 @@ const CheakoutScreen = (props: any) => {
                                     </View>
 
 
-                                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
-
+                                    {/* <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
                                     <Row style={style.paymentContainer}>
                                         <FastImage
                                             source={require('../../images/icon/delevery.png')}
@@ -216,65 +318,64 @@ const CheakoutScreen = (props: any) => {
                                         }}>
                                             <Text style={{ color: '#224889', marginLeft: 15 }}>Choose on delevery</Text>
                                         </TouchableOpacity>
-                                    </Row>
+                                    </Row> */}
 
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Items</Text>
-                                </View>
 
-                                {cart.items.order_info.products.map((_product: any) => {
-                                    return (
-                                        <View key={makeid()}
-                                            style={style.checkOutItemCotainer}>
+                                    {cart.items.order_info.products.map((_product: any) => {
+                                        return (
+                                            <View key={makeid()}
+                                                style={style.checkOutItemCotainer}>
 
-                                            <FastImage
-                                                source={{ uri: _product.unit.photo_url }}
-                                                style={{
-                                                    height: 110,
-                                                    width: 110,
-                                                    borderRadius: 10,
-                                                    margin: 5,
-                                                }}
-                                                resizeMode={FastImage.resizeMode.cover}
-                                            />
+                                                <FastImage
+                                                    source={{ uri: _product.unit.photo_url }}
+                                                    style={{
+                                                        height: 110,
+                                                        width: 110,
+                                                        borderRadius: 10,
+                                                        margin: 5,
+                                                    }}
+                                                    resizeMode={FastImage.resizeMode.cover}
+                                                />
 
-                                            <Col style={{ padding: 5 }}>
-                                                <Col style={{ marginLeft: 5, justifyContent: 'space-between' }}>
+                                                <Col style={{ padding: 5 }}>
+                                                    <Col style={{ marginLeft: 5, justifyContent: 'space-between' }}>
+                                                        <View>
+                                                            <Text style={{
+                                                                color: '#000',
+                                                                fontSize: 16
+                                                            }} numberOfLines={1}>
+                                                                {_product.product_name}
+                                                            </Text>
+                                                            <Text style={{ color: '#aaa' }} numberOfLines={2}>
+                                                                code: {_product.product_code}
+                                                            </Text>
+
+                                                            <Text style={{ color: '#aaa' }} numberOfLines={2}>
+                                                                x{_product.qty} {_product.unit.unit_name}
+                                                            </Text>
+                                                        </View>
+                                                    </Col>
+
                                                     <View>
-                                                        <Text style={{
-                                                            color: '#000',
-                                                            fontSize: 16
-                                                        }} numberOfLines={1}>
-                                                            {_product.product_name}
-                                                        </Text>
-                                                        <Text style={{ color: '#aaa' }} numberOfLines={2}>
-                                                            code: {_product.product_code}
-                                                        </Text>
-
-                                                        <Text style={{ color: '#aaa' }} numberOfLines={2}>
-                                                            x{_product.qty} {_product.unit.unit_name}
-                                                        </Text>
+                                                        <NumberFormat
+                                                            value={_product.amount}
+                                                            displayType={'text'}
+                                                            thousandSeparator={true}
+                                                            decimalScale={2}
+                                                            fixedDecimalScale={true}
+                                                            prefix={''}
+                                                            renderText={value =>
+                                                                <Text style={{ color: PRICE_COLOR }}
+                                                                    numberOfLines={1}
+                                                                >{"$ " + value}
+                                                                </Text>} />
                                                     </View>
                                                 </Col>
+                                            </View>
+                                        )
+                                    })}
 
-                                                <View>
-                                                    <NumberFormat
-                                                        value={_product.amount}
-                                                        displayType={'text'}
-                                                        thousandSeparator={true}
-                                                        decimalScale={2}
-                                                        fixedDecimalScale={true}
-                                                        prefix={''}
-                                                        renderText={value =>
-                                                            <Text style={{ color: PRICE_COLOR }}
-                                                                numberOfLines={1}
-                                                            >{"$ " + value}
-                                                            </Text>} />
-                                                </View>
-                                            </Col>
-                                        </View>
-                                    )
-                                })}
-                                <View style={{ margin: 10 }}>
                                 </View>
                             </ScrollView>
 
@@ -299,36 +400,7 @@ const CheakoutScreen = (props: any) => {
                                 </Col>
 
                                 <TouchableOpacity onPress={() => {
-                                    address.length !== 0 ? (
-
-                                        Alert.alert(
-                                            "Check Out",
-                                            "Are you sure to Check Out?",
-                                            [
-                                                {
-                                                    text: "No",
-                                                    onPress: () => console.log("No Pressed"),
-                                                    style: "cancel"
-                                                },
-                                                {
-                                                    text: "Yes",
-                                                    onPress: () => onCheckOut(),
-                                                }
-                                            ],
-                                            { cancelable: false }
-                                        )
-                                    ) : (
-                                        Alert.alert(
-                                            'Address',
-                                            'Please add your address?',
-                                            [
-                                                {
-                                                    text: 'Add address',
-                                                    onPress: () => navigate.navigate('Map')
-                                                }
-                                            ]
-                                        )
-                                    )
+                                    onConfirm()
                                 }}
                                     style={style.styleCHACKOUT} >
                                     <Text style={{ color: '#fff' }}>CHECKOUT</Text>

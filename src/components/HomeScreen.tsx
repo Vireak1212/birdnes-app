@@ -7,24 +7,19 @@ import {
     SafeAreaView,
     TouchableOpacity,
     Image,
-    View,
     Dimensions,
     ActivityIndicator,
-    TouchableWithoutFeedback
 } from 'react-native';
 import ProductSlide from '../containers/home/ProductSlide'
 import NewProduct from '../containers/product/NewProduct';
 import TopProduct from '../containers/product/TopProduct';
 import HomeHeader from '../custom_items/HomeHeader'
-import { createKeyWords, makeid } from '../functions/PTFunction'
+import { makeid } from '../functions/PTFunction'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useSelector, useDispatch } from 'react-redux';
-import { createProduct } from '../actions/Product';
 import AllProduct from '../containers/product/AllProduct';
 import Stores from '../containers/store/Stores';
-
 import { MAIN_COLOR, PRICE_COLOR } from '../styles';
-import Store from '../reducers/Store';
 
 
 const screen = Dimensions.get('screen')
@@ -48,20 +43,6 @@ const HomeScreen = () => {
     }, [slide_shows.length])
 
     const rightIcon = () => <TouchableOpacity onPress={() => {
-        // firestore().collection('products')
-        //     .get()
-        //     .then((snapshot) => {
-        //         snapshot.docs.forEach(async (doc) => {
-        //             const client = await firestore().collection('products').doc(doc.id);
-        //             let product_info = doc.data().product_info
-        //             product_info.product_tags = createKeyWords(product_info.product_name.toLocaleLowerCase())
-        //             client.update(
-        //                 {
-        //                     product_info
-        //                 }
-        //             )
-        //         })
-        //     })
         navigate.navigate('SearchProduct')
     }}
         style={{
@@ -81,74 +62,6 @@ const HomeScreen = () => {
             resizeMethod='resize'
         />
     </TouchableOpacity>
-
-
-    const _addProudct = () => {
-        const product = {
-            category_info: {
-                id: ''
-            },
-
-            created_date: new Date(),
-
-            discount_info: {
-                discount_percent: 0,
-                discount_value: 0,
-            },
-
-            point_info: {
-                point_value: 1
-            },
-
-            product_info: {
-                photos: [
-                    {
-                        photo_url: '',
-                        photo_url_file_name: ''
-                    }
-                ],
-                product_code: '',
-                product_description: '',
-                product_name: '',
-                product_tags: [''],
-                units: [
-                    {
-                        multiplier: 1,
-                        price: 0.5,
-                        unit_id: '123',
-                        unit_name: 'can'
-                    },
-                    {
-                        multiplier: 1,
-                        price: 15,
-                        unit_id: '123',
-                        unit_name: 'case'
-                    }
-                ]
-            },
-
-            product_option: '',
-            rating_credit: '',
-            rating_value: 0,
-
-            ratings: {
-                five_star: 0,
-                four_star: 0,
-                three_star: 0,
-                two_star: 0,
-                one_star: 0,
-            },
-
-            status: true,
-            store_info: {
-                store_id: '',
-                store_name: '',
-            },
-            total_ratings: 0
-        }
-        dispatch(createProduct(product))
-    }
-
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -180,18 +93,6 @@ const HomeScreen = () => {
                                 <Stores />
                                 <TopProduct />
                                 <AllProduct />
-
-                                {/* <TouchableOpacity onPress={() => _addProudct()}
-                                    style={{
-                                        height: 50, width: 70, borderWidth: 1,
-                                        marginBottom: 20,
-                                        marginLeft: 20
-                                    }}>
-
-                                </TouchableOpacity> */}
-
-
-
                             </>
                         )
                     }}
@@ -204,27 +105,6 @@ const HomeScreen = () => {
 
 export default HomeScreen
 
-const styles = StyleSheet.create({
-    allProductPrice: {
-        fontSize: 15,
-        paddingVertical: 5,
-        fontWeight: 'bold',
-        color: PRICE_COLOR
-    },
-    allProductContainer: {
-        backgroundColor: '#fff',
-        width: screen.width * 8 / 17.5,
-        borderRadius: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.00,
-
-        elevation: 1,
-    }
-})
+const styles = StyleSheet.create({})
 
 

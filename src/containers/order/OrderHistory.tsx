@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import NumberFormat from 'react-number-format';
 import { MAIN_COLOR, PRICE_COLOR } from '../../styles';
+import { dateDiffInNotification } from '../../functions/PTFunction';
 
 
 const OrderHistory = (props: any) => {
@@ -44,7 +45,19 @@ const OrderHistory = (props: any) => {
             )}
                 style={[style.orderHistoryContainer, {
                     marginBottom: index == order_history.length - 1 ? 10 : 0
+
                 }]}>
+                <FastImage
+                    source={{ uri: _order.order_info.products[0].photo_url }}
+                    style={{
+                        height: 90,
+                        width: 100,
+                        borderRadius: 10,
+                        margin: 5
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
+
 
                 <Col style={{
                     justifyContent: 'space-between',
@@ -61,7 +74,9 @@ const OrderHistory = (props: any) => {
                             }} numberOfLines={1}>
                                 {'#' + _order.document_number}
                             </Text>
-                            <Text style={{ color: '#aaa' }}>12/Des/2021</Text>
+                            <Text style={{ color: '#aaa' }}>
+                                {dateDiffInNotification(_order.order_info.order_date.toDate())}
+                            </Text>
                         </Row>
 
                         {/* <Text style={{ color: '#aaa', fontSize: 13, paddingTop: 5 }} numberOfLines={2}>
@@ -86,19 +101,6 @@ const OrderHistory = (props: any) => {
                                 >{"$" + value}
                                 </Text>} />
                     </View>
-
-                    <Row style={{
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                    }}>
-                        <Text style={{ color: MAIN_COLOR }}>Delivered</Text>
-
-                        <TouchableOpacity style={style.orderAgainButton}>
-                            <Text style={{
-                                color: '#aaa'
-                            }}>Order again</Text>
-                        </TouchableOpacity>
-                    </Row>
                 </Col>
             </TouchableOpacity>
 

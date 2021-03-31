@@ -15,7 +15,9 @@ import { MAIN_COLOR } from '../styles'
 import { markers } from '../temp_data/mapData';
 
 
-const MapScreen = () => {
+const MapScreen = (props: any) => {
+    const { isCheckOut } = props.route.params;
+    console.log(isCheckOut)
     let geocoder: any = Geocoder;
     const client = useSelector((state: { client: any }) => state.client);
     const navigate = useNavigation();
@@ -146,14 +148,23 @@ const MapScreen = () => {
             client.items.shipping_address = shipping_address;
             dispatch(updateClient(client.id, client.items))
             Toast.show({
-                text: "Your information has been updated",
+                text: "Your location has been add",
                 type: 'success',
                 duration: 2000
             })
-            navigate.navigate('CheckOut',
-                {
-                    current_address: location
-                })
+            {
+                isCheckOut !== false ? (
+                    navigate.navigate('CheckOut',
+                        {
+                            current_address: location
+                        })
+                ) :
+                    navigate.navigate('ShippingAdress',
+                        {
+                            current_address: location
+                        })
+            }
+
         } else {
             Alert.alert('Please login your account!')
         }

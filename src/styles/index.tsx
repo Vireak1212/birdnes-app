@@ -59,6 +59,14 @@ export default StyleSheet.create({
         backgroundColor: '#fff'
     },
     ///Order 
+    orderInfoContainer: {
+        backgroundColor: '#fff',
+        padding: 10,
+        borderRadius: 10,
+        margin: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     orderShipping: {
         color: '#000',
         fontSize: 16,
@@ -98,13 +106,39 @@ export default StyleSheet.create({
         paddingTop: 1
     },
     ///Check Out 
+    manualLoccationContainer: {
+        backgroundColor: '#fff',
+        marginTop: 10,
+        borderRadius: 5,
+        justifyContent: 'space-between',
+        borderWidth: 0.3,
+        borderColor: '#224889',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    addAddressContainer: {
+        alignSelf: 'flex-end',
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 30,
+        marginRight: 5
+    },
+    addNewPhoneContainer: {
+        backgroundColor: '#fff',
+        height: 50,
+        width: '100%',
+        marginTop: 10,
+        borderRadius: 5,
+        justifyContent: 'center',
+        borderWidth: 0.3,
+        borderColor: '#224889',
+    },
     checkOutItemCotainer: {
         flexDirection: 'row',
         backgroundColor: '#fff',
         alignItems: 'center',
         borderRadius: 10,
         marginTop: 10,
-        marginHorizontal: 15
     },
     paymentContainer: {
         backgroundColor: '#fff',

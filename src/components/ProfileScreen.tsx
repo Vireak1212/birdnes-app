@@ -275,11 +275,8 @@ const ProfileScreen = () => {
                             { cancelable: false }
                         );
                     }}
-                // onPress={() => {
-                //     onSignOut()
-                // }}
                 >
-                    <Text style={{ color: 'red' }}>Sign Out</Text>
+                    <Text style={{ color: 'red', fontWeight: 'bold' }}>Sign Out</Text>
                 </TouchableOpacity>
 
             </SafeAreaView>

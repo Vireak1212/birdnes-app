@@ -9,13 +9,23 @@ import style from '../../styles/index'
 
 let interval: any;
 
-const LoginScreen = () => {
+const LoginScreen = (props: any) => {
 	const navigate = useNavigation()
 	const [phoneNumber, setPhoneNumber] = useState('')
 	const phoneRef = React.createRef<TextInput>();
-
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+			{props.route !== undefined ?
+				<TouchableOpacity onPress={() => navigate.goBack()}
+					style={{
+						height: 50,
+						width: 70,
+						paddingLeft: 20,
+						justifyContent: 'center',
+					}}>
+					<MaterialIcons name="arrow-back-ios" size={25} />
+				</TouchableOpacity> : null}
+
 			<ScrollView>
 				<View style={style.signUpContainer}>
 
