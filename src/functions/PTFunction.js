@@ -1,4 +1,5 @@
 import storage from '@react-native-firebase/storage'
+
 export const makeid = () => {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+<>?:|.,";
@@ -20,6 +21,20 @@ export const GetImage = async (imageAsFileName, folderPath = '') => {
     })
 
 };
+
+export const ConvertDateToTime = (date) => {
+    let hour = date.getHours();
+    if (Number(hour) < 10) {
+        hour = '0' + hour;
+    }
+    let minute = date.getMinutes();
+    if (Number(minute) < 10) {
+        minute = '0' + minute;
+    }
+    let am_pm = Number(hour) > 12 ? 'PM' : 'AM'
+    let convert = hour + ":" + minute + ' ' + am_pm;
+    return convert;
+}
 
 export function createKeyWords(names) {
     let arrNames = []
@@ -145,4 +160,23 @@ export const dateDiffInNotification = (publish_date) => {
         duration = ''
     }
     return duration;
+}
+export const ConvertToEnglishDayDate = (date) => {
+    let convert = ''
+    var day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    convert = day[date.getDay()];
+    return convert;
+}
+
+export const dateDiffInMinute = (message_date) => {
+    var dt1 = new Date(message_date);
+    var dt2 = new Date();
+
+    const cal = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
+    if (cal === 0) {
+        if (dt2.getHours() - dt1.getHours() == 0) {
+            return dt2.getMinutes() - dt1.getMinutes();
+        }
+    }
+    return 24;
 }

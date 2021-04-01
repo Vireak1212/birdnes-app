@@ -166,7 +166,7 @@ const CheakoutScreen = (props: any) => {
 
                     {manualAddress.trim().length !== 0 &&
                         <TouchableOpacity onPress={() => onSave()}>
-                            <AntDesign name='check' size={23} color={MAIN_COLOR} style={{ paddingHorizontal: 10 }} />
+                            <AntDesign name='check' size={23} color={MAIN_COLOR} style={{ paddingRight: 10, paddingLeft: 17 }} />
                         </TouchableOpacity>}
 
                 </View>

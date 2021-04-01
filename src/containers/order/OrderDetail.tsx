@@ -7,7 +7,6 @@ import MainHeader from '../../custom_items/MainHeader';
 import { useNavigation } from '@react-navigation/native';
 import { Col, Row } from 'native-base';
 import NumberFormat from 'react-number-format';
-import { Divider } from 'react-native-elements';
 import { dateDiffInNotification, makeid } from '../../functions/PTFunction';
 import { PRICE_COLOR } from '../../styles';
 import { ScrollView } from 'react-native-gesture-handler';

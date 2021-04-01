@@ -47,7 +47,8 @@ const OrderHistory = (props: any) => {
                     marginBottom: index == order_history.length - 1 ? 10 : 0
 
                 }]}>
-                <FastImage
+
+                {/* <FastImage
                     source={{ uri: _order.order_info.products[0].photo_url }}
                     style={{
                         height: 90,
@@ -56,7 +57,7 @@ const OrderHistory = (props: any) => {
                         margin: 5
                     }}
                     resizeMode={FastImage.resizeMode.cover}
-                />
+                /> */}
 
 
                 <Col style={{
@@ -79,9 +80,9 @@ const OrderHistory = (props: any) => {
                             </Text>
                         </Row>
 
-                        {/* <Text style={{ color: '#aaa', fontSize: 13, paddingTop: 5 }} numberOfLines={2}>
-                            {_order.order_info.products[0].product_description}
-                        </Text> */}
+                        <Text style={{ color: '#aaa', fontSize: 13, paddingTop: 5 }} numberOfLines={2}>
+                            {_order.order_info.products[0].product_name + ' etc. ' + _order.order_info.products.length + ' item'}
+                        </Text>
 
                         <NumberFormat
                             value={_order.order_info.total_amount}
