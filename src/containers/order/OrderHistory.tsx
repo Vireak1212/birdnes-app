@@ -6,11 +6,9 @@ import MainHeader from '../../custom_items/MainHeader';
 import { Col, Row } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
-import FastImage from 'react-native-fast-image';
 import NumberFormat from 'react-number-format';
 import { MAIN_COLOR, PRICE_COLOR } from '../../styles';
 import { dateDiffInNotification } from '../../functions/PTFunction';
-
 
 const OrderHistory = (props: any) => {
     const order_history = useSelector((state: { order_history: any }) => state.order_history);
@@ -48,42 +46,33 @@ const OrderHistory = (props: any) => {
 
                 }]}>
 
-                {/* <FastImage
-                    source={{ uri: _order.order_info.products[0].photo_url }}
-                    style={{
-                        height: 90,
-                        width: 100,
-                        borderRadius: 10,
-                        margin: 5
-                    }}
-                    resizeMode={FastImage.resizeMode.cover}
-                /> */}
-
-
                 <Col style={{
                     justifyContent: 'space-between',
                     alignSelf: 'flex-start',
                     padding: 10,
                 }}>
-                    <View style={{
-                    }}>
-                        <Row style={{ justifyContent: 'space-between' }}>
-                            <Text style={{
-                                color: '#000',
-                                fontSize: 16,
-                                fontWeight: 'bold'
-                            }} numberOfLines={1}>
-                                {'#' + _order.document_number}
-                            </Text>
-                            <Text style={{ color: '#aaa' }}>
-                                {dateDiffInNotification(_order.order_info.order_date.toDate())}
-                            </Text>
-                        </Row>
 
-                        <Text style={{ color: '#aaa', fontSize: 13, paddingTop: 5 }} numberOfLines={2}>
-                            {_order.order_info.products[0].product_name + ' etc. ' + _order.order_info.products.length + ' item'}
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Text style={{
+                            color: '#000',
+                            fontSize: 16,
+                            fontWeight: 'bold'
+                        }} numberOfLines={1}>
+                            {'#' + _order.document_number}
                         </Text>
+                        <Text style={{ color: '#aaa' }}>
+                            {dateDiffInNotification(_order.order_info.order_date.toDate())}
+                        </Text>
+                    </Row>
 
+                    <Text style={{ color: '#aaa', fontSize: 13, paddingTop: 5 }} numberOfLines={2}>
+                        {_order.order_info.products[0].product_name + ' etc. ' + _order.order_info.products.length + ' item'}
+                    </Text>
+                    <Row style={{
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingTop: 10
+                    }}>
                         <NumberFormat
                             value={_order.order_info.total_amount}
                             displayType={'text'}
@@ -96,12 +85,18 @@ const OrderHistory = (props: any) => {
                                     color: PRICE_COLOR,
                                     fontSize: 16,
                                     fontWeight: 'bold',
-                                    paddingTop: 5
                                 }}
                                     numberOfLines={1}
-                                >{"$" + value}
+                                >{"Total " + "$" + value}
                                 </Text>} />
-                    </View>
+
+                        <TouchableOpacity onPress={() => navigate.navigate('OrderDetail',
+                            { item }
+                        )}>
+                            <Text style={{ color: MAIN_COLOR }}>View Detail</Text>
+                        </TouchableOpacity>
+                    </Row>
+
                 </Col>
             </TouchableOpacity>
 

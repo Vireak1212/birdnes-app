@@ -14,10 +14,8 @@ import { updateClient } from '../actions/Client'
 import { MAIN_COLOR } from '../styles'
 import { markers } from '../temp_data/mapData';
 
-
 const MapScreen = (props: any) => {
     const { isCheckOut } = props.route.params;
-    console.log(isCheckOut)
     let geocoder: any = Geocoder;
     const client = useSelector((state: { client: any }) => state.client);
     const navigate = useNavigation();
@@ -143,10 +141,21 @@ const MapScreen = (props: any) => {
 
     const onSave = () => {
         if (client.length !== 0) {
+            let check_location = client.items.shipping_address.filter((r: any) => r === location);
+            if (check_location.length > 0) {
+                Toast.show({
+                    text: "Your location already exists",
+                    type: 'warning',
+                    duration: 2000
+                })
+                return;
+            }
+
             let shipping_address = client.items.shipping_address;
             shipping_address.push(location)
             client.items.shipping_address = shipping_address;
             dispatch(updateClient(client.id, client.items))
+
             Toast.show({
                 text: "Your location has been add",
                 type: 'success',

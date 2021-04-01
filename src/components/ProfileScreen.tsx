@@ -18,6 +18,7 @@ import LoginScreen from './auth/LoginScreen';
 import auth from "@react-native-firebase/auth";
 import AsyncStorage from '@react-native-community/async-storage';
 import { loadData } from '../functions/LoadData';
+import FastImage from 'react-native-fast-image';
 
 const ProfileScreen = () => {
     const client = useSelector((state: { client: any }) => state.client);
@@ -146,6 +147,10 @@ const ProfileScreen = () => {
                     }}>
                         {photo_url.uri === '' ? (
                             <View style={style.backgroundImage}>
+                                <FastImage style={style.Imagestyle}
+                                    source={require('../images/profile.png')}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                />
                                 <TouchableOpacity style={style.Camera} onPress={() => selectImage()}>
                                     <Entypo name='camera' size={20} color='#000' />
                                 </TouchableOpacity>
@@ -153,10 +158,9 @@ const ProfileScreen = () => {
 
                         ) : (
                             <View style={style.backgroundImage}>
-                                <Image style={style.Imagestyle}
+                                <FastImage style={style.Imagestyle}
                                     source={{ uri: photo_url.uri }}
-                                    resizeMethod="auto"
-                                    resizeMode="cover"
+                                    resizeMode={FastImage.resizeMode.cover}
                                 />
                                 <TouchableOpacity style={style.Camera} onPress={() => selectImage()}>
                                     <Entypo name='camera' size={20} color='#000' />

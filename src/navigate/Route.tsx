@@ -45,6 +45,7 @@ import auth from "@react-native-firebase/auth";
 import messaging from "@react-native-firebase/messaging";
 import firestore from "@react-native-firebase/firestore";
 import { Platform } from 'react-native';
+import ReviewDetail from '../containers/review/ReviewDetail';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -166,6 +167,7 @@ const Route = () => {
         <Stack.Screen name="AllProduct" component={AllProduct} />
         <Stack.Screen name="ProductItem" component={ProductItems} />
         <Stack.Screen name="CartDetail" component={MainCartScreen} />
+        <Stack.Screen name="ReviewDetail" component={ReviewDetail} />
 
       </Stack.Navigator>
     );
