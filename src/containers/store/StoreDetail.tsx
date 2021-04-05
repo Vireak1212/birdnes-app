@@ -74,8 +74,7 @@ const StoreDetail = (props: any) => {
                                 }}>{store_name}</Text>
                                 <Text style={{ fontWeight: 'bold', fontSize: 12, marginVertical: 5, color: '#000' }}>
                                     ESSENTIALS | GLOCERY STORE</Text>
-                                <View style={{ alignSelf: 'flex-start', flexDirection: 'row' }}>
-
+                                {/* <View style={{ alignSelf: 'flex-start', flexDirection: 'row' }}>
                                     <StarRating
                                         disabled={false}
                                         maxStars={5}
@@ -86,7 +85,7 @@ const StoreDetail = (props: any) => {
                                     />
 
                                     <Text style={{ marginLeft: 30, color: '#000' }}>32 Reviews</Text>
-                                </View>
+                                </View> */}
                             </Col>
 
                         </View>

@@ -340,7 +340,7 @@ const ProductDetail = (props: any) => {
                                                     {'#' + item.items.product_info.product_code}
                                                 </Text>
 
-                                                <TouchableOpacity style={{ alignSelf: 'flex-start', paddingTop: 5 }}>
+                                                {/* <TouchableOpacity style={{ alignSelf: 'flex-start', paddingTop: 5 }}>
                                                     <StarRating
                                                         disabled={true}
                                                         emptyStar={'star-o'}
@@ -355,7 +355,7 @@ const ProductDetail = (props: any) => {
                                                         // starStyle={{ marginTop: Platform.OS === "ios" ? 4 : 3 }}
                                                         containerStyle={{ width: 80 }}
                                                     />
-                                                </TouchableOpacity>
+                                                </TouchableOpacity> */}
                                             </Col>
 
                                             <View style={{ alignItems: 'center' }}>
