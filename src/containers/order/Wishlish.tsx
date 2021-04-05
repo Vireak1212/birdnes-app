@@ -12,7 +12,6 @@ import { MAIN_COLOR, PRICE_COLOR } from '../../styles';
 
 
 const Wishlish = () => {
-    const data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const navigate = useNavigation();
     const style = useSelector((state: { style: any }) => state.style)
     const client = useSelector((state: { client: any }) => state.client);
@@ -32,7 +31,6 @@ const Wishlish = () => {
             setIsInitialLoad(false)
         }, 200);
     }, [client.items.favorite_product.length])
-    console.log(client.items.favorite_product)
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
@@ -45,7 +43,7 @@ const Wishlish = () => {
             <TouchableOpacity key={index} onPress={() => navigate.navigate('ProductDetail',
                 { item: _product })}
                 style={[style.orderHistoryContainer, {
-                    marginBottom: index == data.length - 1 ? 10 : 0,
+                    marginBottom: index == _product.length - 1 ? 10 : 0,
                 }]}>
 
                 <FastImage style={{

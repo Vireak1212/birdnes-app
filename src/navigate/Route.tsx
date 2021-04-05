@@ -204,7 +204,7 @@ const Route = () => {
               ),
             }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Store"
           component={MainStoreScreen}
           options={
@@ -213,7 +213,7 @@ const Route = () => {
                 <Fontisto name="shopping-store" color={color} size={20} />
               ),
             }}
-        />
+        /> */}
 
         <Tab.Screen
           name="Cart"
