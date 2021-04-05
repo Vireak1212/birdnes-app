@@ -456,24 +456,28 @@ const ProductDetail = (props: any) => {
                             )
                         }}
                     />
+
                 }
-                <View style={style.addToCartContaier}>
+                {!isLoadCompleted ? (null) :
+                    <View style={style.addToCartContaier}>
 
-                    <TouchableOpacity onPress={() => {
-                        {
-                            client.length !== 0 ?
-                                onAddToCart() :
-                                navigate.navigate('Login',
-                                    { isBack: true }
-                                )
-                        }
-                    }}
-                        style={style.addToCartBotton}>
-                        <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
-                        <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            {
+                                client.length !== 0 ?
+                                    onAddToCart() :
+                                    navigate.navigate('Login',
+                                        { isBack: true }
+                                    )
+                            }
+                        }}
+                            style={style.addToCartBotton}>
+                            <Text style={{ paddingRight: 10, color: '#fff', fontWeight: 'bold' }}>Add to Cart</Text>
+                            <Entypo name="shopping-cart" size={22} style={style.headerIconColor} />
+                        </TouchableOpacity>
 
-                </View>
+                    </View>
+                }
+
             </>
             }
 
