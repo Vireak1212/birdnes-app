@@ -122,7 +122,6 @@ const Wishlish = () => {
         )
     }
 
-
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
             <MainHeader

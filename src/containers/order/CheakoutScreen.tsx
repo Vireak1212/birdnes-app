@@ -256,7 +256,7 @@ const CheakoutScreen = (props: any) => {
                                                 style={[style.shippingAddress,
                                                 {
                                                     flexDirection: 'row',
-                                                    backgroundColor: _address === address ? '#eee' : '#fff'
+                                                    backgroundColor: _address === address ? '#eee' : '#fff',
                                                 }]}>
 
                                                 <Col>
@@ -269,24 +269,25 @@ const CheakoutScreen = (props: any) => {
                                                     </Text>
                                                 </Col>
 
-                                                {_address !== address ? <TouchableOpacity onPress={() => {
-                                                    Alert.alert(
-                                                        "Delete Cart",
-                                                        "Are you sure to delete this Cart?",
-                                                        [
-                                                            {
-                                                                text: "No",
-                                                                onPress: () => console.log("No Pressed"),
-                                                                style: "cancel"
-                                                            },
-                                                            {
-                                                                text: "Yes",
-                                                                onPress: () => _deleteAddress(_address),
-                                                            }
-                                                        ],
-                                                        { cancelable: false }
-                                                    );
-                                                }}>
+                                                {_address !== address ? <TouchableOpacity style={{ borderWidth: 1, padding: 5 }}
+                                                    onPress={() => {
+                                                        Alert.alert(
+                                                            "Delete Cart",
+                                                            "Are you sure to delete this Cart?",
+                                                            [
+                                                                {
+                                                                    text: "No",
+                                                                    onPress: () => console.log("No Pressed"),
+                                                                    style: "cancel"
+                                                                },
+                                                                {
+                                                                    text: "Yes",
+                                                                    onPress: () => _deleteAddress(_address),
+                                                                }
+                                                            ],
+                                                            { cancelable: false }
+                                                        );
+                                                    }}>
                                                     <MaterialIcons name="delete-forever" size={25} color={'#FF0000'} />
                                                 </TouchableOpacity> :
                                                     <Ionicons name='checkmark-circle' size={25} color={MAIN_COLOR} />
@@ -420,8 +421,6 @@ const CheakoutScreen = (props: any) => {
                         </>}
                 </>
             }
-
-
         </SafeAreaView>
     );
 }

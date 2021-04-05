@@ -75,7 +75,7 @@ const HomeScreen = () => {
                     removeClippedSubviews={Platform.OS == 'ios' ? false : true}
                     showsVerticalScrollIndicator={false}
                     // disableVirtualization={true}
-                    data={[1]}
+                    data={['']}
                     listKey={makeid()}
                     ListEmptyComponent={null}
                     initialNumToRender={4}
@@ -87,7 +87,7 @@ const HomeScreen = () => {
                             <>
                                 <ProductSlide />
                                 <NewProduct />
-                                <Stores />
+                                {/* <Stores /> */}
                                 <TopProduct />
                                 <AllProduct />
                             </>
