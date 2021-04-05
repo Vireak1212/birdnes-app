@@ -21,9 +21,6 @@ import AllProduct from '../containers/product/AllProduct';
 import Stores from '../containers/store/Stores';
 import { MAIN_COLOR, PRICE_COLOR } from '../styles';
 
-
-const screen = Dimensions.get('screen')
-
 const HomeScreen = () => {
     const products = useSelector((state: { products: any }) => state.products);
     const slide_shows = useSelector((state: { slide_shows: any }) => state.slide_shows);

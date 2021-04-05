@@ -109,10 +109,12 @@ const AllProduct = () => {
                             <Text style={{ fontSize: 15, paddingBottom: 2 }} numberOfLines={2}>
                                 {_AllProduct.product_info.product_name}
                             </Text>
-                            <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
-                                {_AllProduct.product_info.product_description}
-                            </Text>
-
+                            {_AllProduct.product_info.product_description !== '' ? (
+                                <Text style={{ fontSize: 11, color: '#aaa' }} numberOfLines={2}>
+                                    {_AllProduct.product_info.product_description}
+                                </Text>
+                            ) : null
+                            }
                             <NumberFormat
                                 value={_AllProduct.product_info.units[0].price}
                                 displayType={'text'}

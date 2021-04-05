@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { Col, Row } from 'native-base';
-import React from 'react'
-import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { ActivityIndicator, FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import FastImage from 'react-native-fast-image';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
 import { useSelector } from 'react-redux';
 import MainHeader from '../../custom_items/MainHeader';
 import { makeid } from '../../functions/PTFunction';
-import { PRICE_COLOR } from '../../styles';
+import { MAIN_COLOR, PRICE_COLOR } from '../../styles';
 
 
 const Wishlish = () => {
@@ -17,6 +17,22 @@ const Wishlish = () => {
     const style = useSelector((state: { style: any }) => state.style)
     const client = useSelector((state: { client: any }) => state.client);
     const products = useSelector((state: { products: any }) => state.products);
+
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
+
+    const getWishlish = async () => {
+        setTimeout(() => {
+
+        }, 200);
+    }
+
+    React.useEffect(() => {
+        getWishlish();
+        setTimeout(() => {
+            setIsInitialLoad(false)
+        }, 200);
+    }, [client.items.favorite_product.length])
+    console.log(client.items.favorite_product)
 
     const leftIcon = () => <TouchableOpacity style={style.leftRightHeader}
         onPress={() => navigate.goBack()}>
@@ -92,6 +108,21 @@ const Wishlish = () => {
         )
     }
 
+    const noItem = () => {
+        return (
+            <View style={style.cartImageContainer}>
+                <Image style={{
+                    height: 200,
+                    width: 200,
+                }}
+                    source={require('../../images/empty-cart-rappi.png')}
+                    resizeMode='cover'
+                    resizeMethod='resize'
+                />
+                <Text style={{ opacity: 0.5 }}>Order Empty</Text>
+            </View>
+        )
+    }
 
 
     return (
@@ -100,17 +131,29 @@ const Wishlish = () => {
                 title="Wishlish"
                 leftIcon={leftIcon()}
             />
-            <FlatList
-                style={{ marginBottom: 10, marginHorizontal: 10 }}
-                listKey={makeid()}
-                renderItem={_renderCurrentProject}
-                data={client.items.favorite_product}
-                keyExtractor={(item, index) => index.toString()}
-                initialNumToRender={4}
-                maxToRenderPerBatch={8}
-                windowSize={10}
-                onEndReachedThreshold={0.8}
-            />
+            {isInitialLoad ?
+                <ActivityIndicator style={{
+                    marginTop: 20
+                }} size={35} color={MAIN_COLOR} />
+                : (
+                    <>
+                        {client.items.favorite_product.length === 0 ? noItem() : (
+                            <FlatList
+                                style={{ marginBottom: 10, marginHorizontal: 10 }}
+                                listKey={makeid()}
+                                renderItem={_renderCurrentProject}
+                                data={client.items.favorite_product}
+                                keyExtractor={(item, index) => index.toString()}
+                                initialNumToRender={4}
+                                maxToRenderPerBatch={8}
+                                windowSize={10}
+                                onEndReachedThreshold={0.8}
+                            />
+                        )}
+                    </>
+                )
+            }
+
         </SafeAreaView>
     )
 }

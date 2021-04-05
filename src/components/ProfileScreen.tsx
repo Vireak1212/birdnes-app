@@ -176,7 +176,7 @@ const ProfileScreen = () => {
                             <Text style={{ fontSize: 20, fontWeight: 'bold', color: MAIN_COLOR }}>
                                 {client.items.client_info.full_name}
                             </Text>
-                            <Text style={{ color: '#aaa' }}>{'(+855)' + client.items.client_info.phone_number}</Text>
+                            <Text style={{ color: '#aaa' }}>{client.items.client_info.phone_number}</Text>
                         </Col>
                     </View>
 

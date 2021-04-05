@@ -43,6 +43,16 @@ const ShippingAddress = () => {
     }
 
     const onSave = () => {
+        let check_location = client.items.shipping_address.filter((r: any) => r === manualAddress);
+        if (check_location.length > 0) {
+            Toast.show({
+                text: "Your location already exists",
+                type: 'warning',
+                duration: 2000
+            })
+            return;
+        }
+
         let shipping_address = client.items.shipping_address;
         shipping_address.push(manualAddress)
         client.items.shipping_address = shipping_address;
